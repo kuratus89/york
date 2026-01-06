@@ -1,7 +1,9 @@
 #ifndef STORA_H
 #define STORA_H
 
-bool isf();
+#include "bits/stdc++.h"
+using namespace std;
+extern bool isf();
 struct win{
     bool type;// type 1 => full window , type 0 => partial window
     string name;// window name
@@ -11,20 +13,19 @@ struct win{
     map<string , long long> stl;
     map<long long , long long> ltl;
 };
-bool gameon;
-stack<win> wino;
-bool first_boot;
-string k;
-map<string , string> string_to_color;
-vector<string> in_to_color;
-long long x,y;
-long long xmin;
-long long ymin;
-long long ymax;
-long long xmax;
-bool hc;
-bool ch=0;
-long long rx;
-long long ry;
-string scrostring;
+extern bool gameon;
+extern stack<win> wino;
+extern bool first_boot;
+extern string k;
+extern map<string , string> string_to_color;
+extern vector<string> in_to_color;
+extern long long x,y;
+extern long long xmin;
+extern long long ymin;
+extern long long ymax;
+extern long long xmax;
+extern bool hc;
+extern bool ch;
+extern long long rx;
+extern long long ry;
 #endif

@@ -12,8 +12,8 @@ void screen_control(){
         ch=1;
         if((k=="A")||(k=="W"))hc=1;
         if(k=="D")x = min(xmax , x+1);
-        else if(k=='A')x=max(xmin , x-1);
-        else if(k=='W')y = max(ymin , y-1);
+        else if(k=="A")x=max(xmin , x-1);
+        else if(k=="W")y = max(ymin , y-1);
         else if(k=="S")y = min(ymax , y+1);
     }
 }

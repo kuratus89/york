@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 #include "output/output.h"
 #include "input/input.h"
-#include "stora.h"
+#include "stora/stora.h"
 #include "windows/window.h"
 
 using namespace std;
 
-//global variable=>
 
 
 int main(){

@@ -115,12 +115,7 @@ void save_ltl(string path, map<long long, long long>& m) {
     file.close();
 }
 
-void save_sts(const map<string,string>& mp, const string& filename) {
-    ofstream out(filename);
-    for (auto& [key, value] : mp) {
-        out << key << "=" << value << "\n";
-    }
-}
+
 
 bool isf(){
     string target = "data/boot.kp";
