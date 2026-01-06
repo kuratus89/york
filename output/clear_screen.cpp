@@ -4,6 +4,7 @@
 void soft_clear(){
     std::cout << "\033[H";
 }
+
 void hard_clear(){
     #ifdef _WIN32
         system("cls");

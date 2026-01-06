@@ -1,14 +1,8 @@
 #ifndef OUTPUT_H
 #define OUTPUT_H
 #include <bits/stdc++.h>
-
-void blue();
-void red();
-void green();
-void cyan();
-void purple();
-void white();
-void reset();
-void screen_output(std::string screen);
-
+using namespace std;
+#include "clear_screen.h"
+string dommer(vector<vector<pair<char , char>>> &screen);
+void print_screen(string screen);
 #endif

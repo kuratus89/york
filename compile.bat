@@ -1,0 +1,1 @@
+g++ main.cpp input/input.cpp output/output.cpp output/clear_screen.cpp -std=c++17 -o game
