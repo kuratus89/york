@@ -6,10 +6,10 @@
 #include "../output/output.h"
 #include "../stora/stora.h"
 #include "window.h"
+#include "../lib.h"
 
 void boot(){
     first_boot=0;
-    hard_clear();
     string s = "booting..";
     s = paint(s , "green");
     s.push_back('\n');

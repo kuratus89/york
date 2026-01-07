@@ -1,8 +1,7 @@
 #ifndef STORA_H
 #define STORA_H
 
-#include "bits/stdc++.h"
-using namespace std;
+#include "../lib.h"
 extern bool isf();
 struct win{
     bool type;// type 1 => full window , type 0 => partial window

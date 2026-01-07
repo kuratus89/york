@@ -1,8 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-
-#include <bits/stdc++.h>
-using namespace std;
+#include "../lib.h"
 #include "../stora/stora.h"
 void window();
 void pushwin(win ararara);

@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include "lib.h"
 #include "output/output.h"
 #include "input/input.h"
 #include "stora/stora.h"

@@ -1,8 +1,8 @@
+#include "../lib.h"
 #include "output.h"
 #include "clear_screen.h"
-#include <bits/stdc++.h>
 #include "../stora/stora.h"
-using namespace std;
+
 
 
 string paint(string s ,string col ){//paint string with color

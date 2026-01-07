@@ -2,12 +2,11 @@
 // manage windows (.)-(.)
 
 #include "window.h"
-#include <bits/stdc++.h>
 #include "boot.h"
 #include "scro.h"
 #include "../stora/stora.h"
 #include "error.h"
-using namespace std;
+#include "../lib.h"
 
 
 
@@ -29,7 +28,7 @@ void window(){
         }
         wino.push(tamzid);
     }
-    func_point[wino.top().name];
+    func_point[wino.top().name]();
 }
 
 void popwin(){

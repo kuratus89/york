@@ -2,8 +2,7 @@
 // store data and controls read/write of files system *_*
 
 #include "stora.h"
-#include "bits/stdc++.h"
-#include <filesystem>
+#include "../lib.h"
 #include "../windows/window.h"
 using namespace std;
 namespace fs = std::filesystem;
@@ -119,11 +118,11 @@ void save_ltl(string path, map<long long, long long>& m) {
 
 bool isf(){
     string target = "data/boot.kp";
+    if (!fs::exists("data")) return 0; // Add this check
     for (const auto& entry : fs::recursive_directory_iterator("data")) {
-        if (entry.path().filename() == target) {
+        if (entry.path().filename() == "boot.kp") { // Also fix the comparison logic here
             return 1;
         }
     }
-
     return 0;
 }

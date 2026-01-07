@@ -3,12 +3,11 @@
 
 #include "scro.h"
 #include "../stora/stora.h"
-#include <bits/stdc++.h>
 #include "../output/output.h"
-using namespace std;
+#include "../lib.h"
 
 void screen_control(){
-    if((k!="-")&&(k=="D")&&(k=="A")&&(k=="W")&&(k=="S")){
+    if((k!="-")&&((k=="D")||(k=="A")||(k=="W")||(k=="S"))){
         ch=1;
         if((k=="A")||(k=="W"))hc=1;
         if(k=="D")x = min(xmax , x+1);
@@ -21,15 +20,15 @@ void screen_control(){
 vector<vector<pair<char , char>>> bod_create(){
     vector<vector<pair<char , char>>> scr(y , vector<pair<char , char>> (x,{'5' , ' '}));
     char colo;
-    if((x<rx)||(y<ry))colo = 0;
-    else colo = 2;
+    if((x<rx)||(y<ry))colo = '0';
+    else colo = '2';
     for(long long i=0 ; i<x; i++){
         scr[0][i] = {colo , '-'};
         scr[y-1][i] = {colo , '-'};
     }
     for(long long i=0 ; i<y ; i++){
-        scr[y][0] = {colo , '|'};
-        scr[y][x-1] = {colo , '|'};
+        scr[i][0] = {colo , '|'};
+        scr[i][x-1] = {colo , '|'};
     }
     return scr;
 }
@@ -40,9 +39,10 @@ void str_added(vector<vector<pair<char , char>>> &scr){// advance string initili
     fy = (fy/2) +1;
     fx = (max(0LL ,fx-(long long)scrostring.size())/2) +1;
     for(auto val:scrostring){
+        if(fx>=x)break;
         if(scr[fy][fx].second==' ')scr[fy][fx].second = val;
-    }
-    
+        fx++;
+    }    
 }
 
 

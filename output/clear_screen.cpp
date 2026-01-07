@@ -1,5 +1,5 @@
 #include "output.h"
-#include <iostream>
+#include "../lib.h"
 
 void soft_clear(){
     std::cout << "\033[H";
