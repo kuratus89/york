@@ -2,6 +2,9 @@
 #define STORA_H
 
 #include "../lib.h"
+
+ //variables 
+
 extern bool isf();
 struct win{
     bool type;// type 1 => full window , type 0 => partial window
@@ -27,4 +30,19 @@ extern bool hc;
 extern bool ch;
 extern long long rx;
 extern long long ry;
+extern bool boot_log;
+extern long long cx;
+extern long long cy;
+extern char player;
+extern vector<vector<pair<char , char>>> screen;
+extern vector<vector<pair<char , char>>> pre_screen;
+extern string player_color;
+extern vector<string> intro_dialog;
+
+//func
+
+bool isc();
+void initilize_sc();
+
+
 #endif

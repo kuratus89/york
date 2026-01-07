@@ -4,8 +4,6 @@
 #include "stora/stora.h"
 #include "windows/window.h"
 
-using namespace std;
-
 
 
 int main(){

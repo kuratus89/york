@@ -5,7 +5,7 @@
 #include "../lib.h"
 
 void error(){
-    hard_clear();
+    soft_clear();
     cout<<"sorry but the game crash >_<"<<endl;
     cout<<"reason => ";
     cout<<wino.top().sts["value"];

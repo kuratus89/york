@@ -4,6 +4,7 @@
 #include "stora.h"
 #include "../lib.h"
 #include "../windows/window.h"
+#include "../output/output.h"
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -31,11 +32,29 @@ map<string , string> string_to_color={
 };
 vector<string> in_to_color = {"\033[31m" ,"\033[34m","\033[32m","\033[35m","\033[36m","\033[37m","\033[0m"};
 
-bool hc=0; // need to hard clear?
+bool hc=1; // need to hard clear?
 bool ch=1; // change happen?
-
+bool boot_log =1;
+vector<vector<pair<char , char>>> screen;
+vector<vector<pair<char , char>>> pre_screen;
+long long cx,cy;
+char player;
+string player_color;
+vector<string> intro_dialog = {
+    "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
+    "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",
+    "Strip me of my old name and grant me a new one-and if it pleases you, reshape my very appearance as well."
+};
 
 // functions
+
+bool isc(){
+    return (!screen.empty());
+}
+void initilize_sc(){
+    screen = bod_create('5');
+}
+
 void load_sts(string path, map<string, string>& m) {
     ifstream file(path);
     if (!file.is_open()) return;
