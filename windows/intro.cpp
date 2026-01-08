@@ -42,6 +42,7 @@ void intro(){
         player = '@';
         wino.top().screen_handle =1;
         wino.top().type=1;
+        wino.top().stl["done"]=0;
     }
     if(ani){
         wino.top().screen[cy][cx].second=' ';
@@ -61,10 +62,15 @@ void intro(){
             dialoger();
         }
         else {
-            wino.pop();
-            win hehe;
-            hehe.name = "intro_menu";
-            wino.push(hehe);
+            if(wino.top().stl["done"]==0){
+                // wino.pop();
+                win hehe;
+                hehe.name = "intro_menu";
+                wino.push(hehe);
+            }
+            else {
+
+            }
         }
     }
     this_thread::sleep_for(std::chrono::milliseconds(delay));

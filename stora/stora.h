@@ -18,6 +18,7 @@ struct win{
     vector<vector<pair<char , char>>> par_screen;
     bool initilizzed=0;
     bool screen_handle=0;
+    
 };
 extern bool gameon;
 extern stack<win> wino;

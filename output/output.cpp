@@ -54,7 +54,7 @@ vector<vector<pair<char , char>>> bod_create(char colo , long long lx , long lon
     return scr;
 }
 void dialog_seprater(char colo , vector<vector<pair<char , char>>> &scro){
-    for(long long i=1 ; i<x-1; i++)scro[y-5][i] = {colo , '-'};
+    for(long long i=1; i<x-1; i++)scro[y-5][i] = {colo , '-'};
 }
 
 void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char player_icon , string msg , char colo){
@@ -63,7 +63,7 @@ void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char p
             scro[i][j] = {colo , ' '};
         }
     }
-    for(long long i=0 ; i<x; i++)scro[y-5][i] = {colo , '-'};
+    for(long long i=1 ; i<x-1; i++)scro[y-5][i] = {colo , '-'};
 
     for(long long i=y-4 ; i<y-1 ; i++){
         scro[i][8] ={colo ,'|'};
