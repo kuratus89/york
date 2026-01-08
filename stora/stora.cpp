@@ -9,10 +9,10 @@ using namespace std;
 namespace fs = std::filesystem;
 
 // variables
-long long x = 10;
-long long y = 5;
-long long xmin=8;
-long long ymin=4;
+long long x = 60;
+long long y = 20;
+long long xmin=15;
+long long ymin=8;
 long long ymax=LLONG_MAX;
 long long xmax=LLONG_MAX;
 long long rx=50; //recommended x and y
@@ -35,7 +35,7 @@ vector<string> in_to_color = {"\033[31m" ,"\033[34m","\033[32m","\033[35m","\033
 bool hc=1; // need to hard clear?
 bool ch=1; // change happen?
 bool boot_log =1;
-vector<vector<pair<char , char>>> screen;
+// vector<vector<pair<char , char>>> screen;
 vector<vector<pair<char , char>>> pre_screen;
 long long cx,cy;
 char player;
@@ -48,12 +48,6 @@ vector<string> intro_dialog = {
 
 // functions
 
-bool isc(){
-    return (!screen.empty());
-}
-void initilize_sc(){
-    screen = bod_create('5');
-}
 
 void load_sts(string path, map<string, string>& m) {
     ifstream file(path);

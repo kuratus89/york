@@ -24,23 +24,27 @@ void dialoger(){
     else {
         dial.push_back(intro_dialog[di][din]);
         din++;
-        dialog_adder(screen , "unknown" , player , dial , '5');
+        dialog_adder(wino.top().screen , "unknown" , player , dial , '5');
     }
     
 
 }
 
 void intro(){
-    if(!isc()){
-        initilize_sc();
+    if(!wino.top().initilizzed){
+        wino.top().initilizzed=1;
+        wino.top().screen = bod_create('5' , x , y);
+        dialog_seprater('5', wino.top().screen );
         initilize_tarx();
         player_color = "white";
         cx = 3;
         cy= 1;
         player = '@';
+        wino.top().screen_handle =1;
+        wino.top().type=1;
     }
     if(ani){
-        screen[cy][cx].second=' ';
+        wino.top().screen[cy][cx].second=' ';
         if(isbo()){
             if(cx==tarx){
                 ani=0;
@@ -50,12 +54,19 @@ void intro(){
         else {
             cy++;
         }
-        screen[cy][cx]= {'5' , player};
+        wino.top().screen[cy][cx]= {'5' , player};
     }
     else {
-        dialoger();
+        if(di<intro_dialog.size()){
+            dialoger();
+        }
+        else {
+            wino.pop();
+            win hehe;
+            hehe.name = "intro_menu";
+            wino.push(hehe);
+        }
     }
-    kuramizer();
     this_thread::sleep_for(std::chrono::milliseconds(delay));
 
     

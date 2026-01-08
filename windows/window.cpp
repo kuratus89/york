@@ -7,6 +7,7 @@
 #include "../stora/stora.h"
 #include "intro.h"
 #include "../output/output.h"
+#include "intro_menu.h"
 #include "../lib.h"
 
 
@@ -15,7 +16,8 @@ map<string , void(*)()> func_point = {
         {"boot" , boot},
         {"error", error},
         {"scro" , scro},
-        {"intro" , intro}
+        {"intro" , intro},
+        {"intro_menu" , intro_menu}
 };
 
 
@@ -37,6 +39,17 @@ void window(){
         return;
     }
     func_point[wino.top().name]();
+
+    if(wino.top().screen_handle){
+        // if(wino.top().type){
+        //     kuramizer(wino.top().screen);
+        // }
+        // else {
+        //     par_scr(wino.top().screen , wino.top().clx , wino.top().cly);
+        // }
+        kuramizer(wino.top().screen);
+        
+    }
 }
 
 void popwin(){

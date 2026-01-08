@@ -38,21 +38,23 @@ void print_screen(string screen){// output the string with soft clear
     cout<<screen;
 }
 
-vector<vector<pair<char , char>>> bod_create(char colo){ // create boders of color colo
-    vector<vector<pair<char , char>>> scr(y , vector<pair<char , char>> (x,{'5' , ' '}));
-    for(long long i=0 ; i<x; i++){
+vector<vector<pair<char , char>>> bod_create(char colo , long long lx , long long ly  ){ // create boders of color colo
+    vector<vector<pair<char , char>>> scr(ly , vector<pair<char , char>> (lx,{colo , ' '}));
+    for(long long i=0 ; i<lx; i++){
         scr[0][i] = {colo , '-'};
-        scr[y-1][i] = {colo , '-'};
-        scr[y-5][i] = {colo , '-'};
+        scr[ly-1][i] = {colo , '-'};
     }
-    for(long long i=0 ; i<y ; i++){
+    for(long long i=0 ; i<ly ; i++){
         scr[i][0] = {colo , '|'};
-        scr[i][x-1] = {colo , '|'};
+        scr[i][lx-1] = {colo , '|'};
     }
     // for(long long i=y-4 ; i<y-1 ; i++){
     //     scr[i][8] ={colo ,'|'};
     // }
     return scr;
+}
+void dialog_seprater(char colo , vector<vector<pair<char , char>>> &scro){
+    for(long long i=1 ; i<x-1; i++)scro[y-5][i] = {colo , '-'};
 }
 
 void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char player_icon , string msg , char colo){
@@ -61,6 +63,7 @@ void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char p
             scro[i][j] = {colo , ' '};
         }
     }
+    for(long long i=0 ; i<x; i++)scro[y-5][i] = {colo , '-'};
 
     for(long long i=y-4 ; i<y-1 ; i++){
         scro[i][8] ={colo ,'|'};
@@ -98,10 +101,23 @@ void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char p
 }
 
 
-void kuramizer(){
+void kuramizer(vector<vector<pair<char, char>>> &screen){
     if(pre_screen==screen)return;
     pre_screen = screen;
     print_screen(dommer(screen));
+}
+void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par , long long vx , long long vy){
+    long long tx=vx;
+    for(auto gl:par){
+        if(vy>screen.size())break;
+        for(auto va:gl){
+            if(tx>screen[0].size())break;
+            screen[vy][tx]=va;
+            tx++;
+        }
+        tx=vx;
+        vy++;
+    }    
 }
 
 

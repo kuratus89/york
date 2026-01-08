@@ -11,9 +11,13 @@ struct win{
     string name;// window name
     // data
     map<string , string> sts;
-    map<long long , string> lts;
     map<string , long long> stl;
-    map<long long , long long> ltl;
+    // map<long long , string> lts;
+    // map<long long , long long> ltl;
+    vector<vector<pair<char , char>>> screen;
+    vector<vector<pair<char , char>>> par_screen;
+    bool initilizzed=0;
+    bool screen_handle=0;
 };
 extern bool gameon;
 extern stack<win> wino;
@@ -34,15 +38,13 @@ extern bool boot_log;
 extern long long cx;
 extern long long cy;
 extern char player;
-extern vector<vector<pair<char , char>>> screen;
+// extern vector<vector<pair<char , char>>> screen;
 extern vector<vector<pair<char , char>>> pre_screen;
 extern string player_color;
 extern vector<string> intro_dialog;
 
 //func
 
-bool isc();
-void initilize_sc();
 
 
 #endif
