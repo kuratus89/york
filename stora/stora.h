@@ -16,6 +16,7 @@ struct win{
     // map<long long , long long> ltl;
     vector<vector<pair<char , char>>> screen;
     vector<vector<pair<char , char>>> par_screen;
+    map<string ,vector<string>> vs;
     bool initilizzed=0;
     bool screen_handle=0;
     

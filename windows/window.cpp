@@ -9,6 +9,7 @@
 #include "../output/output.h"
 #include "dynamic/intro_menu.h"
 #include "dynamic/input_str.h"
+#include "dynamic/msg.h"
 #include "../lib.h"
 
 
@@ -19,7 +20,8 @@ map<string , void(*)()> func_point = {
         {"scro" , scro},
         {"intro" , intro},
         {"intro_menu" , intro_menu},
-        {"input_str" , input_str}
+        {"input_str" , input_str},
+        {"msg" , msg}
 };
 
 

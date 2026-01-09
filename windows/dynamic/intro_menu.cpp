@@ -70,6 +70,14 @@ void optin(){
             ed.sts["api"]="player_cha";
             ed.stl["limit"]=1;
         }
+        else if(selecter == 2){
+            if(wino.top().sts["name"]==""){
+                ed.name = "msg";
+                ed.sts["title"]="name?";
+                ed.vs["msg"] = {"Please enter name"};
+                ed.sts["color"]="0";
+            }
+        }
         wino.push(ed);
     }
 }
