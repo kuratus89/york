@@ -15,7 +15,7 @@ void initilize_tarx(){
 
 void dialoger(){
     if(din>intro_dialog[di].size()){
-        if(k=="Space"){
+        if(k==" "){
             di++;
             dial="";
             din=0;
