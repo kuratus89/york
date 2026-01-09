@@ -5,7 +5,7 @@
 
  //variables 
 
-extern bool isf();
+bool isf();
 struct win{
     bool type;// type 1 => full window , type 0 => partial window
     string name;// window name
@@ -21,6 +21,12 @@ struct win{
     bool screen_handle=0;
     
 };
+struct boot_data{
+    map<string , string> sts;
+    map<string , long long> stl;
+};
+bool save_boot_data(const boot_data &data, const std::string &valo, const std::string &dgm);
+optional<boot_data> load_boot_data(const std::string &valo, const std::string &dgm);
 extern bool gameon;
 extern stack<win> wino;
 extern bool first_boot;

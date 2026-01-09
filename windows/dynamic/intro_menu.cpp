@@ -3,6 +3,7 @@
 #include "../../stora/stora.h"
 #include "../../output/output.h"
 #include "input_str.h"
+#include "../../stora/stora.h"
 
 long long lx=40;
 long long ly=5;
@@ -15,7 +16,7 @@ vector<string> opt = {
 vector<string> options = {
     "  EDIT NAME",
     "  EDIT CHARACTER",
-    "  START"
+    "  DONE"
 };
 long long selecter=0;
 
@@ -76,6 +77,19 @@ void optin(){
                 ed.sts["title"]="name?";
                 ed.vs["msg"] = {"Please enter name"};
                 ed.sts["color"]="0";
+            }
+            else {
+                boot_data bd;
+                bd.stl["x"]=x;
+                bd.stl["y"]=y;
+                bd.sts["name"]=ed.sts["name"];
+                bd.sts["character"]=cha;
+                if(save_boot_data(bd , "data" , "boot.kp")){
+                    cout<<"yes";
+                }
+                else {
+                    cout<<"no";
+                }
             }
         }
         wino.push(ed);

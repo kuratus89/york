@@ -8,6 +8,7 @@
 #include <fstream>
 #include <thread>
 #include <queue>
+#include <optional>
 using namespace std;
 namespace fs = std::filesystem;
 #endif
