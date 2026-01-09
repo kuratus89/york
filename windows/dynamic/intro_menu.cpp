@@ -1,11 +1,17 @@
 
-#include "window.h"
-#include "../stora/stora.h"
-#include "../output/output.h"
+#include "../window.h"
+#include "../../stora/stora.h"
+#include "../../output/output.h"
+#include "input_str.h"
 
-
-
-vector<void(*)()> opt ;
+long long lx=40;
+long long ly=5;
+char cha;
+vector<string> opt = {
+    "input_str",
+    "input_str",
+    "hululu" 
+} ;
 vector<string> options = {
     "  EDIT NAME",
     "  EDIT CHARACTER",
@@ -24,7 +30,17 @@ void opt_adder(vector<vector<pair<char , char>>> &valo , char colo){
         if((i==0)&&(wino.top().sts["name"]!="")){
             string cl = "[CURRENT NAME->";
             cl+=wino.top().sts["name"];
-            for(auto val:options[i]){
+            cl.push_back(']');
+            for(auto val:cl){
+                valo[gy][gx] = {colo , val};
+                gx++;
+            }
+        }
+        if(i==1){
+            string cl = "[CURRENT CHARACTER->";
+            cl.push_back(cha);
+            cl.push_back(']');
+            for(auto val:cl){
                 valo[gy][gx] = {colo , val};
                 gx++;
             }
@@ -37,10 +53,32 @@ void opt_adder(vector<vector<pair<char , char>>> &valo , char colo){
 }
 void optin(){
     if(k=="S")selecter++;
-    else if(k=="W")selecter=0;
-
+    else if(k=="W")selecter--;
     if(selecter<0)selecter =options.size()-1; 
     if(selecter>options.size()-1)selecter=0;
+    if(k=="Enter"){
+        // cout<<"hulululu";
+        win ed;
+        ed.name = opt[selecter];
+        if(selecter==0){
+            ed.sts["value"]="NAME";
+            ed.sts["api"]="name";
+            ed.stl["limit"]=7;
+        }
+        else if(selecter==1){
+            ed.sts["value"]="character";
+            ed.sts["api"]="player_cha";
+            ed.stl["limit"]=1;
+        }
+        wino.push(ed);
+    }
+}
+void clr(char colo){
+    for(long long i=1 ; i<ly-1 ; i++){
+        for(long long j=1; j<lx-1 ; j++){
+            wino.top().par_screen[i][j]= {colo , ' '};
+        }
+    }
 }
 
 void intro_menu(){
@@ -48,18 +86,21 @@ void intro_menu(){
     if(!gura.initilizzed){
         gura.initilizzed=1;
         gura.type=1;
+        cha='@';
         gura.screen = pre_screen;
-        gura.par_screen = bod_create('5' , 30 , 5);
+        gura.par_screen = bod_create('5' , lx , ly);
         gura.screen_handle=1;
         string title = "ENTER DETAILS";
         gura.sts["name"]="";
-        long long lox= (max(0LL,(long long)gura.par_screen[0].size()-(long long)title.size()-2)/2)+1;
+        long long lox= (max(0LL,lx-(long long)title.size()-2)/2)+1;
         for(auto &val:title){
             if(lox>=gura.par_screen[0].size()-1)break;
             gura.par_screen[0][lox]={'5',val};
             lox++;
         }
     }
+    if(gura.sts["player_cha"]!="")cha = gura.sts["player_cha"][0];
+    clr('5');
     optin();
     opt_adder(gura.par_screen ,'5');
     par_scr(gura.screen , gura.par_screen , 3 , 3);

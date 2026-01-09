@@ -7,7 +7,8 @@
 #include "../stora/stora.h"
 #include "intro.h"
 #include "../output/output.h"
-#include "intro_menu.h"
+#include "dynamic/intro_menu.h"
+#include "dynamic/input_str.h"
 #include "../lib.h"
 
 
@@ -17,7 +18,8 @@ map<string , void(*)()> func_point = {
         {"error", error},
         {"scro" , scro},
         {"intro" , intro},
-        {"intro_menu" , intro_menu}
+        {"intro_menu" , intro_menu},
+        {"input_str" , input_str}
 };
 
 

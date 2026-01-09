@@ -6,7 +6,7 @@
 long long delay =30;
 long long tarx;
 bool ani=1;
-long long di=0;
+long long di=5;
 long long din=0;
 string dial;
 void initilize_tarx(){

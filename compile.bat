@@ -1,1 +1,1 @@
-g++ main.cpp input/input.cpp output/output.cpp output/clear_screen.cpp stora/stora.cpp windows/window.cpp windows/boot.cpp windows/scro.cpp windows/error.cpp windows/intro.cpp physics/physics.cpp windows/intro_menu.cpp -std=c++17 -o projects/game
+g++ main.cpp input/input.cpp output/output.cpp output/clear_screen.cpp stora/stora.cpp windows/window.cpp windows/boot.cpp windows/scro.cpp windows/error.cpp windows/intro.cpp physics/physics.cpp windows/dynamic/intro_menu.cpp windows/dynamic/input_str.cpp -std=c++17 -o projects/game
