@@ -39,7 +39,7 @@ bool boot_log =1;
 vector<vector<pair<char , char>>> pre_screen;
 long long cx,cy;
 char player;
-string player_color;
+char player_color;
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",

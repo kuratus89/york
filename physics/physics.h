@@ -2,5 +2,6 @@
 #define PHYSICS_H
 
 bool isbo();
+void delay(long long v);
 
 #endif

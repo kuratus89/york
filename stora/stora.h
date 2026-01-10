@@ -16,6 +16,7 @@ struct win{
     // map<long long , long long> ltl;
     vector<vector<pair<char , char>>> screen;
     vector<vector<pair<char , char>>> par_screen;
+    vector<vector<pair<char , char>>> blank_screen;
     map<string ,vector<string>> vs;
     bool initilizzed=0;
     bool screen_handle=0;
@@ -48,7 +49,7 @@ extern long long cy;
 extern char player;
 // extern vector<vector<pair<char , char>>> screen;
 extern vector<vector<pair<char , char>>> pre_screen;
-extern string player_color;
+extern char player_color;
 extern vector<string> intro_dialog;
 
 //func

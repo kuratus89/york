@@ -9,4 +9,5 @@ vector<vector<pair<char , char>>> bod_create(char colo , long long lx , long lon
 void kuramizer(vector<vector<pair<char , char>>> &screen);
 void dialog_seprater(char colo , vector<vector<pair<char , char>>> &scro);void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par , long long vx , long long vy);
 void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char player_icon , string msg , char colo);
+void ovr(string vallo);
 #endif

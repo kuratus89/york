@@ -10,6 +10,7 @@
 #include "dynamic/intro_menu.h"
 #include "dynamic/input_str.h"
 #include "dynamic/msg.h"
+#include "main_menu.h"
 #include "../lib.h"
 
 
@@ -21,7 +22,8 @@ map<string , void(*)()> func_point = {
         {"intro" , intro},
         {"intro_menu" , intro_menu},
         {"input_str" , input_str},
-        {"msg" , msg}
+        {"msg" , msg},
+        {"main_menu" , main_menu}
 };
 
 

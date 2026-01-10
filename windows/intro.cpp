@@ -3,7 +3,6 @@
 #include "../stora/stora.h"
 #include "../physics/physics.h"
 #include "../output/output.h"
-long long delay =30;
 long long tarx;
 bool ani=1;
 long long di=0;
@@ -36,7 +35,7 @@ void intro(){
         wino.top().screen = bod_create('5' , x , y);
         dialog_seprater('5', wino.top().screen );
         initilize_tarx();
-        player_color = "white";
+        player_color = '5';
         cx = 3;
         cy= 1;
         player = '@';
@@ -69,11 +68,14 @@ void intro(){
                 wino.push(hehe);
             }
             else {
-
+                wino.pop();
+                win heha;
+                heha.name = "main_menu";
+                wino.push(heha);
             }
         }
     }
-    this_thread::sleep_for(std::chrono::milliseconds(delay));
+    delay(30);
 
     
 }

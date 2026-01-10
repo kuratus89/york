@@ -65,11 +65,13 @@ void optin(){
             ed.sts["value"]="NAME";
             ed.sts["api"]="name";
             ed.stl["limit"]=7;
+            wino.push(ed);
         }
         else if(selecter==1){
             ed.sts["value"]="character";
             ed.sts["api"]="player_cha";
             ed.stl["limit"]=1;
+            wino.push(ed);
         }
         else if(selecter == 2){
             if(wino.top().sts["name"]==""){
@@ -77,22 +79,23 @@ void optin(){
                 ed.sts["title"]="name?";
                 ed.vs["msg"] = {"Please enter name"};
                 ed.sts["color"]="0";
+                wino.push(ed);
             }
             else {
                 boot_data bd;
                 bd.stl["x"]=x;
                 bd.stl["y"]=y;
-                bd.sts["name"]=ed.sts["name"];
+                bd.sts["name"]=wino.top().sts["name"];
                 bd.sts["character"]=cha;
                 if(save_boot_data(bd , "data" , "boot.kp")){
-                    cout<<"yes";
+                    wino.pop();
+                    wino.top().stl["done"]=1;
                 }
                 else {
-                    cout<<"no";
+                    ovr("cant save files");
                 }
             }
         }
-        wino.push(ed);
     }
 }
 void clr(char colo){
@@ -123,9 +126,9 @@ void intro_menu(){
     }
     if(gura.sts["player_cha"]!="")cha = gura.sts["player_cha"][0];
     clr('5');
-    optin();
+    
     opt_adder(gura.par_screen ,'5');
     par_scr(gura.screen , gura.par_screen , 3 , 3);
-
+    optin();
 
 }
