@@ -106,18 +106,34 @@ void kuramizer(vector<vector<pair<char, char>>> &screen){
     pre_screen = screen;
     print_screen(dommer(screen));
 }
-void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par , long long vx , long long vy){
-    long long tx=vx;
-    for(auto gl:par){
-        if(vy>screen.size())break;
-        for(auto va:gl){
-            if(tx>screen[0].size())break;
-            screen[vy][tx]=va;
-            tx++;
+// void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par , long long vx , long long vy){
+//     long long tx=vx;
+//     for(auto gl:par){
+        
+//         if((vy>=1)&&(vy<y-1)){
+//             for(auto va:gl){
+//                 if((vx>=1)&&(vx<x-1)){
+//                     screen[vy][tx]=va;
+//                 }
+//                 tx++;
+//             }
+//         }
+//         tx=vx;
+//         vy++;
+//     }    
+// }
+void par_scr(vector<vector<pair<char, char>>> &screen,
+             vector<vector<pair<char, char>>> &par,
+             long long vx, long long vy) {
+    for (long long sy = 0; sy < (long long)par.size(); ++sy) {
+        long long ty = vy + sy;
+        if (ty <= 0 || ty >= y-5) continue;
+        for (long long sx = 0; sx < (long long)par[sy].size(); ++sx) {
+            long long tx = vx + sx;
+            if (tx <= 0 || tx >= x) continue;
+            screen[ty][tx] = par[sy][sx];
         }
-        tx=vx;
-        vy++;
-    }    
+    }
 }
 
 

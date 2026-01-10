@@ -19,7 +19,9 @@ void boot(){
     if(isf()){
         s+= paint("data found , loading" , "green");
         print_screen(s);
-        // work in process
+        win beluga;
+        beluga.name = "main_menu";
+        wino.push(beluga);
     }
     else {
         s+= paint("data not found , initializing" , "red");

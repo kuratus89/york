@@ -23,13 +23,13 @@ void str_adder(char colo){
     long long vx=1;
     for(auto val:s){
         if(vx>=40)break;
-        wino.top().par_screen[1][vx]={colo,val};
+        wino.top().screen["par_screen"][1][vx]={colo,val};
         vx++;
     }
 }
 void clear_win(char colo){
     for(long long i=1 ; i<39 ; i++){
-        wino.top().par_screen[1][i]={colo , ' '};
+        wino.top().screen["par_screen"][1][i]={colo , ' '};
     }
 }
 
@@ -40,8 +40,8 @@ void input_str(){
     if(!pora.initilizzed){
         pora.initilizzed=1;
         pora.type=1;
-        pora.screen = pre_screen;
-        pora.par_screen = bod_create('5' ,40 ,3);
+        pora.screen["screen"] = pre_screen;
+        pora.screen["par_screen"] = bod_create('5' ,40 ,3);
         pora.screen_handle=1;
         lim = pora.stl["limit"];
         string title = "ENTER ";
@@ -51,7 +51,7 @@ void input_str(){
         long long hx = (max(0LL , 38 -(long long) title.size())/2)+1;
         for(auto val:title){
             if(hx>39)break;
-            pora.par_screen[0][hx] = {'5' , val};
+            pora.screen["par_screen"][0][hx] = {'5' , val};
             hx++;
         }
     }
@@ -59,6 +59,6 @@ void input_str(){
     if(exito)return;
     clear_win('5');
     str_adder('5');
-    par_scr(pora.screen , pora.par_screen , (((x-2-40)/2) +1) , (((y-2-4)/2) +1));
+    par_scr(pora.screen["screen"] , pora.screen["par_screen"] , (((x-2-40)/2) +1) , (((y-2-4)/2) +1));
     
 }

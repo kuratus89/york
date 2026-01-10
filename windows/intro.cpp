@@ -23,7 +23,7 @@ void dialoger(){
     else {
         dial.push_back(intro_dialog[di][din]);
         din++;
-        dialog_adder(wino.top().screen , "unknown" , player , dial , '5');
+        dialog_adder(wino.top().screen["screen"] , "unknown" , player , dial , '5');
     }
     
 
@@ -32,19 +32,17 @@ void dialoger(){
 void intro(){
     if(!wino.top().initilizzed){
         wino.top().initilizzed=1;
-        wino.top().screen = bod_create('5' , x , y);
-        dialog_seprater('5', wino.top().screen );
+        wino.top().screen["screen"] = bod_create('5' , x , y);
+        dialog_seprater('5', wino.top().screen["screen"] );
         initilize_tarx();
         player_color = '5';
-        cx = 3;
-        cy= 1;
         player = '@';
         wino.top().screen_handle =1;
         wino.top().type=1;
         wino.top().stl["done"]=0;
     }
     if(ani){
-        wino.top().screen[cy][cx].second=' ';
+        wino.top().screen["screen"][cy][cx].second=' ';
         if(isbo()){
             if(cx==tarx){
                 ani=0;
@@ -54,7 +52,7 @@ void intro(){
         else {
             cy++;
         }
-        wino.top().screen[cy][cx]= {'5' , player};
+        wino.top().screen["screen"][cy][cx]= {'5' , player};
     }
     else {
         if(di<intro_dialog.size()){

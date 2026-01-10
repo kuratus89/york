@@ -14,9 +14,7 @@ struct win{
     map<string , long long> stl;
     // map<long long , string> lts;
     // map<long long , long long> ltl;
-    vector<vector<pair<char , char>>> screen;
-    vector<vector<pair<char , char>>> par_screen;
-    vector<vector<pair<char , char>>> blank_screen;
+    map<string , vector<vector<pair<char , char>>>> screen;
     map<string ,vector<string>> vs;
     bool initilizzed=0;
     bool screen_handle=0;
@@ -27,7 +25,7 @@ struct boot_data{
     map<string , long long> stl;
 };
 bool save_boot_data(const boot_data &data, const std::string &valo, const std::string &dgm);
-optional<boot_data> load_boot_data(const std::string &valo, const std::string &dgm);
+bool load_boot_data(const string &valo, const string &dgm, boot_data &out_data);
 extern bool gameon;
 extern stack<win> wino;
 extern bool first_boot;
@@ -51,6 +49,7 @@ extern char player;
 extern vector<vector<pair<char , char>>> pre_screen;
 extern char player_color;
 extern vector<string> intro_dialog;
+extern vector<vector<pair<char , char>>> title;
 
 //func
 

@@ -101,7 +101,7 @@ void optin(){
 void clr(char colo){
     for(long long i=1 ; i<ly-1 ; i++){
         for(long long j=1; j<lx-1 ; j++){
-            wino.top().par_screen[i][j]= {colo , ' '};
+            wino.top().screen["par_screen"][i][j]= {colo , ' '};
         }
     }
 }
@@ -112,23 +112,23 @@ void intro_menu(){
         gura.initilizzed=1;
         gura.type=1;
         cha='@';
-        gura.screen = pre_screen;
-        gura.par_screen = bod_create('5' , lx , ly);
+        gura.screen["screen"] = pre_screen;
+        gura.screen["par_screen"] = bod_create('5' , lx , ly);
         gura.screen_handle=1;
         string title = "ENTER DETAILS";
         gura.sts["name"]="";
         long long lox= (max(0LL,lx-(long long)title.size()-2)/2)+1;
         for(auto &val:title){
-            if(lox>=gura.par_screen[0].size()-1)break;
-            gura.par_screen[0][lox]={'5',val};
+            if(lox>=gura.screen["par_screen"][0].size()-1)break;
+            gura.screen["par_screen"][0][lox]={'5',val};
             lox++;
         }
     }
     if(gura.sts["player_cha"]!="")cha = gura.sts["player_cha"][0];
     clr('5');
     
-    opt_adder(gura.par_screen ,'5');
-    par_scr(gura.screen , gura.par_screen , 3 , 3);
+    opt_adder(gura.screen["par_screen"] ,'5');
+    par_scr(gura.screen["screen"] , gura.screen["par_screen"] , 3 , 3);
     optin();
 
 }

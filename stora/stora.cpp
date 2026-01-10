@@ -37,13 +37,33 @@ bool ch=1; // change happen?
 bool boot_log =1;
 // vector<vector<pair<char , char>>> screen;
 vector<vector<pair<char , char>>> pre_screen;
-long long cx,cy;
+long long cx=3,cy=1;
+
 char player;
-char player_color;
+char player_color='5';
+char title_color = '4';
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",
     "Strip me of my old name and grant me a new one-and if it pleases you, reshape my very appearance as well."
+};
+
+std::vector<std::vector<std::pair<char, char>>> title = {
+    { {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,'.'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'s'}, {title_color,'S'}, {title_color,'S'}, {title_color,'s'}, {title_color,'_'}, {title_color,'s'}, {title_color,'S'}, {title_color,'S'}, {title_color,'s'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,'_'}, {title_color,'s'}, {title_color,'S'}, {title_color,'S'}, {title_color,'s'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'.'}, {title_color,' '}, {title_color,' '}, {title_color,' '} },
+    { {title_color,'.'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,'.'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'d'}, {title_color,'%'}, {title_color,'%'}, {title_color,'S'}, {title_color,'P'}, {title_color,'~'}, {title_color,'Y'}, {title_color,'S'}, {title_color,'%'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,'S'}, {title_color,'~'}, {title_color,'Y'}, {title_color,'S'}, {title_color,'%'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,'.'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'d'}, {title_color,'%'}, {title_color,'S'}, {title_color,'\''}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'`'}, {title_color,'S'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'`'}, {title_color,'S'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'d'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'d'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,'_'}, {title_color,'s'}, {title_color,'d'}, {title_color,'S'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,' '}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,'_'}, {title_color,'s'}, {title_color,'d'}, {title_color,'S'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,'~'}, {title_color,'Y'}, {title_color,'S'}, {title_color,'S'}, {title_color,'Y'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,'~'}, {title_color,'Y'}, {title_color,'S'}, {title_color,'Y'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'`'}, {title_color,'S'}, {title_color,'%'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'d'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'`'}, {title_color,'S'}, {title_color,'%'}, {title_color,'b'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,'.'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'.'}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'%'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,'S'}, {title_color,'b'}, {title_color,'s'}, {title_color,'_'}, {title_color,'s'}, {title_color,'d'}, {title_color,'S'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'&'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'Y'}, {title_color,'S'}, {title_color,'S'}, {title_color,'P'}, {title_color,'~'}, {title_color,'Y'}, {title_color,'S'}, {title_color,'S'}, {title_color,'Y'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'*'}, {title_color,'S'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'S'}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'P'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'P'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'S'}, {title_color,'P'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,'Y'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'Y'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,'Y'}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '} },
+    { {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '}, {title_color,' '} },
 };
 
 // functions
@@ -94,39 +114,40 @@ bool save_boot_data(const boot_data &data, const string &valo, const string &dgm
     }
 }
 
-optional<boot_data> load_boot_data(const string &valo, const string &dgm) {
+bool load_boot_data(const string &valo, const string &dgm, boot_data &out_data) {
     try {
         fs::path file = fs::path(valo) / dgm;
         ifstream in(file, ios::binary);
-        if (!in) return nullopt;
+        if (!in) return false;
 
-        boot_data data;
+        boot_data temp;
 
         uint64_t sts_size{};
         in.read(reinterpret_cast<char*>(&sts_size), sizeof(sts_size));
-        if (!in.good()) return nullopt;
+        if (!in.good()) return false;
         for (uint64_t i = 0; i < sts_size; ++i) {
             string k, v;
-            if (!readString(in, k)) return nullopt;
-            if (!readString(in, v)) return nullopt;
-            data.sts.emplace(move(k), move(v));
+            if (!readString(in, k)) return false;
+            if (!readString(in, v)) return false;
+            temp.sts.emplace(move(k), move(v));
         }
 
         uint64_t stl_size{};
         in.read(reinterpret_cast<char*>(&stl_size), sizeof(stl_size));
-        if (!in.good()) return nullopt;
+        if (!in.good()) return false;
         for (uint64_t i = 0; i < stl_size; ++i) {
             string k;
             long long v{};
-            if (!readString(in, k)) return nullopt;
+            if (!readString(in, k)) return false;
             in.read(reinterpret_cast<char*>(&v), sizeof(v));
-            if (!in.good()) return nullopt;
-            data.stl.emplace(move(k), v);
+            if (!in.good()) return false;
+            temp.stl.emplace(move(k), v);
         }
 
-        return data;
+        out_data = move(temp); // commit
+        return true;
     } catch (...) {
-        return nullopt;
+        return false;
     }
 }
 

@@ -44,7 +44,21 @@ void window(){
         wino.push(tamzid);
         return;
     }
-    func_point[wino.top().name]();
+    try{
+        func_point[wino.top().name]();
+    }
+    catch(exception &e){
+        string s = "window -> ";
+        s+=wino.top().name;
+        s+= " crash , error -> ";
+        s+= e.what();
+        win valaray;
+        valaray.name = "error";
+        valaray.sts["value"]=s;
+        wino.push(valaray);
+        return;
+    }
+    
 
     if(wino.top().screen_handle){
         // if(wino.top().type){
@@ -53,7 +67,7 @@ void window(){
         // else {
         //     par_scr(wino.top().screen , wino.top().clx , wino.top().cly);
         // }
-        kuramizer(wino.top().screen);
+        kuramizer(wino.top().screen["screen"]);
         
     }
 }

@@ -23,24 +23,24 @@ void msg(){
         for(auto &val:ms)mx = max(mx ,(long long) val.size());
         mx = max(mx , (long long)tit.size());
         mx+=2;
-        wino.top().screen = pre_screen;
-        wino.top().par_screen = bod_create(colo , mx , my );
+        wino.top().screen["screen"] = pre_screen;
+        wino.top().screen["par_screen"] = bod_create(colo , mx , my );
         long long nx=1, ny=1;
         for(auto &val:ms){
             nx=1;
             for(auto &valo:val){
-                wino.top().par_screen[ny][nx] = {colo , valo};
+                wino.top().screen["par_screen"][ny][nx] = {colo , valo};
                 nx++;
             }
             ny++;
         }
         nx = ((mx-2-tit.size())/2) +1;
         for(auto &val:tit){
-            wino.top().par_screen[0][nx]= {colo , val};
+            wino.top().screen["par_screen"][0][nx]= {colo , val};
             nx++;
         }
 
     }
-    par_scr(wino.top().screen , wino.top().par_screen ,((max(0LL , x-mx)/2)+1),((max(0LL , y-my)/2)+1) );
+    par_scr(wino.top().screen["screen"] , wino.top().screen["par_screen"] ,((max(0LL , x-mx)/2)+1),((max(0LL , y-my)/2)+1) );
     inpu();
 }
