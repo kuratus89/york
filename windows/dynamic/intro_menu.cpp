@@ -87,12 +87,16 @@ void optin(){
                 bd.stl["y"]=y;
                 bd.sts["name"]=wino.top().sts["name"];
                 bd.sts["character"]=cha;
+                bd.sts["player_color"]="5";
                 if(save_boot_data(bd , "data" , "boot.kp")){
                     wino.pop();
                     wino.top().stl["done"]=1;
                 }
                 else {
-                    ovr("cant save files");
+                    win gw;
+                    gw.name = "error";
+                    gw.sts["value"] = "cannot save files";
+                    wino.push(gw);
                 }
             }
         }

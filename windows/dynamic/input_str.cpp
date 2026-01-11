@@ -13,6 +13,9 @@ void incha(){
         if(!s.empty())s.pop_back();
     }
     if(k=="Enter"){
+        if(wino.top().stl["no_empty"]==1){
+            if(s=="")return;
+        }
         string val = wino.top().sts["api"];
         wino.pop();
         wino.top().sts[val] = s;

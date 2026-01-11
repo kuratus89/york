@@ -122,15 +122,27 @@ void kuramizer(vector<vector<pair<char, char>>> &screen){
 //         vy++;
 //     }    
 // }
-void par_scr(vector<vector<pair<char, char>>> &screen,
-             vector<vector<pair<char, char>>> &par,
-             long long vx, long long vy) {
+void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par,long long vx, long long vy) {
     for (long long sy = 0; sy < (long long)par.size(); ++sy) {
         long long ty = vy + sy;
         if (ty <= 0 || ty >= y-5) continue;
         for (long long sx = 0; sx < (long long)par[sy].size(); ++sx) {
             long long tx = vx + sx;
-            if (tx <= 0 || tx >= x) continue;
+            if (tx <= 0 || tx >= x-1) continue;
+            screen[ty][tx] = par[sy][sx];
+        }
+    }
+}
+void ita(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par,long long vx, long long vy , bool is_bodder) {
+    for (long long sy = 0; sy < (long long)par.size(); ++sy) {
+        long long ty = vy + sy;
+        long long mi=0 , ai=0;
+        if(is_bodder)mi++;
+        if(is_bodder)ai--;
+        if (ty <= ai || ty >= screen.size()-mi) continue;
+        for (long long sx = 0; sx < (long long)par[sy].size(); ++sx) {
+            long long tx = vx + sx;
+            if (tx <= ai || tx >= screen[0].size()-mi) continue;
             screen[ty][tx] = par[sy][sx];
         }
     }

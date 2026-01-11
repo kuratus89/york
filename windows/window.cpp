@@ -11,6 +11,8 @@
 #include "dynamic/input_str.h"
 #include "dynamic/msg.h"
 #include "main_menu.h"
+#include "dynamic/appearance.h"
+#include "dynamic/input_clr.h"
 #include "../lib.h"
 
 
@@ -23,7 +25,9 @@ map<string , void(*)()> func_point = {
         {"intro_menu" , intro_menu},
         {"input_str" , input_str},
         {"msg" , msg},
-        {"main_menu" , main_menu}
+        {"main_menu" , main_menu},
+        {"appearance" , appearance},
+        {"input_clr" , input_clr}
 };
 
 
@@ -45,7 +49,14 @@ void window(){
         return;
     }
     try{
-        func_point[wino.top().name]();
+        if(func_point.count(wino.top().name))func_point[wino.top().name]();
+        else {
+            win er;
+            er.name = "error";
+            er.sts["value"]= "invalid window name";
+            wino.push(er);
+            return;
+        }
     }
     catch(exception &e){
         string s = "window -> ";

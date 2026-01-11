@@ -30,6 +30,7 @@ map<string , string> string_to_color={
     {"white" , "\033[37m"},
     {"reset" , "\033[0m"}
 };
+
 vector<string> in_to_color = {"\033[31m" ,"\033[34m","\033[32m","\033[35m","\033[36m","\033[37m","\033[0m"};
 
 bool hc=1; // need to hard clear?
