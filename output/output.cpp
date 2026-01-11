@@ -150,3 +150,24 @@ void ita(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>
 
 
 
+void option_adder(vector<vector<pair<char , char>>> &screen , vector<string> &options , long long selecter , long long sx , long long sy){
+    screen = bod_create('5' , sx ,sy);
+    
+    long long hy=1;
+    for(long long i=0 ; i<options.size() ; i++){
+        long long hx = 2;
+        if(hy>=screen.size())continue; 
+        if(i==wino.top().stl["selecter"]){
+            screen[hy][hx]= {'5', '-'};
+            hx++;
+            screen[hy][hx]= {'5', '>'};
+            hx++;
+        }
+        for(auto val:options[i]){
+            if(hx>=screen[0].size())continue;
+            screen[hy][hx] ={'5', val};
+            hx++;
+        }
+        hy++;
+    }
+}

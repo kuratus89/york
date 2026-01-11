@@ -11,4 +11,5 @@ void dialog_seprater(char colo , vector<vector<pair<char , char>>> &scro);void p
 void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char player_icon , string msg , char colo);
 void ovr(string vallo);
 void ita(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par,long long vx, long long vy , bool is_bodder);
+void option_adder(vector<vector<pair<char , char>>> &screen , vector<string> &options , long long selecter , long long sx , long long sy);
 #endif

@@ -13,6 +13,7 @@
 #include "main_menu.h"
 #include "dynamic/appearance.h"
 #include "dynamic/input_clr.h"
+#include "dynamic/settings.h"
 #include "../lib.h"
 
 
@@ -27,7 +28,8 @@ map<string , void(*)()> func_point = {
         {"msg" , msg},
         {"main_menu" , main_menu},
         {"appearance" , appearance},
-        {"input_clr" , input_clr}
+        {"input_clr" , input_clr},
+        {"settings" , settings}
 };
 
 

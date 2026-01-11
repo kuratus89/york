@@ -60,10 +60,13 @@ void inpt(){
             wino.top().stl["animation"]=2;
         }
         else if(wino.top().stl["selecter"]==3){
-            
+            win st;
+            st.name = "settings";
+            wino.push(st);
+            return;
         }
         else if(wino.top().stl["selecter"]==4){
-
+            gameon=0;
         }
     }
     
