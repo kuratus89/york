@@ -31,6 +31,7 @@ map<string , string> string_to_color={
     {"reset" , "\033[0m"}
 };
 
+
 vector<string> in_to_color = {"\033[31m" ,"\033[34m","\033[32m","\033[35m","\033[36m","\033[37m","\033[0m"};
 
 bool hc=1; // need to hard clear?
@@ -38,6 +39,7 @@ bool ch=1; // change happen?
 bool boot_log =1;
 // vector<vector<pair<char , char>>> screen;
 vector<vector<pair<char , char>>> pre_screen;
+vector<vector<pixel>> adv_pre_screen = vector<vector<pixel>> (0);
 long long cx=3,cy=1;
 
 char player;

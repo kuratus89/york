@@ -9,6 +9,8 @@
 #include <thread>
 #include <queue>
 #include <optional>
+#include <unordered_map>
+#include <cmath>
 using namespace std;
 namespace fs = std::filesystem;
 #endif

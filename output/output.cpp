@@ -29,7 +29,6 @@ string dommer(vector<vector<pair<char , char>>> &screen){// dommer process the s
         }
         s.push_back('\n');
     }
-    cout<<string_to_color["white"];
     return s;
 }
 
@@ -51,6 +50,10 @@ vector<vector<pair<char , char>>> bod_create(char colo , long long lx , long lon
     // for(long long i=y-4 ; i<y-1 ; i++){
     //     scr[i][8] ={colo ,'|'};
     // }
+    scr[0][0] = {colo , '+'};
+    scr[0][lx-1] = {colo , '+'};
+    scr[ly-1][0] = {colo , '+'};
+    scr[ly-1][lx-1] = {colo , '+'};
     return scr;
 }
 void dialog_seprater(char colo , vector<vector<pair<char , char>>> &scro){
@@ -133,20 +136,18 @@ void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, c
         }
     }
 }
-void ita(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par,long long vx, long long vy , bool is_bodder) {
+void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy) {
     for (long long sy = 0; sy < (long long)par.size(); ++sy) {
         long long ty = vy + sy;
-        long long mi=0 , ai=0;
-        if(is_bodder)mi++;
-        if(is_bodder)ai--;
-        if (ty <= ai || ty >= screen.size()-mi) continue;
+        if (ty <= 0 || ty >= y-5) continue;
         for (long long sx = 0; sx < (long long)par[sy].size(); ++sx) {
             long long tx = vx + sx;
-            if (tx <= ai || tx >= screen[0].size()-mi) continue;
+            if (tx <= 0 || tx >= x-1) continue;
             screen[ty][tx] = par[sy][sx];
         }
     }
 }
+
 
 
 
@@ -170,4 +171,22 @@ void option_adder(vector<vector<pair<char , char>>> &screen , vector<string> &op
         }
         hy++;
     }
+}
+
+string adv_dommer(vector<vector<pixel>> &scr){
+    string s;
+    for(auto &var:scr){
+        for(auto &val:var){
+            s+= in_to_color[val.color];
+            s+=val.value;
+        }
+        s+="\n";
+    }
+    return s;
+}
+
+void adv_kuramizer(vector<vector<pixel>> &screen){
+    if(adv_pre_screen==screen)return;
+    adv_pre_screen = screen;
+    print_screen(adv_dommer(screen));
 }

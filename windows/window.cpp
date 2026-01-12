@@ -14,6 +14,7 @@
 #include "dynamic/appearance.h"
 #include "dynamic/input_clr.h"
 #include "dynamic/settings.h"
+#include "../game/main_game.h"
 #include "../lib.h"
 
 
@@ -29,7 +30,8 @@ map<string , void(*)()> func_point = {
         {"main_menu" , main_menu},
         {"appearance" , appearance},
         {"input_clr" , input_clr},
-        {"settings" , settings}
+        {"settings" , settings},
+        {"main_game" , main_game}
 };
 
 
@@ -74,14 +76,8 @@ void window(){
     
 
     if(wino.top().screen_handle){
-        // if(wino.top().type){
-        //     kuramizer(wino.top().screen);
-        // }
-        // else {
-        //     par_scr(wino.top().screen , wino.top().clx , wino.top().cly);
-        // }
-        kuramizer(wino.top().screen["screen"]);
-        
+        if(wino.top().adv)adv_kuramizer(wino.top().adv_screen["screen"]);
+        else kuramizer(wino.top().screen["screen"]);
     }
 }
 

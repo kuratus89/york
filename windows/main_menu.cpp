@@ -43,7 +43,9 @@ void inpt(){
     if(k=="Enter"){
         if(wino.top().stl["animation"]!=-1)return;
         if(wino.top().stl["selecter"]==0){
-
+            win gm;
+            gm.name = "main_game";
+            wino.push(gm);
         }
         else if(wino.top().stl["selecter"]==1){
             win message;

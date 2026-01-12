@@ -13,7 +13,7 @@ void inpppt(){
         else {
             win msg;
             msg.name = "msg";
-            msg.sts["tittle"]  = "umm";
+            msg.sts["title"]  = "umm";
             msg.vs["msg"] = {
                 "i will add it later",
                 "if u really want it , then ask me"

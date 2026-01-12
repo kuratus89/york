@@ -2,6 +2,7 @@
 #define OUTPUT_H
 #include "../lib.h"
 #include "clear_screen.h"
+#include "../stora/stora.h"
 string dommer(vector<vector<pair<char , char>>> &screen);
 void print_screen(string screen);
 string paint(string s , string col);
@@ -10,6 +11,8 @@ void kuramizer(vector<vector<pair<char , char>>> &screen);
 void dialog_seprater(char colo , vector<vector<pair<char , char>>> &scro);void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par , long long vx , long long vy);
 void dialog_adder(vector<vector<pair<char , char>>> &scro , string name , char player_icon , string msg , char colo);
 void ovr(string vallo);
-void ita(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, char>>> &par,long long vx, long long vy , bool is_bodder);
 void option_adder(vector<vector<pair<char , char>>> &screen , vector<string> &options , long long selecter , long long sx , long long sy);
+void adv_kuramizer(vector<vector<pixel>> &screen);
+void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy);
+
 #endif

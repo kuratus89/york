@@ -1,5 +1,5 @@
-#ifndef INPUT_CLR
-#define INPUT_CLR
+#ifndef INPUT_CLR_H
+#define INPUT_CLR_H
 
 void input_clr();
 
