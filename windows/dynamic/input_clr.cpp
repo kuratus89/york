@@ -2,7 +2,7 @@
 #include "../../output/output.h"
 
 void clor(){
-    wino.top().screen["clr"] = bod_create('5' , 15 , 8);
+    wino.top().screen["clr"] = bod_create(5 , 15 , 8);
     // wino.top().screen["clr"] = vector<vector<pair<char , char>>> (8 , vector<pair<char , char>> (10  , {'5' , ' '}));
     vector<string> color = {
         " Red",
@@ -13,18 +13,24 @@ void clor(){
         " White"
     };
     long long hy=1;
+    pixel pe;
     for(long long i=0 ; i<color.size() ; i++){
         long long hx = 2;
+        pe.color = i;
         if(hy>=wino.top().screen["clr"].size())continue; 
         if(i==wino.top().stl["selecter"]){
-            wino.top().screen["clr"][hy][hx]= {'0'+i, '-'};
+            
+            pe.value = "─";
+            wino.top().screen["clr"][hy][hx]= pe;
             hx++;
-            wino.top().screen["clr"][hy][hx]= {'0'+ i , '>'};
+            pe.value = ">";
+            wino.top().screen["clr"][hy][hx]=pe;
             hx++;
         }
         for(auto val:color[i]){
-            if(hx>=wino.top().screen["clr"][0].size())continue;
-            wino.top().screen["clr"][hy][hx] ={'0' +i , val};
+            if(hx>=wino.top().screen["clr"][0].size())break;
+            pe.value = string(1, val);
+            wino.top().screen["clr"][hy][hx] =pe;
             hx++;
         }
         hy++;
@@ -38,10 +44,10 @@ void inppt(){
     if(k=="Enter"){
         string s;
         string key = wino.top().sts["api"];
-        char vb = '0' + wino.top().stl["selecter"];
+        int vb =wino.top().stl["selecter"];
         s.push_back(vb);
         wino.pop();
-        wino.top().sts[key] = s;
+        wino.top().stl[key] =vb;
         
     }
 }
@@ -55,6 +61,6 @@ void input_clr(){
         wino.top().stl["selecter"] = 0;
     }
     clor();
-    par_scr(wino.top().screen["screen"] , wino.top().screen["clr"] , ((x-wino.top().screen["clr"][0].size()-2)/2)+1 , ((y-wino.top().screen["clr"].size()-2)/2)+1);
+    ita(wino.top().screen["screen"] , wino.top().screen["clr"] , ((x-wino.top().screen["clr"][0].size()-2)/2)+1 , ((y-wino.top().screen["clr"].size()-2)/2)+1);
     inppt();
 }

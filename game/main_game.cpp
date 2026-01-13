@@ -6,8 +6,8 @@
 pixel px;
 
 void game_window(){
-    wino.top().adv_screen["game"] = vector<vector<pixel>> (y , vector<pixel> (x , px));
-    render(wino.top().adv_screen["game"] , cx , cy);
+    wino.top().screen["game"] = vector<vector<pixel>> (y , vector<pixel> (x , px));
+    render(wino.top().screen["game"] , cx , cy);
 }
 void init(){
     if(k=="W")cy--;
@@ -23,13 +23,13 @@ void main_game(){
         wino.top().adv=1;
         px.color=5;
         px.value=" ";
-        wino.top().adv_screen["screen"] = vector<vector<pixel>> (y , vector<pixel> (x ,px));
+        wino.top().screen["screen"] = vector<vector<pixel>> (y , vector<pixel> (x ,px));
         cx=0;
         cy=0;
         
     }
     manage_chunks(cx , cy);
     game_window();
-    ita(wino.top().adv_screen["screen"] , wino.top().adv_screen["game"] , 0 , 0);
+    ita(wino.top().screen["screen"] , wino.top().screen["game"] , 0 , 0);
     init();
 }

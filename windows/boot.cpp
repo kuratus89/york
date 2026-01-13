@@ -8,6 +8,28 @@
 #include "window.h"
 #include "../lib.h"
 
+void load_titles(){
+    int title_color = 1;
+    pixel pe;
+    pe.color =title_color;
+    for(const auto& var : title){
+        vector<vector<pixel>> t;
+        vector<pixel> p;
+        for(wchar_t val : var){
+            if(val==L'\n'){
+                if (!p.empty())t.push_back(p);
+                p.clear();
+                continue;
+            }
+            pe.value = val;
+            p.push_back(pe);
+        }
+        if (!p.empty())t.push_back(p);
+        titles.push_back(t);
+    }
+}
+
+
 void boot(){
     first_boot=0;
     string s = "booting..";
@@ -15,6 +37,7 @@ void boot(){
     s.push_back('\n');
     if(boot_log)this_thread::sleep_for(std::chrono::milliseconds(200));
     print_screen(s);
+    // load_titles();
     if(boot_log)this_thread::sleep_for(std::chrono::milliseconds(200));
     if(isf()){
         s+= paint("data found , loading" , "green");
@@ -30,11 +53,12 @@ void boot(){
         win kalu;
         kalu.name="intro";
         wino.push(kalu);
-        win apolo;
-        apolo.name = "scro";
-        pushwin(apolo);
-        hc=1;
-        if(boot_log)this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+    win apolo;
+    apolo.name = "scro";
+    pushwin(apolo);
+    hc=1;
+    if(boot_log)this_thread::sleep_for(std::chrono::milliseconds(1000));
+    
     
 }

@@ -76,8 +76,7 @@ void window(){
     
 
     if(wino.top().screen_handle){
-        if(wino.top().adv)adv_kuramizer(wino.top().adv_screen["screen"]);
-        else kuramizer(wino.top().screen["screen"]);
+        kuramizer(wino.top().screen["screen"]);
     }
 }
 

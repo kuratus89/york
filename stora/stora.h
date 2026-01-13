@@ -20,8 +20,7 @@ struct win{
     map<string , long long> stl;
     // map<long long , string> lts;
     // map<long long , long long> ltl;
-    map<string , vector<vector<pair<char , char>>>> screen;
-    map<string , vector<vector<pixel>>> adv_screen;
+    map<string , vector<vector<pixel>>> screen;
     map<string ,vector<string>> vs;
     bool initilizzed=0;
     bool screen_handle=0;
@@ -55,11 +54,11 @@ extern long long cx;
 extern long long cy;
 extern char player;
 // extern vector<vector<pair<char , char>>> screen;
-extern vector<vector<pair<char , char>>> pre_screen;
-extern vector<vector<pixel>> adv_pre_screen;
-extern char player_color;
+extern vector<vector<pixel>> pre_screen;
+extern int player_color;
 extern vector<string> intro_dialog;
-extern vector<vector<pair<char , char>>> title;
+extern vector<wstring> title;
+extern vector<vector<vector<pixel>>> titles;
 
 //func
 

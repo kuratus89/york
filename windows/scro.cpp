@@ -23,9 +23,12 @@ void scro(){
         wino.push(message);
         pair<int, int> size = screen_size();
         x = size.first;
+        pixel pe;
+        pe.color = 5;
+        pe.value = " ";
         y = size.second;
-        wino.top().screen["screen"] = vector<vector<pair<char , char>>> (y , vector<pair<char , char>> (x , {'5' , ' '}));
-        pre_screen = vector<vector<pair<char , char>>> (y , vector<pair<char , char>> (x , {'5' , ' '}));
+        wino.top().screen["screen"] = vector<vector<pixel>> (y , vector<pixel> (x , pe));
+        pre_screen =vector<vector<pixel>> (y , vector<pixel> (x , pe));
         return;
         
     }

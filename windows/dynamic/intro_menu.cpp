@@ -20,12 +20,15 @@ vector<string> options = {
 };
 long long selecter=0;
 
-void opt_adder(vector<vector<pair<char , char>>> &valo , char colo){
+void opt_adder(vector<vector<pixel>> &valo , char colo){
     long long gy=1;
+    pixel pe;
+    pe.color = colo;
     for(long long i=0 ; i<options.size() ; i++ , gy++){
         long long gx=1;
         for(auto val:options[i]){
-            valo[gy][gx] = {colo , val};
+            pe.value = val;
+            valo[gy][gx] =pe;
             gx++;
         }
         if((i==0)&&(wino.top().sts["name"]!="")){
@@ -33,7 +36,8 @@ void opt_adder(vector<vector<pair<char , char>>> &valo , char colo){
             cl+=wino.top().sts["name"];
             cl.push_back(']');
             for(auto val:cl){
-                valo[gy][gx] = {colo , val};
+                pe.value = val;
+                valo[gy][gx] = pe;
                 gx++;
             }
         }
@@ -42,13 +46,16 @@ void opt_adder(vector<vector<pair<char , char>>> &valo , char colo){
             cl.push_back(cha);
             cl.push_back(']');
             for(auto val:cl){
-                valo[gy][gx] = {colo , val};
+                pe.value = val;
+                valo[gy][gx] = pe;
                 gx++;
             }
         }
         if(i==selecter){
-            valo[gy][1]={colo , '-'};
-            valo[gy][2] = {colo , '>'};
+            pe.value = "─";
+            valo[gy][1]=pe;
+            pe.value = ">";
+            valo[gy][2] = pe;
         }
     }
 }
@@ -78,16 +85,14 @@ void optin(){
                 ed.name = "msg";
                 ed.sts["title"]="name?";
                 ed.vs["msg"] = {"Please enter name"};
-                ed.sts["color"]="0";
+                ed.stl["color"]=0;
                 wino.push(ed);
             }
             else {
                 boot_data bd;
-                bd.stl["x"]=x;
-                bd.stl["y"]=y;
                 bd.sts["name"]=wino.top().sts["name"];
                 bd.sts["character"]=cha;
-                bd.sts["player_color"]="5";
+                bd.stl["player_color"]=5;
                 if(save_boot_data(bd , "data" , "boot.kp")){
                     wino.pop();
                     wino.top().stl["done"]=1;
@@ -102,10 +107,13 @@ void optin(){
         }
     }
 }
-void clr(char colo){
+void clr(int colo){
+    pixel pe;
+    pe.color = colo;
+    pe.value = " ";
     for(long long i=1 ; i<ly-1 ; i++){
         for(long long j=1; j<lx-1 ; j++){
-            wino.top().screen["par_screen"][i][j]= {colo , ' '};
+            wino.top().screen["par_screen"][i][j]= pe;
         }
     }
 }
@@ -117,22 +125,25 @@ void intro_menu(){
         gura.type=1;
         cha='@';
         gura.screen["screen"] = pre_screen;
-        gura.screen["par_screen"] = bod_create('5' , lx , ly);
+        gura.screen["par_screen"] = bod_create(5 , lx , ly);
         gura.screen_handle=1;
         string title = "ENTER DETAILS";
         gura.sts["name"]="";
         long long lox= (max(0LL,lx-(long long)title.size()-2)/2)+1;
+        pixel pe;
+        pe.color = 5;
         for(auto &val:title){
             if(lox>=gura.screen["par_screen"][0].size()-1)break;
-            gura.screen["par_screen"][0][lox]={'5',val};
+            pe.value = val;
+            gura.screen["par_screen"][0][lox]=pe;
             lox++;
         }
     }
     if(gura.sts["player_cha"]!="")cha = gura.sts["player_cha"][0];
-    clr('5');
+    clr(5);
     
-    opt_adder(gura.screen["par_screen"] ,'5');
-    par_scr(gura.screen["screen"] , gura.screen["par_screen"] , 3 , 3);
+    opt_adder(gura.screen["par_screen"] ,5);
+    ita(gura.screen["screen"] , gura.screen["par_screen"] , 3 , 3);
     optin();
 
 }
