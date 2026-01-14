@@ -66,5 +66,5 @@ namespace input {
 
     bool pollEvent(event& e);
     std::string keyToString(key k);
-
+    bool ikd(key k);
 } // namespace input

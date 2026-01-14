@@ -1,27 +1,17 @@
 #include "input.h"
 
-#ifdef _WIN32
-    #include <conio.h>
-#else
-    #include <termios.h>
-    #include <unistd.h>
-    #include <fcntl.h>
-    #include <cstdio>
-#endif
+#include <conio.h>
+#include <windows.h>
+
 
 namespace input {
 
 // ================= ASCII / PUNCTUATION MAPPING =================
 static key mapAscii(int c) {
-    // Letters
-    if (c >= 'a' && c <= 'z')
-        return key(c - 'a' + static_cast<int>(key::A));
-    if (c >= 'A' && c <= 'Z')
-        return key(c - 'A' + static_cast<int>(key::A));
+    if (c >= 'a' && c <= 'z')return key(c - 'a' + static_cast<int>(key::A));
+    if (c >= 'A' && c <= 'Z')return key(c - 'A' + static_cast<int>(key::A));
 
-    // Numbers
-    if (c >= '0' && c <= '9')
-        return key(c - '0' + static_cast<int>(key::Num0));
+    if (c >= '0' && c <= '9')return key(c - '0' + static_cast<int>(key::Num0));
 
     switch (c) {
         case ' ':  return key::Space;
@@ -131,15 +121,13 @@ std::string keyToString(key k) {
     }
 }
 
-#ifdef _WIN32
+// #ifdef _WIN32
 // ================= WINDOWS =================
 bool pollEvent(event& e) {
     if (!_kbhit())
         return false;
 
     int ch = _getch();
-
-    // Extended / special keys start with 0 or 224
     if (ch == 0 || ch == 224) {
         ch = _getch();
         switch (ch) {
@@ -183,98 +171,126 @@ bool pollEvent(event& e) {
     e.pressed = true;
     return true;
 }
+static int keytovk(key k){
+    switch(k){
+        case key::W: return 'W';
+        case key::A: return 'A';
+        case key::S: return 'S';
+        case key::D: return 'D';
+        case key::Q: return 'Q';
+        case key::E: return 'E';
+        case key::Space: return VK_SPACE;
+        case key::Enter: return VK_RETURN;
+        case key::Up: return VK_UP;
+        case key::Down: return VK_DOWN;
+        case key::Right: return VK_RIGHT;
+        case key::Left: return VK_LEFT;
+        default: return 0;
 
-#else
-// ================= LINUX / POSIX =================
-bool pollEvent(event& e) {
-    static bool init = false;
-    static termios oldt;
-
-    if (!init) {
-        termios newt{};
-        tcgetattr(STDIN_FILENO, &oldt);
-        newt = oldt;
-        newt.c_lflag &= ~(ICANON | ECHO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-        fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
-        init = true;
     }
-
-    int ch = getchar();
-    if (ch == EOF)
-        return false;
-
-    if (ch == 27) { // Escape sequence or Escape key
-        int a = getchar();
-        if (a == EOF) { // plain Escape
-            e.keycode = key::Escape;
-        } else if (a == '[') {
-            int b = getchar();
-            if (b == EOF) {
-                e.keycode = key::Escape;
-            } else if (b >= '0' && b <= '9') {
-                int num = b - '0';
-                int next = getchar();
-                while (next >= '0' && next <= '9') {
-                    num = num * 10 + (next - '0');
-                    next = getchar();
-                }
-                if (next == '~') {
-                    switch (num) {
-                        case 1: case 7:  e.keycode = key::Home;      break;
-                        case 2:          e.keycode = key::Insert;    break;
-                        case 3:          e.keycode = key::DeleteKey; break;
-                        case 4: case 8:  e.keycode = key::End;       break;
-                        case 5:          e.keycode = key::PageUp;    break;
-                        case 6:          e.keycode = key::PageDown;  break;
-                        case 11: e.keycode = key::F1;  break;
-                        case 12: e.keycode = key::F2;  break;
-                        case 13: e.keycode = key::F3;  break;
-                        case 14: e.keycode = key::F4;  break;
-                        case 15: e.keycode = key::F5;  break;
-                        case 17: e.keycode = key::F6;  break;
-                        case 18: e.keycode = key::F7;  break;
-                        case 19: e.keycode = key::F8;  break;
-                        case 20: e.keycode = key::F9;  break;
-                        case 21: e.keycode = key::F10; break;
-                        case 23: e.keycode = key::F11; break;
-                        case 24: e.keycode = key::F12; break;
-                        default: e.keycode = key::Unknown; break;
-                    }
-                } else {
-                    e.keycode = key::Unknown;
-                }
-            } else {
-                switch (b) {
-                    case 'A': e.keycode = key::Up;       break;
-                    case 'B': e.keycode = key::Down;     break;
-                    case 'C': e.keycode = key::Right;    break;
-                    case 'D': e.keycode = key::Left;     break;
-                    case 'H': e.keycode = key::Home;     break;
-                    case 'F': e.keycode = key::End;      break;
-                    case 'Z': e.keycode = key::Tab;      break; // Shift+Tab (approx)
-                    default:  e.keycode = key::Unknown;  break;
-                }
-            }
-        } else if (a == 'O') {
-            int b = getchar();
-            switch (b) {
-                case 'P': e.keycode = key::F1; break;
-                case 'Q': e.keycode = key::F2; break;
-                case 'R': e.keycode = key::F3; break;
-                case 'S': e.keycode = key::F4; break;
-                default:  e.keycode = key::Unknown; break;
-            }
-        } else {
-            e.keycode = key::Escape;
-        }
-    } else {
-        e.keycode = mapAscii(ch);
-    }
-
-    e.pressed = true;
-    return true;
 }
-#endif
+bool ikd(key k){
+    int vk = keytovk(k);
+    if(!vk)return 0;
+    return ((GetAsyncKeyState(vk) & 0x8000)!=0);
+}
+}
 
-} // namespace input
+// #else
+// // ================= LINUX / POSIX =================
+// bool pollEvent(event& e) {
+//     static bool init = false;
+//     static termios oldt;
+
+//     if (!init) {
+//         termios newt{};
+//         tcgetattr(STDIN_FILENO, &oldt);
+//         newt = oldt;
+//         newt.c_lflag &= ~(ICANON | ECHO);
+//         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+//         fcntl(STDIN_FILENO, F_SETFL, O_NONBLOCK);
+//         init = true;
+//     }
+
+//     int ch = getchar();
+//     if (ch == EOF)
+//         return false;
+
+//     if (ch == 27) { // Escape sequence or Escape key
+//         int a = getchar();
+//         if (a == EOF) { // plain Escape
+//             e.keycode = key::Escape;
+//         } else if (a == '[') {
+//             int b = getchar();
+//             if (b == EOF) {
+//                 e.keycode = key::Escape;
+//             } else if (b >= '0' && b <= '9') {
+//                 int num = b - '0';
+//                 int next = getchar();
+//                 while (next >= '0' && next <= '9') {
+//                     num = num * 10 + (next - '0');
+//                     next = getchar();
+//                 }
+//                 if (next == '~') {
+//                     switch (num) {
+//                         case 1: case 7:  e.keycode = key::Home;      break;
+//                         case 2:          e.keycode = key::Insert;    break;
+//                         case 3:          e.keycode = key::DeleteKey; break;
+//                         case 4: case 8:  e.keycode = key::End;       break;
+//                         case 5:          e.keycode = key::PageUp;    break;
+//                         case 6:          e.keycode = key::PageDown;  break;
+//                         case 11: e.keycode = key::F1;  break;
+//                         case 12: e.keycode = key::F2;  break;
+//                         case 13: e.keycode = key::F3;  break;
+//                         case 14: e.keycode = key::F4;  break;
+//                         case 15: e.keycode = key::F5;  break;
+//                         case 17: e.keycode = key::F6;  break;
+//                         case 18: e.keycode = key::F7;  break;
+//                         case 19: e.keycode = key::F8;  break;
+//                         case 20: e.keycode = key::F9;  break;
+//                         case 21: e.keycode = key::F10; break;
+//                         case 23: e.keycode = key::F11; break;
+//                         case 24: e.keycode = key::F12; break;
+//                         default: e.keycode = key::Unknown; break;
+//                     }
+//                 } else {
+//                     e.keycode = key::Unknown;
+//                 }
+//             } else {
+//                 switch (b) {
+//                     case 'A': e.keycode = key::Up;       break;
+//                     case 'B': e.keycode = key::Down;     break;
+//                     case 'C': e.keycode = key::Right;    break;
+//                     case 'D': e.keycode = key::Left;     break;
+//                     case 'H': e.keycode = key::Home;     break;
+//                     case 'F': e.keycode = key::End;      break;
+//                     case 'Z': e.keycode = key::Tab;      break; // Shift+Tab (approx)
+//                     default:  e.keycode = key::Unknown;  break;
+//                 }
+//             }
+//         } else if (a == 'O') {
+//             int b = getchar();
+//             switch (b) {
+//                 case 'P': e.keycode = key::F1; break;
+//                 case 'Q': e.keycode = key::F2; break;
+//                 case 'R': e.keycode = key::F3; break;
+//                 case 'S': e.keycode = key::F4; break;
+//                 default:  e.keycode = key::Unknown; break;
+//             }
+//         } else {
+//             e.keycode = key::Escape;
+//         }
+//     } else {
+//         e.keycode = mapAscii(ch);
+//     }
+
+//     e.pressed = true;
+//     return true;
+// }
+// #endif
+
+// } // namespace input
+
+
+
+

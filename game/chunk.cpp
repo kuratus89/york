@@ -13,6 +13,7 @@ vector<pair<string , pair<string, int>>> blocker{
     {"grass",{"█",2}},//1
     {"stone" , {"█" , 6}}//2
 };
+long long chunk_size = 10;
 
 void chunk_loader(long long lcx , long long lcy){
     chunks jk;
@@ -23,14 +24,14 @@ void chunk_loader(long long lcx , long long lcy){
         long long g = grass(lcx +i);
         for(long long j=0 ; j<10 ; j++){
             if((lcy+j<h)||(is_air(lcx+i , lcy+j))){
-                jk.chunk[i][j]=0;
+                jk.chunk[j][i]=0;
                 continue;
             }
             if((lcy+j<19)||(lcy+j<g)){
-                jk.chunk[i][j] = 1;
+                jk.chunk[j][i] = 1;
                 continue;
             }
-            jk.chunk[i][j] = 2;
+            jk.chunk[j][i] = 2;
         }
     }
     chunker[{lcx,lcy}] = (jk);
@@ -54,8 +55,8 @@ void chaper(vector<vector<pixel>> &scv , vector<vector<int>> &chk , long long vx
             if(ty < 0 || ty >= scv.size()) continue;
 
             pixel pix;
-            pix.color = blocker[chk[i][j]].second.second;
-            pix.value = blocker[chk[i][j]].second.first;
+            pix.color = blocker[chk[j][i]].second.second;
+            pix.value = blocker[chk[j][i]].second.first;
             scv[ty][tx] = pix;
         }
     }
@@ -75,13 +76,14 @@ bool is_chunk_loaded(long long x, long long y) {
 
 void manage_chunks(long long px, long long py) {
     chunk_unloader(px, py);
-    long long gx = floor(px / 10.0)*10;
-    long long gy = floor(py / 10.0)*10;
-    for (long long x = gx - render_distance; x <= gx + render_distance; x += 10) {
-        for (long long y = gy - render_distance; y <= gy + render_distance; y += 10) {
-            if (!is_chunk_loaded(x, y)) {
-                chunk_loader(x, y);
-            }
-        }
-    }
+    long long gx = floor(px / chunk_size)*chunk_size;
+    long long gy = floor(py / chunk_size)*chunk_size;
+    for (long long x=gx-render_distance;x<=gx+render_distance;x+=chunk_size)for (long long y = gy - render_distance; y <= gy + render_distance; y +=chunk_size)if (!is_chunk_loaded(x, y))chunk_loader(x, y);
+}
+
+int get_block(long long x, long long y){
+    long long lx = (x >= 0) ? (x / chunk_size) * chunk_size : ((x - chunk_size + 1) / chunk_size) * chunk_size;
+    long long ly = (y >= 0) ? (y / chunk_size) * chunk_size : ((y - chunk_size + 1) / chunk_size) * chunk_size;
+    if (!is_chunk_loaded(lx, ly))chunk_loader(lx, ly);
+    return chunker[{lx , ly}].chunk[y-ly][x - lx];
 }

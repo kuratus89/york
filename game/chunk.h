@@ -18,6 +18,7 @@ void render(vector<vector<pixel>> &scv , long long mx , long long my );
 void chunk_unloader(long long lvx , long long lvy);
 void chunk_loader(long long lcx , long long lcy);
 void manage_chunks(long long px , long long py);
+int get_block(long long x, long long y);
 
 
 #endif
