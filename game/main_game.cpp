@@ -5,6 +5,7 @@
 #include "../input/input.h"
 #include "../physics/physics.h"
 #include "core.h"
+#include "../windows/dynamic/inventory.h"
 
 pixel pa , pp;
 
@@ -27,15 +28,37 @@ void init(){
         if(input::ikd(input::key::Right))break_block_right();
     }
     else {
-        if(input::ikd(input::key::Up))place_block_up(wino.top().stl["item"]);
-        if(input::ikd(input::key::Down))place_block_down(wino.top().stl["item"]);
-        if(input::ikd(input::key::Left))place_block_left(wino.top().stl["item"]);
-        if(input::ikd(input::key::Right))place_block_right(wino.top().stl["item"]);
+        
+        if(input::ikd(input::key::Up)){
+            if(ear.inventory[item]<=0)return;
+            place_block_up(item);
+            ear.inventory[item]--;
+        }
+        if(input::ikd(input::key::Down)){
+            if(ear.inventory[item]<=0)return;
+            place_block_down(item);
+            ear.inventory[item]--;
+        }
+        if(input::ikd(input::key::Left)){
+            if(ear.inventory[item]<=0)return;
+            place_block_left(item);
+            ear.inventory[item]--;            
+        }
+        if(input::ikd(input::key::Right)){
+            if(ear.inventory[item]<=0)return;
+            place_block_right(item);
+            ear.inventory[item]--;
+        }
     }
     if(k=="Enter"){
         win pau;
         pau.name = "pause";
         wino.push(pau);
+    }
+    else if(k=="E"){
+        win in;
+        in.name = "inventory";
+        wino.push(in);
     }
 }
 

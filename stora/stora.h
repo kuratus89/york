@@ -118,6 +118,7 @@ struct world{
     int posx;
     int posy;
     map<pair<int,int>  , chunks> chunker;
+    map<int , int> inventory;
 
 
 
@@ -138,6 +139,12 @@ struct world{
             write_bin(out , pos.first);
             write_bin(out , pos.second);
             val.save(out);
+        }
+        cnt = inventory.size();
+        write_bin(out , cnt);
+        for(auto &val:inventory){
+            write_bin(out , val.first);
+            write_bin(out , val.second);
         }
 
         return out.good();
@@ -162,6 +169,14 @@ struct world{
             read_bin(in , yy);
 
             chunker[{xx,yy}].load(in);
+        }
+        read_bin(in , cnt);
+        inventory.clear();
+        for(uint64_t i=0 ; i<cnt ; i++){
+            int xx,yy;
+            read_bin(in , xx);
+            read_bin(in , yy);
+            inventory[xx]=yy;
         }
 
         return in.good();

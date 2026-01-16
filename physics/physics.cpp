@@ -2,6 +2,7 @@
 #include "../lib.h"
 #include "../stora/stora.h"
 #include "../game/chunk.h"
+#include "../windows/dynamic/inventory.h"
 
 long long jump_hight = 8;
 long long jump_stage = 0;
@@ -81,23 +82,31 @@ void manage_jump(){
 }
 
 void break_block_left(){
-    if(!get_block(cx-1, cy))return;
+    int temp = get_block(cx-1, cy);
+    if(!temp)return;
+    ear.inventory[temp]++;
     delay(10);
     set_block(cx-1 , cy , 0);
 }
 
 void break_block_right(){
-    if(!get_block(cx+1 , cy))return;
+    int temp = get_block(cx+1, cy);
+    if(!temp)return;
+    ear.inventory[temp]++;
     delay(10);
     set_block(cx+1 , cy , 0);
 }
 void break_block_up(){
-    if(!get_block(cx , cy-1))return ;
+    int temp = get_block(cx, cy-1);
+    if(!temp)return;
+    ear.inventory[temp]++;
     delay(10);
     set_block(cx , cy-1 , 0);
 }
 void break_block_down(){
-    if(!get_block(cx , cy+1))return;
+    int temp = get_block(cx, cy+1);
+    if(!temp)return;
+    ear.inventory[temp]++;
     delay(10);
     set_block(cx , cy+1 , 0);
 }

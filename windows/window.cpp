@@ -18,6 +18,7 @@
 #include "dynamic/start_new_game.h"
 #include "dynamic/load_world.h"
 #include "dynamic/pause.h"
+#include "dynamic/inventory.h"
 #include "../lib.h"
 
 
@@ -37,7 +38,8 @@ map<string , void(*)()> func_point = {
         {"main_game" , main_game},
         {"start_new_game" , start_new_game},
         {"load_world" , load_world},
-        {"pause" , pause}
+        {"pause" , pause},
+        {"inventory" , inventory}
 };
 
 
