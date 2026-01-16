@@ -3,6 +3,7 @@
 #include "chunk.h"
 #include "core.h"
 #include "../stora/stora.h"
+#include "../windows/error.h"
 
 long long grass_lvl=10;
 // vector<chunks> chunker;
@@ -14,8 +15,9 @@ vector<pair<string , pair<string, int>>> blocker{
     {"stone" , {"█" , 6}}//2
 };
 long long chunk_size = 10;
+world ear;
 
-void chunk_loader(long long lcx , long long lcy){
+void chunk_loader(long long  lcx ,long long lcy){
     chunks jk;
     jk.x = lcx;
     jk.y = lcy;
@@ -34,12 +36,17 @@ void chunk_loader(long long lcx , long long lcy){
             jk.chunk[j][i] = 2;
         }
     }
+    if(ear.chunker[{lcx , lcy}].change.size())jk.change = ear.chunker[{lcx , lcy}].change;
+    for(auto &val:jk.change){
+            jk.chunk[val.first.second][val.first.first] = val.second;
+    }
     chunker[{lcx,lcy}] = (jk);
 
 }
 void chunk_unloader(long long lvx , long long lvy){
     for(auto it = chunker.begin() ; it!=chunker.end() ;){
         if((abs((*it).second.x - lvx)>render_distance)||((abs((*it).second.y - lvy)>render_distance))){
+            ear.chunker[(*it).first].change = (*it).second.change;
             it = chunker.erase(it);
         }
         else it++;
@@ -86,4 +93,28 @@ int get_block(long long x, long long y){
     long long ly = (y >= 0) ? (y / chunk_size) * chunk_size : ((y - chunk_size + 1) / chunk_size) * chunk_size;
     if (!is_chunk_loaded(lx, ly))chunk_loader(lx, ly);
     return chunker[{lx , ly}].chunk[y-ly][x - lx];
+}
+
+void set_block(long long x, long long y , int d){
+    long long lx;
+    if(x>=0)lx = (x/chunk_size)*chunk_size;
+    else lx = ((x - chunk_size+1)/chunk_size)*chunk_size;
+    long long ly ;
+    if(y>=0) ly = (y/chunk_size)*chunk_size;
+    else ly = ((y -chunk_size+1)/chunk_size)*chunk_size;
+    if(!is_chunk_loaded(lx , ly)){
+        crash("trying to modify unloaded chunk");
+        return;
+    }
+    chunker[{lx , ly}].chunk[y - ly][x - lx] = d;
+    chunker[{lx , ly}].change[{x - lx , y - ly}] = d;
+}
+
+bool save_game(string s){
+    ear.posx = cx;
+    ear.posy = cy;
+    for(auto it = chunker.begin() ; it!=chunker.end() ;it++){
+        ear.chunker[(*it).first].change = (*it).second.change;
+    }
+    return ear.save(s);
 }

@@ -18,7 +18,7 @@ void move_left(){
     if(!get_block(cx-1, cy)){
         cx--;
     }
-    else if(!get_block(cx-1 , cy-1)){
+    else if((!get_block(cx-1 , cy-1))&&(!get_block(cx , cy-1))){
         cx--;
         cy--;
     }
@@ -32,7 +32,7 @@ void move_right(){
     if(!get_block(cx+1 , cy)){
         cx++;
     }
-    else if(!get_block(cx+1 , cy-1)){
+    else if((!get_block(cx+1 , cy-1))&&(!get_block(cx , cy-1))){
         cx++;
         cy--;
     }
@@ -41,6 +41,7 @@ void move_right(){
 void gravity(){
     if(jump_stage)return;
     if(!get_block(cx ,cy+1)){
+        delay(5);
         cy++;
     }
 }
@@ -66,7 +67,7 @@ void jump(){
 void manage_jump(){
     if(jump_stage > 0){
         if(jump_stage < jump_hight){
-            // delay(20);
+            delay(5);
             if(!get_block(cx , cy-1)){
                 cy--;
                 jump_stage++;
@@ -77,4 +78,47 @@ void manage_jump(){
             jump_stage = 0;
         }
     }
+}
+
+void break_block_left(){
+    if(!get_block(cx-1, cy))return;
+    delay(10);
+    set_block(cx-1 , cy , 0);
+}
+
+void break_block_right(){
+    if(!get_block(cx+1 , cy))return;
+    delay(10);
+    set_block(cx+1 , cy , 0);
+}
+void break_block_up(){
+    if(!get_block(cx , cy-1))return ;
+    delay(10);
+    set_block(cx , cy-1 , 0);
+}
+void break_block_down(){
+    if(!get_block(cx , cy+1))return;
+    delay(10);
+    set_block(cx , cy+1 , 0);
+}
+
+void place_block_up(int i){
+    if(get_block(cx , cy-1))return;
+    delay(10);
+    set_block(cx , cy-1 , i);
+}
+void place_block_down(int i){
+    if(get_block(cx , cy+1))return;
+    delay(10);
+    set_block(cx , cy+1 , i);
+}
+void place_block_left(int i){
+    if(get_block(cx-1 , cy))return;
+    delay(10);
+    set_block(cx -1 , cy, i);
+}
+void place_block_right(int i){
+    if(get_block(cx+1 , cy))return;
+    delay(10);
+    set_block(cx +1 , cy , i);
 }

@@ -1,7 +1,7 @@
 
 #include "../lib.h"
+#include "chunk.h"
 
-long long seed = 234543245;
 long long min_surface = 0;
 long long max_surface = 20;
 long long min_grass = 19;
@@ -18,7 +18,7 @@ long long hasher(long long x , long long seed){
 }
 
 float vap(long long x){
-    return (hasher(x , seed)&0x7fffffff)/float(0x7fffffff);
+    return (hasher(x , ear.seed)&0x7fffffff)/float(0x7fffffff);
 }
 
 float lerp(float a , float b,  float t){
@@ -64,7 +64,7 @@ long long grass(long long x){
 
 long long hasher_2d(long long x , long long y ){
     long long h = x *374761393 + y * 668265263;
-    h^=seed;
+    h^=ear.seed;
     h = (h<<13)^h;
     return (h*(h*h*15731+789221)+1376312589);
 }

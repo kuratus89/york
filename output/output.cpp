@@ -154,6 +154,8 @@ void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, c
     }
 }
 void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy) {
+    if(vx == LLONG_MIN)vx = ((screen[0].size() - par[0].size()-2)/2)+1;
+    if(vy == LLONG_MIN)vy = ((screen.size() - par.size()-2)/2)+1;
     for (long long sy = 0; sy < (long long)par.size(); ++sy) {
         long long ty = vy + sy;
         if (ty <= 0 || ty >= y-1) continue;

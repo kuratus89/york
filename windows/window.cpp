@@ -15,6 +15,9 @@
 #include "dynamic/input_clr.h"
 #include "dynamic/settings.h"
 #include "../game/main_game.h"
+#include "dynamic/start_new_game.h"
+#include "dynamic/load_world.h"
+#include "dynamic/pause.h"
 #include "../lib.h"
 
 
@@ -31,7 +34,10 @@ map<string , void(*)()> func_point = {
         {"appearance" , appearance},
         {"input_clr" , input_clr},
         {"settings" , settings},
-        {"main_game" , main_game}
+        {"main_game" , main_game},
+        {"start_new_game" , start_new_game},
+        {"load_world" , load_world},
+        {"pause" , pause}
 };
 
 

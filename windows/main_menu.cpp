@@ -12,7 +12,8 @@ void menu_adder(int color){
     wino.top().screen["menu"]= vector<vector<pixel>> (10 , vector<pixel> (16 , pe));
         
     vector<string> options= {
-        " Single Player",
+        " New Game",
+        " Load Gamge",
         " Multi Player",
         " Appearance",
         " Settings",
@@ -44,17 +45,22 @@ void menu_adder(int color){
 void inpt(){
     if(k=="W")wino.top().stl["selecter"]--;
     else if(k=="S")wino.top().stl["selecter"]++;
-    if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"]=4;
-    if(wino.top().stl["selecter"]==5)wino.top().stl["selecter"]=0;
+    if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"]=5;
+    if(wino.top().stl["selecter"]==6)wino.top().stl["selecter"]=0;
     if((k=="W")||(k=="S"))menu_adder(5);
     if(k=="Enter"){
         if(wino.top().stl["animation"]!=-1)return;
         if(wino.top().stl["selecter"]==0){
             win gm;
-            gm.name = "main_game";
+            gm.name = "start_new_game";
             wino.push(gm);
         }
-        else if(wino.top().stl["selecter"]==1){
+        if(wino.top().stl["selecter"]==1){
+            win lg;
+            lg.name = "load_world";
+            wino.push(lg);
+        }
+        else if(wino.top().stl["selecter"]==2){
             win message;
             message.name = "msg";
             message.sts["title"]= "umm";
@@ -65,16 +71,16 @@ void inpt(){
             message.stl["color"]=0;
             wino.push(message);
         }
-        else if(wino.top().stl["selecter"]==2){
+        else if(wino.top().stl["selecter"]==3){
             wino.top().stl["animation"]=2;
         }
-        else if(wino.top().stl["selecter"]==3){
+        else if(wino.top().stl["selecter"]==4){
             win st;
             st.name = "settings";
             wino.push(st);
             return;
         }
-        else if(wino.top().stl["selecter"]==4){
+        else if(wino.top().stl["selecter"]==5){
             gameon=0;
         }
     }

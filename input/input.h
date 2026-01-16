@@ -40,6 +40,7 @@ namespace input {
         Escape,
         Tab,
         Backspace,
+        Shift,
 
         // Navigation
         Up,

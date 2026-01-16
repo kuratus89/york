@@ -149,14 +149,14 @@ vector<vector<vector<pixel>>> titles = {
 };
 // functions
 
-static bool writeString(ofstream &out, const string &s) {
+bool writeString(ofstream &out, const string &s) {
     uint64_t len = static_cast<uint64_t>(s.size());
     out.write(reinterpret_cast<const char*>(&len), sizeof(len));
     out.write(s.data(), static_cast<streamsize>(len));
     return out.good();
 }
 
-static bool readString(ifstream &in, string &s) {
+bool readString(ifstream &in, string &s) {
     uint64_t len{};
     in.read(reinterpret_cast<char*>(&len), sizeof(len));
     if (!in.good()) return false;
@@ -242,3 +242,26 @@ bool isf(){
     }
     return 0;
 }
+
+
+bool write_string(ofstream &out , const string &s){
+    uint64_t len=s.size();
+    out.write(reinterpret_cast<const char*>(&len) , sizeof(len));
+    out.write(s.data() , len);
+    return out.good();
+}
+
+bool read_string(ifstream &in , string &s){
+    uint64_t len;
+    in.read(reinterpret_cast<char*>(&len) , sizeof(len));
+    if(!in.good())return 0;
+    s.resize(len);
+    in.read(&s[0], len);
+    return in.good();
+}
+
+
+
+
+
+

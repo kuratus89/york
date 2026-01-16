@@ -6,8 +6,20 @@ long long lim;
 string s;
 bool exito=0;
 void incha(){
-    if((k!="-")&&(k.size()==1)){
-        if(s.size()<lim)s.push_back(k[0]);
+    if((k!="-")&&(k.size()==1)&&((s.size()<lim))){
+        if(wino.top().stl["only_int"]==1){
+            if(k[0]=='0')s.push_back(k[0]);
+            if(k[0]=='1')s.push_back(k[0]);
+            if(k[0]=='2')s.push_back(k[0]);
+            if(k[0]=='3')s.push_back(k[0]);
+            if(k[0]=='4')s.push_back(k[0]);
+            if(k[0]=='5')s.push_back(k[0]);
+            if(k[0]=='6')s.push_back(k[0]);
+            if(k[0]=='7')s.push_back(k[0]);
+            if(k[0]=='8')s.push_back(k[0]);
+            if(k[0]=='9')s.push_back(k[0]);
+        }
+        else s.push_back(k[0]);
     }
     if(k=="Backspace"){
         if(!s.empty())s.pop_back();
