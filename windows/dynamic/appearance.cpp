@@ -74,6 +74,6 @@ void appearance(){
     if(wino.top().stl.count("pl_color"))player_color = wino.top().stl["pl_color"];
     if(wino.top().sts["player_cha"]!="")player = wino.top().sts["player_cha"][0];
     opt_adder();
-    ita(wino.top().screen["screen"] , wino.top().screen["appreance"] , ((x-wino.top().screen["appreance"][0].size()-2)/2)+1 , ((y-wino.top().screen["appreance"].size()-2)/2)+1);
+    ita(wino.top().screen["screen"] , wino.top().screen["appreance"] , ((x-wino.top().screen["appreance"][0].size()-2)/2)+1 , ((y-wino.top().screen["appreance"].size()-2)/2)+1 , 1);
     inptt();
 }

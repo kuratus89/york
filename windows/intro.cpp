@@ -46,7 +46,7 @@ void intro(){
         wino.top().type=1;
         wino.top().stl["done"]=0;
         dia();
-        ita(wino.top().screen["screen"] , wino.top().screen["dia"] , 0 , y-5);
+        ita(wino.top().screen["screen"] , wino.top().screen["dia"] , 0 , y-5 , 1);
 
     }
     

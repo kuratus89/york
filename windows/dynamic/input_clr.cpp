@@ -61,6 +61,6 @@ void input_clr(){
         wino.top().stl["selecter"] = 0;
     }
     clor();
-    ita(wino.top().screen["screen"] , wino.top().screen["clr"] , ((x-wino.top().screen["clr"][0].size()-2)/2)+1 , ((y-wino.top().screen["clr"].size()-2)/2)+1);
+    ita(wino.top().screen["screen"] , wino.top().screen["clr"] , ((x-wino.top().screen["clr"][0].size()-2)/2)+1 , ((y-wino.top().screen["clr"].size()-2)/2)+1 , 1);
     inppt();
 }

@@ -6,6 +6,7 @@
 #include "../physics/physics.h"
 #include "core.h"
 #include "../windows/dynamic/inventory.h"
+#include "status.h"
 
 pixel pa , pp;
 
@@ -32,23 +33,23 @@ void init(){
         if(input::ikd(input::key::Up)){
             if(ear.inventory[item]<=0)return;
             place_block_up(item);
-            ear.inventory[item]--;
         }
         if(input::ikd(input::key::Down)){
             if(ear.inventory[item]<=0)return;
             place_block_down(item);
-            ear.inventory[item]--;
         }
         if(input::ikd(input::key::Left)){
             if(ear.inventory[item]<=0)return;
-            place_block_left(item);
-            ear.inventory[item]--;            
+            place_block_left(item);         
         }
         if(input::ikd(input::key::Right)){
             if(ear.inventory[item]<=0)return;
             place_block_right(item);
-            ear.inventory[item]--;
         }
+    }
+    if(ghost){
+        if(input::ikd(input::key::W))cy--;
+        if(input::ikd(input::key::S))cy++;
     }
     if(k=="Enter"){
         win pau;
@@ -83,8 +84,9 @@ void main_game(){
     gravity();
     manage_chunks(cx , cy);
     game_window();
-    ita(wino.top().screen["screen"] , wino.top().screen["game"] , 0 , 0);
-    ita(wino.top().screen["screen"] , wino.top().screen["player"] , (x/2), (y/2));
+    ita(wino.top().screen["screen"] , wino.top().screen["game"] , 0 , 0 , 1);
+    ita(wino.top().screen["screen"] , wino.top().screen["player"] , (x/2), (y/2) , 1);
+    status();
     init();
     delay(20);
 }

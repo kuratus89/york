@@ -19,6 +19,7 @@ long long rx=50; //recommended x and y
 long long ry = 15;
 bool gameon=1;
 string k="-";
+string player_name;
 stack<win> wino;
 bool first_boot=1;
 map<string , string> string_to_color={
@@ -29,11 +30,14 @@ map<string , string> string_to_color={
     {"cyan" , "\033[36m"},//4
     {"white" , "\033[37m"},//5
     {"grey" , "\033[38;2;100;100;100m"},//6
+    {"iron" , "\033[38;2;160;150;130m"},//7
+    {"gold" , "\033[38;2;200;200;0m"},//8
+    
     {"reset" , "\033[0m"}
 };
 
 
-vector<string> in_to_color = {"\033[31m" ,"\033[34m","\033[32m","\033[35m","\033[36m","\033[37m","\033[38;2;100;100;100m","\033[0m"};
+vector<string> in_to_color = {"\033[31m" ,"\033[34m","\033[32m","\033[35m","\033[36m","\033[37m","\033[38;2;100;100;100m","\033[38;2;160;150;130m","\033[38;2;200;200;0m","\033[0m"};
 
 bool hc=1; // need to hard clear?
 bool ch=1; // change happen?
@@ -45,6 +49,8 @@ long long cx=3,cy=1;
 char player;
 int player_color=5;
 int title_color = 4;
+bool speed =0;
+bool ghost =0;
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",

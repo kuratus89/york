@@ -143,7 +143,7 @@ void intro_menu(){
     clr(5);
     
     opt_adder(gura.screen["par_screen"] ,5);
-    ita(gura.screen["screen"] , gura.screen["par_screen"] , 3 , 3);
+    ita(gura.screen["screen"] , gura.screen["par_screen"] , 3 , 3 , 1);
     optin();
 
 }

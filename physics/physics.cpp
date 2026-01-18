@@ -12,11 +12,12 @@ bool isbo(){
 }
 
 void delay(long long v){
+    if(speed)return;
     this_thread::sleep_for(std::chrono::milliseconds(v));
 }
 
 void move_left(){
-    if(!get_block(cx-1, cy)){
+    if((!get_block(cx-1, cy))||(ghost)){
         cx--;
     }
     else if((!get_block(cx-1 , cy-1))&&(!get_block(cx , cy-1))){
@@ -30,7 +31,7 @@ bool is_ground(){
 }
 
 void move_right(){
-    if(!get_block(cx+1 , cy)){
+    if((!get_block(cx+1 , cy))||(ghost)){
         cx++;
     }
     else if((!get_block(cx+1 , cy-1))&&(!get_block(cx , cy-1))){
@@ -40,6 +41,7 @@ void move_right(){
 }
 
 void gravity(){
+    if(ghost)return;
     if(jump_stage)return;
     if(!get_block(cx ,cy+1)){
         delay(5);
@@ -115,19 +117,23 @@ void place_block_up(int i){
     if(get_block(cx , cy-1))return;
     delay(10);
     set_block(cx , cy-1 , i);
+    ear.inventory[i]--;
 }
 void place_block_down(int i){
     if(get_block(cx , cy+1))return;
     delay(10);
     set_block(cx , cy+1 , i);
+    ear.inventory[i]--;
 }
 void place_block_left(int i){
     if(get_block(cx-1 , cy))return;
     delay(10);
     set_block(cx -1 , cy, i);
+    ear.inventory[i]--;
 }
 void place_block_right(int i){
     if(get_block(cx+1 , cy))return;
     delay(10);
     set_block(cx +1 , cy , i);
+    ear.inventory[i]--;
 }

@@ -13,6 +13,6 @@ void dialog_adder(vector<vector<pixel>> &scro , string name , char player_icon ,
 void ovr(string vallo);
 void option_adder(vector<vector<pixel>> &screen , vector<string> &options , long long selecter , long long sx , long long sy);
 void kuramizer(vector<vector<pixel>> &screen);
-void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy);
+void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy , bool boder);
 
 #endif

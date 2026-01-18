@@ -83,6 +83,6 @@ void input_str(){
     if(exito)return;
     clear_win(5);
     str_adder(5);
-    ita(pora.screen["screen"] , pora.screen["par_screen"] , (((x-2-40)/2) +1) , (((y-2-4)/2) +1));
+    ita(pora.screen["screen"] , pora.screen["par_screen"] , (((x-2-40)/2) +1) , (((y-2-4)/2) +1) , 1);
     
 }

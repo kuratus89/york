@@ -45,6 +45,6 @@ void msg(){
         }
 
     }
-    ita(wino.top().screen["screen"] , wino.top().screen["par_screen"] ,((max(0LL , x-mx)/2)+1),((max(0LL , y-my)/2)+1) );
+    ita(wino.top().screen["screen"] , wino.top().screen["par_screen"] ,((max(0LL , x-mx)/2)+1),((max(0LL , y-my)/2)+1),1);
     inpu();
 }

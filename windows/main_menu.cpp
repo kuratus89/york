@@ -105,6 +105,7 @@ void main_menu(){
             wino.push(er);
             return;
         }
+        player_name =aalu.sts["name"]; 
         player = aalu.sts["character"][0];
         player_color = aalu.stl["player_color"];
         wino.top().screen["blank_screen"] = bod_create(5 , x , y);
@@ -307,11 +308,11 @@ void main_menu(){
         if(wino.top().stl["apx"]==12)wino.top().stl["animation"]=-1;
     }
 
-    if(wino.top().stl["platform_visible"]==1)ita(wino.top().screen["screen"] , wino.top().screen["platform"] , wino.top().stl["xtar"]-6 , cy+1);
-    ita(wino.top().screen["screen"] , wino.top().screen["menu"] , wino.top().stl["mx"] , ((y - wino.top().screen["menu"].size()-2)/2)+1);
-    ita(wino.top().screen["screen"] , titles[which_title] ,((x-titles[which_title][0].size()-2)/2)+1, wino.top().stl["ty"] );
-    ita(wino.top().screen["screen"] , wino.top().screen["player"] , cx , cy);
-    ita(wino.top().screen["screen"] , wino.top().screen["dia"] , 0 , y-5);
+    if(wino.top().stl["platform_visible"]==1)ita(wino.top().screen["screen"] , wino.top().screen["platform"] , wino.top().stl["xtar"]-6 , cy+1,1);
+    ita(wino.top().screen["screen"] , wino.top().screen["menu"] , wino.top().stl["mx"] , ((y - wino.top().screen["menu"].size()-2)/2)+1,1);
+    ita(wino.top().screen["screen"] , titles[which_title] ,((x-titles[which_title][0].size()-2)/2)+1, wino.top().stl["ty"],1 );
+    ita(wino.top().screen["screen"] , wino.top().screen["player"] , cx , cy ,1);
+    ita(wino.top().screen["screen"] , wino.top().screen["dia"] , 0 , y-5 , 1);
 
     inpt();
 

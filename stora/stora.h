@@ -117,6 +117,7 @@ struct world{
     int seed;
     int posx;
     int posy;
+    int health;
     map<pair<int,int>  , chunks> chunker;
     map<int , int> inventory;
 
@@ -131,6 +132,7 @@ struct world{
         
         write_bin(out , posx);
         write_bin(out , posy);
+        write_bin(out , health);
 
         uint64_t cnt = chunker.size();
         write_bin(out , cnt);
@@ -158,6 +160,7 @@ struct world{
         read_bin(in , seed);
         read_bin(in , posx);
         read_bin(in , posy);
+        read_bin(in  , health);
 
         uint64_t cnt;
         read_bin(in , cnt);
@@ -209,6 +212,9 @@ extern int player_color;
 extern vector<string> intro_dialog;
 extern vector<wstring> title;
 extern vector<vector<vector<pixel>>> titles;
+extern string player_name;
+extern bool speed;
+extern bool ghost;
 
 //func
 

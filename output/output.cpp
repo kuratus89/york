@@ -74,7 +74,7 @@ void dialog_adder(vector<vector<pixel>> &scro , string name , char player_icon ,
     pixel pe;
     pe.color = colo;
     pe.value = " ";
-    for(long long i=y-4 ; i<y-1 ; i++){
+    for(long long i=y-4;i<y-1 ; i++){
         for(long long j=1 ; j<x-1 ; j++){
             scro[i][j] = pe;
         }
@@ -153,15 +153,15 @@ void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, c
         }
     }
 }
-void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy) {
+void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy , bool boder) {
     if(vx == LLONG_MIN)vx = ((screen[0].size() - par[0].size()-2)/2)+1;
     if(vy == LLONG_MIN)vy = ((screen.size() - par.size()-2)/2)+1;
     for (long long sy = 0; sy < (long long)par.size(); ++sy) {
         long long ty = vy + sy;
-        if (ty <= 0 || ty >= y-1) continue;
+        if (boder&&(ty <= 0 || ty >= y-1)) continue;
         for (long long sx = 0; sx < (long long)par[sy].size(); ++sx) {
             long long tx = vx + sx;
-            if (tx <= 0 || tx >= x-1) continue;
+            if (boder&&(tx <= 0 || tx >= x-1)) continue;
             if (ty < 0 || ty >= (long long)screen.size()) continue;
 
             screen[ty][tx] = par[sy][sx];

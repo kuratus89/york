@@ -6,7 +6,10 @@
 vector<string> invoda = {
     "Air",
     "Grass",
-    "Stone"
+    "Stone",
+    "iron",
+    "gold",
+    "diamond"
 };
 
 
@@ -49,6 +52,6 @@ void inventory(){
         }
     }
     option_adder(wino.top().screen["invo"] , invd , wino.top().stl["selecter"] , 20 , 10);
-    ita(wino.top().screen["screen"] , wino.top().screen["invo"] , LLONG_MIN , LLONG_MIN);
+    ita(wino.top().screen["screen"] , wino.top().screen["invo"] , LLONG_MIN , LLONG_MIN , 1);
     itp();
 }

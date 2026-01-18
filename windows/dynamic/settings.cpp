@@ -36,6 +36,6 @@ void settings(){
         "Done"
     };
     option_adder(wino.top().screen["settings"] ,  optt, wino.top().stl["selecter"] ,50 , 5 );
-    ita(wino.top().screen["screen"], wino.top().screen["settings"] , ((x-wino.top().screen["settings"][0].size()-2)/2)+1 , ((y-wino.top().screen["settings"].size()-2)/2)+1);
+    ita(wino.top().screen["screen"], wino.top().screen["settings"] , ((x-wino.top().screen["settings"][0].size()-2)/2)+1 , ((y-wino.top().screen["settings"].size()-2)/2)+1 , 1);
     inpppt();
 }

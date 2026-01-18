@@ -12,7 +12,10 @@ long long render_distance = 120;
 vector<pair<string , pair<string, int>>> blocker{
     {"air",{" " , 5}},//0
     {"grass",{"█",2}},//1
-    {"stone" , {"█" , 6}}//2
+    {"stone" , {"█" , 6}},//2
+    {"iron" , {"█" , 7}},//3
+    {"gold" , {"█" , 8}},//4
+    {"diamond" , {"█" , 4}}//5
 };
 long long chunk_size = 10;
 world ear;
@@ -34,6 +37,9 @@ void chunk_loader(long long  lcx ,long long lcy){
                 continue;
             }
             jk.chunk[j][i] = 2;
+            if(is_iron(lcx+i,lcy+j))jk.chunk[j][i]=3;
+            if(is_gold(i+lcx,j+lcy))jk.chunk[j][i]=4;
+            if(is_diamond(i+lcx,j+lcy))jk.chunk[j][i]=5;
         }
     }
     if(ear.chunker[{lcx , lcy}].change.size())jk.change = ear.chunker[{lcx , lcy}].change;

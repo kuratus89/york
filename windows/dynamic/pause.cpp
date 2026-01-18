@@ -24,6 +24,11 @@ void itt(){
             }
             wino.push(al);
         }
+        if(wino.top().stl["selecter"]==2){
+            win che;
+            che.name = "cheat";
+            wino.push(che);
+        }
     }
 }
 
@@ -39,6 +44,6 @@ void pause(){
         "Cheats"
     };
     option_adder(wino.top().screen["pau"] , opts , wino.top().stl["selecter"] , 30 , 5);
-    ita(wino.top().screen["screen"] ,wino.top().screen["pau"] , LLONG_MIN , LLONG_MIN);
+    ita(wino.top().screen["screen"] ,wino.top().screen["pau"] , LLONG_MIN , LLONG_MIN , 1);
     itt();
 }
