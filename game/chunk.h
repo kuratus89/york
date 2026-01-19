@@ -18,5 +18,6 @@ int get_block(long long x, long long y);
 void set_block(long long x, long long y , int d);
 bool save_game(string s);
 extern world ear;
+extern vector<pair<string , pair<string, int>>> blocker;
 
 #endif

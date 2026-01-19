@@ -13,7 +13,7 @@ void menu_adder(int color){
         
     vector<string> options= {
         " New Game",
-        " Load Gamge",
+        " Load Game",
         " Multi Player",
         " Appearance",
         " Settings",

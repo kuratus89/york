@@ -2,6 +2,7 @@
 #include "../windows/window.h"
 #include "../stora/stora.h"
 #include "chunk.h"
+#include "../windows/dynamic/inventory.h"
 
 void healther(){
     for(long long i=1 ; i<=10; i++)wino.top().screen["health"][1][i].value = " ";
@@ -15,6 +16,15 @@ void healther(){
     for(long long i=1 ; i<=ear.health ; i++)wino.top().screen["health"][1][i]=he;
     ita(wino.top().screen["status"] ,wino.top().screen["health"] , 17 , 1 ,1);
 
+}
+
+void selected(){
+    pixel px;
+    px.color = blocker[item].second.second;
+    px.value = blocker[item].second.first;
+    wino.top().screen["item"][1][1] = px;
+    wino.top().screen["item"][1][2] = px;
+    ita(wino.top().screen["status"] , wino.top().screen["item"] , 35 , 1 , 1);
 }
 
 void status(){
@@ -32,6 +42,14 @@ void status(){
         wino.top().screen["status"][2][14].value = "t";
         wino.top().screen["status"][2][15].value = "h";
         wino.top().screen["status"][2][16].value = ":";
+
+
+        wino.top().screen["status"][2][30].value = "I";
+        wino.top().screen["status"][2][31].value = "t";
+        wino.top().screen["status"][2][32].value = "e";
+        wino.top().screen["status"][2][33].value = "m";
+        wino.top().screen["status"][2][34].value = ":";
+        wino.top().screen["item"] = bod_create(5 , 4 , 3);
         long long temp = 1;
         for(auto val:player_name){
             wino.top().screen["status"][2][temp].value = val;
@@ -39,5 +57,7 @@ void status(){
         }
     }
     healther();
+    selected();
     ita(wino.top().screen["screen"] , wino.top().screen["status"] , 0 , y-5 , 0);
+    
 }
