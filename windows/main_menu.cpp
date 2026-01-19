@@ -187,7 +187,7 @@ void main_menu(){
     }
     else if((wino.top().stl["animation"]==1)){
         wino.top().stl["platform_visible"]=1;
-        delay(60);
+        delay(30);
         wino.top().screen["screen"] = wino.top().screen["blank_screen"];
         if(wino.top().stl["player_animation"]==0){
             cy--;
@@ -205,7 +205,7 @@ void main_menu(){
         
     }
     else if(wino.top().stl["animation"]==2){
-        delay(50);
+        delay(30);
         pixel pe;
         pe.color =5;
         pe.value = "─";
@@ -234,7 +234,7 @@ void main_menu(){
         if(wino.top().stl["apx"]>=28)wino.top().stl["animation"]=3;
     }
     else if(wino.top().stl["animation"]==3){
-        delay(50);
+        delay(30);
 
         cx++;
         if(cx>x)wino.top().stl["animation"]=4;
@@ -270,12 +270,12 @@ void main_menu(){
         wino.top().stl["animation"]=6;
     }
     else if(wino.top().stl["animation"]==6){
-        delay(50);
+        delay(30);
         cx--;
         if(cx==wino.top().stl["xtar"])wino.top().stl["animation"]=7;
     }
     else if(wino.top().stl["animation"]==7){
-        delay(60);
+        delay(30);
         pixel pe;
         pe.color = 5;
         pe.value = "─";

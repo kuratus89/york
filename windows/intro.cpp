@@ -14,7 +14,7 @@ void initilize_tarx(){
 
 void dialoger(){
     if(din>intro_dialog[di].size()){
-        if(k==" "){
+        if((k==" ")||(k=="Enter")){
             di++;
             dial="";
             din=0;
@@ -87,7 +87,7 @@ void intro(){
             }
         }
     }
-    delay(30);
+    delay(15);
     
     
 }

@@ -16,7 +16,11 @@ void scro(){
         message.name = "msg";
         message.sts["title"] = "INSTRUCTIONS";
         message.vs["msg"] = {
-            "PLEASE MAXIMIZE YOUR WINDOW",
+            "DO NOT CHANGE TO WINDOW SIZE AFTER THIS WINDOW!",
+            "YOU CAN SET YOUR DESIRE WINDOW SIZE RIGHT NOW",
+            "IF U FEEL GAME IS LAGGY THEN MAKE YOUR WINDOW SIZE SMALLER",
+            "CONTROLS : WASD, ENTER, SPACE, ARROW KEYS AND E",
+            "",
             "PRESS ENTER TO CONTINUE"
         };
         message.sts["color"] = "1";

@@ -88,5 +88,5 @@ void main_game(){
     ita(wino.top().screen["screen"] , wino.top().screen["player"] , (x/2), (y/2) , 1);
     status();
     init();
-    delay(20);
+    delay(10);
 }
