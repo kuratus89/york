@@ -20,6 +20,7 @@
 #include "dynamic/pause.h"
 #include "dynamic/inventory.h"
 #include "dynamic/cheat.h"
+#include "dynamic/dialog.h"
 #include "../lib.h"
 
 
@@ -41,14 +42,28 @@ map<string , void(*)()> func_point = {
         {"load_world" , load_world},
         {"pause" , pause},
         {"inventory" , inventory},
-        {"cheat" , cheat}
+        {"cheat" , cheat},
+        {"dialog", dialog}
 };
+
+
 
 
 void window(){
     if(hc){
         hard_clear();
         hc=0;
+    }
+    if(!ticker.empty()){
+        for(auto &val:ticker)val.first--;
+        for(auto it = ticker.begin() ; it!=ticker.end() ;){
+            if((*it).first==0){
+                wino.push((*it).second);
+                swap((*it) , ticker.back());
+                ticker.pop_back();
+            }
+            else it++;
+        }
     }
     if(wino.empty()){
         win tamzid;

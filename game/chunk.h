@@ -17,6 +17,8 @@ void manage_chunks(long long px , long long py);
 int get_block(long long x, long long y);
 void set_block(long long x, long long y , int d);
 bool save_game(string s);
+void manage_all_mobs();
+int get_mob(long long x , long long y);
 extern world ear;
 extern vector<pair<string , pair<string, int>>> blocker;
 

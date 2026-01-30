@@ -15,8 +15,6 @@ long long xmin=15;
 long long ymin=8;
 long long ymax=LLONG_MAX;
 long long xmax=LLONG_MAX;
-long long rx=50; //recommended x and y
-long long ry = 15;
 bool gameon=1;
 string k="-";
 string player_name;
@@ -33,6 +31,7 @@ map<string , string> string_to_color={
     {"iron" , "\033[38;2;160;150;130m"},//7
     {"gold" , "\033[38;2;200;200;0m"},//8
     
+    
     {"reset" , "\033[0m"}
 };
 
@@ -44,8 +43,8 @@ bool ch=1; // change happen?
 bool boot_log =1;
 // vector<vector<pair<char , char>>> screen;
 vector<vector<pixel>> pre_screen = vector<vector<pixel>> (0);
-long long cx=3,cy=1;
-
+int cx=3,cy=1;
+vector<pair<int , win>> ticker;
 char player;
 int player_color=5;
 int title_color = 4;

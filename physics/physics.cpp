@@ -4,7 +4,7 @@
 #include "../game/chunk.h"
 #include "../windows/dynamic/inventory.h"
 
-long long jump_hight = 8;
+long long jump_hight = 6;
 long long jump_stage = 0;
 
 bool isbo(){
@@ -15,43 +15,49 @@ void delay(long long v){
     if(speed)return;
     this_thread::sleep_for(std::chrono::milliseconds(v));
 }
+bool is_ground(int &vx , int &vy){
+    return(get_block(vx , vy+1));
+}
 
-void move_left(){
-    if((!get_block(cx-1, cy))||(ghost)){
-        cx--;
+void move_left(int &vx , int &vy){
+    if(get_mob(vx-1 , vy)!=-1)return;
+
+    if((!get_block(vx-1, vy))||(ghost)){
+        vx--;
     }
-    else if((!get_block(cx-1 , cy-1))&&(!get_block(cx , cy-1))){
-        cx--;
-        cy--;
+    else if((!get_block(vx-1 , vy-1))&&(!get_block(vx , vy-1))){
+        vx--;
+        vy--;
     }
 }
 
-bool is_ground(){
-    return(get_block(cx , cy+1));
+
+
+void move_right(int &vx , int &vy){
+
+    if(get_mob(vx+1 , vy)!=-1)return;
+
+    if((!get_block(vx+1 , vy))||(ghost)){
+        vx++;
+    }
+    else if((!get_block(vx+1 , vy-1))&&(!get_block(vx , vy-1))){
+        vx++;
+        vy--;
+    }
 }
 
-void move_right(){
-    if((!get_block(cx+1 , cy))||(ghost)){
-        cx++;
-    }
-    else if((!get_block(cx+1 , cy-1))&&(!get_block(cx , cy-1))){
-        cx++;
-        cy--;
-    }
-}
-
-void gravity(){
+void gravity(int &vx , int &vy){
     if(ghost)return;
     if(jump_stage)return;
-    if(!get_block(cx ,cy+1)){
-        delay(5);
-        cy++;
+    if((!get_block(vx ,vy+1))&&(get_mob(vx , vy+1)==-1)){
+        // delay(5);
+        vy++;
     }
 }
 void jump(){
     if(jump_stage)return;
-    if(!is_ground())return;
-    if(!get_block(cx , cy-1)){
+    if(!is_ground(cx , cy))return;
+    if((!get_block(cx , cy-1))&&(get_mob(cx , cy-1)==-1)){
         // delay(30);
         cy--;
         jump_stage = 1;
@@ -136,4 +142,8 @@ void place_block_right(int i){
     delay(10);
     set_block(cx +1 , cy , i);
     ear.inventory[i]--;
+}
+
+void reset_physics(){
+    jump_hight = 0;
 }

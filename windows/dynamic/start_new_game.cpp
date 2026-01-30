@@ -45,9 +45,11 @@ void inta(){
                 if(wino.top().sts["seed"]=="")ear.seed = randi();
                 else ear.seed = stoi(wino.top().sts["seed"]);
                 ear.name = wino.top().sts["world_name"];
-                ear.posy = cy=height(cx)-1;
                 ear.posx= 0;
+                ear.posy = cy=height(ear.posx)-1;                
                 ear.health = 10;
+                ear.chunker.clear();
+                ear.inventory.clear();
                 win mg;
                 filesystem::create_directories("data/worlds/"+ear.name);
                 if(!ear.save("data/worlds/"+ear.name+"/data.kp")){

@@ -20,8 +20,8 @@ void init(){
     // if(k=="A")cx--;
     // if(k=="D")cx++;
     if(input::ikd(input::key::Space))jump();
-    if(input::ikd(input::key::A))move_left();
-    if(input::ikd(input::key::D))move_right();
+    if(input::ikd(input::key::A))move_left(cx , cy);
+    if(input::ikd(input::key::D))move_right(cx , cy);
     if(input::ikd(input::key::Shift)){
         if(input::ikd(input::key::Up))break_block_up();
         if(input::ikd(input::key::Down))break_block_down();
@@ -67,6 +67,7 @@ void main_game(){
     if(!wino.top().initilizzed){
         wino.top().initilizzed=1;
         wino.top().screen_handle=1;
+        // reset_physics();
         wino.top().adv=1;
         pa.color=5;
         pa.value = " ";
@@ -78,10 +79,30 @@ void main_game(){
         pp.value = string(1,player);
         wino.top().screen["player"] = vector<vector<pixel>> (1 , vector<pixel> (1 , pp));
         wino.top().stl["item"]=1;
+
+        if(ear.stl["first_timer"]==0){
+            ear.stl["first_timer"]=1;
+            win dia;
+            dia.name = "dialog";
+            dia.vs["dialog"] = {
+                "This is the world I live in!",
+                "I will show you exactly how to take control of me.",
+                "You can control my movement using the A and D keys.",
+                "You can open my thoughts with E and select what I must carry then confirm it with Enter",
+                "You can make me place the selected block using the arrow keys",
+                "You can make me break blocks using Shift + arrow keys",
+                "And yes you possess a special ability to freeze time itself. Press ENTER to stop the world."
+                
+            };
+            dia.stl["player_color"] = player_color;
+            dia.sts["player"] = string(1,player);
+            dia.sts["name"] = player_name;
+            ticker.push_back({2,dia});
+        }
         
     }
+    gravity(cx , cy);
     manage_jump();
-    gravity();
     manage_chunks(cx , cy);
     game_window();
     ita(wino.top().screen["screen"] , wino.top().screen["game"] , 0 , 0 , 1);
@@ -89,4 +110,6 @@ void main_game(){
     status();
     init();
     delay(10);
+    
+    manage_all_mobs();
 }

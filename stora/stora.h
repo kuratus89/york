@@ -49,11 +49,15 @@ struct mob{
     int y;
     int health;
     int type;
+    int initilize=0;
     bool save(ofstream &out){
-        return (write_bin(out , id)&&write_bin(out , x)&&write_bin(out , y)&&write_bin(out , health)&&write_bin(out , type));
+        return (write_bin(out , id)&&write_bin(out , x)&&write_bin(out , y)&&write_bin(out , health)&&write_bin(out , type)&&write_bin(out , initilize));
     }
     bool load(ifstream &in){
         return(read_bin(in , id)&&read_bin(in , x)&&read_bin(in , y)&&read_bin(in , health)&&read_bin(in , type));
+    }
+    void spawn(int x , int y,int type){
+
     }
 };
 
@@ -120,6 +124,8 @@ struct world{
     int health;
     map<pair<int,int>  , chunks> chunker;
     map<int , int> inventory;
+    map<string,string> sts;
+    map<string , long long> stl;
 
 
 
@@ -146,6 +152,20 @@ struct world{
         write_bin(out , cnt);
         for(auto &val:inventory){
             write_bin(out , val.first);
+            write_bin(out , val.second);
+        }
+
+        cnt = sts.size();
+        write_bin(out , cnt);
+        for(auto &val:sts){
+            write_string(out , val.first);
+            write_string(out , val.second);
+        }
+
+        cnt = stl.size();
+        write_bin(out , cnt);
+        for(auto &val:stl){
+            write_string(out , val.first);
             write_bin(out , val.second);
         }
 
@@ -181,6 +201,22 @@ struct world{
             read_bin(in , yy);
             inventory[xx]=yy;
         }
+        sts.clear();
+        read_bin(in , cnt);
+        for(uint64_t i = 0 ; i <cnt ; i++){
+            string a,b;
+            read_string(in , a);
+            read_string(in , b);
+            sts[a]=b;
+        }
+        stl.clear();
+        read_bin(in , cnt);
+        for(uint64_t i=0; i<cnt ; i++){
+            string a;long long b;
+            read_string(in , a);
+            read_bin(in , b);
+            stl[a]=b;
+        }
 
         return in.good();
     }
@@ -194,17 +230,11 @@ extern string k;
 extern map<string , string> string_to_color;
 extern vector<string> in_to_color;
 extern long long x,y;
-extern long long xmin;
-extern long long ymin;
-extern long long ymax;
-extern long long xmax;
 extern bool hc;
 extern bool ch;
-extern long long rx;
-extern long long ry;
 extern bool boot_log;
-extern long long cx;
-extern long long cy;
+extern int cx;
+extern int cy;
 extern char player;
 // extern vector<vector<pair<char , char>>> screen;
 extern vector<vector<pixel>> pre_screen;
@@ -215,6 +245,7 @@ extern vector<vector<vector<pixel>>> titles;
 extern string player_name;
 extern bool speed;
 extern bool ghost;
+extern vector<pair<int , win>> ticker;
 
 //func
 

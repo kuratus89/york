@@ -4,12 +4,13 @@
 #include "core.h"
 #include "../stora/stora.h"
 #include "../windows/error.h"
+#include "npc.h"
 
 long long grass_lvl=10;
 // vector<chunks> chunker;
 map<pair<int , int> , chunks> chunker;
 long long render_distance = 120;
-vector<pair<string , pair<string, int>>> blocker{
+vector<pair<string , pair<string, int>>> blocker = {
     {"air",{" " , 5}},//0
     {"grass",{"█",2}},//1
     {"stone" , {"█" , 6}},//2
@@ -17,8 +18,13 @@ vector<pair<string , pair<string, int>>> blocker{
     {"gold" , {"█" , 8}},//4
     {"diamond" , {"█" , 4}}//5
 };
+vector<pair<string , pair<string , int>>> mober ={
+    {"sheep" , {"S" , 5}},
+    {"zombie" , {"Z" , 2}}
+};
 long long chunk_size = 10;
 world ear;
+long long mob_count=5;
 
 void chunk_loader(long long  lcx ,long long lcy){
     chunks jk;
@@ -46,10 +52,23 @@ void chunk_loader(long long  lcx ,long long lcy){
     for(auto &val:jk.change){
             jk.chunk[val.first.second][val.first.first] = val.second;
     }
+    
+    
+    if(ear.stl["mobs_count"]<mob_count){
+        mob b;
+        b.type=1;
+        b.x = lcx+5;
+        b.y = height(lcx+5)-1;
+        ear.stl["mobs_count"]++;
+        jk.mobs.push_back(b);
+    }
     chunker[{lcx,lcy}] = (jk);
 
 }
 void chunk_unloader(long long lvx , long long lvy){
+    
+    
+
     for(auto it = chunker.begin() ; it!=chunker.end() ;){
         if((abs((*it).second.x - lvx)>render_distance)||((abs((*it).second.y - lvy)>render_distance))){
             ear.chunker[(*it).first].change = (*it).second.change;
@@ -75,11 +94,19 @@ void chaper(vector<vector<pixel>> &scv , vector<vector<int>> &chk , long long vx
     }
 }
 
+void mob_render(vector<vector<pixel>> &scv , mob moho , long long hx , long long hy){
+    if(hx< 0 || hx >= scv[0].size()) return;
+    if(hy< 0 || hy >= scv.size()) return;
+    scv[hy][hx].color = mober[moho.type].second.second;
+    scv[hy][hx].value = mober[moho.type].second.first;
+}
+
 void render(vector<vector<pixel>> &scv , long long mx , long long my ){
     long long center_x = scv[0].size()/2;
     long long center_y = scv.size()/2;
     for(auto &val:chunker){
         chaper(scv , val.second.chunk , val.second.x - mx +center_x, val.second.y - my+center_y);
+        for(auto &var:val.second.mobs)mob_render(scv , var , var.x - mx+center_x , var.y - my + center_y);
     }
 }
 
@@ -89,16 +116,33 @@ bool is_chunk_loaded(long long x, long long y) {
 
 void manage_chunks(long long px, long long py) {
     chunk_unloader(px, py);
-    long long gx = floor(px / chunk_size)*chunk_size;
-    long long gy = floor(py / chunk_size)*chunk_size;
+    // long long gx = floor(px / chunk_size)*chunk_size;
+    // long long gy = floor(py / chunk_size)*chunk_size;
+    long long gx = (px >= 0) ? (px / chunk_size) * chunk_size : ((px - chunk_size + 1) / chunk_size) * chunk_size;
+    long long gy = (py >= 0) ? (py / chunk_size) * chunk_size : ((py - chunk_size + 1) / chunk_size) * chunk_size;
+    
     for (long long x=gx-render_distance;x<=gx+render_distance;x+=chunk_size)for (long long y = gy - render_distance; y <= gy + render_distance; y +=chunk_size)if (!is_chunk_loaded(x, y))chunk_loader(x, y);
 }
 
 int get_block(long long x, long long y){
     long long lx = (x >= 0) ? (x / chunk_size) * chunk_size : ((x - chunk_size + 1) / chunk_size) * chunk_size;
     long long ly = (y >= 0) ? (y / chunk_size) * chunk_size : ((y - chunk_size + 1) / chunk_size) * chunk_size;
+    // long long lx = floor(x / chunk_size)*chunk_size;
+    // long long ly = floor(y / chunk_size)*chunk_size;
+    
     if (!is_chunk_loaded(lx, ly))chunk_loader(lx, ly);
     return chunker[{lx , ly}].chunk[y-ly][x - lx];
+}
+
+int get_mob(long long x , long long y){
+    if((x==cx)&&(y==cy))return -395;
+    long long lx = (x>=0)?(x/chunk_size)*chunk_size : ((x-chunk_size +1)/ chunk_size)*chunk_size;
+    long long ly = (y>=0)?(y/chunk_size)*chunk_size : ((y-chunk_size+1)/chunk_size)*chunk_size;
+    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
+    for(auto &val:chunker[{lx,ly}].mobs){
+        if((val.x==x)&&(val.y==y))return val.type;
+    }
+    return -1;
 }
 
 void set_block(long long x, long long y , int d){
@@ -123,4 +167,20 @@ bool save_game(string s){
         ear.chunker[(*it).first].change = (*it).second.change;
     }
     return ear.save(s);
+}
+
+void manage_all_mobs(){
+    for(auto &val:chunker){
+        for(auto it = val.second.mobs.begin() ; it!=val.second.mobs.end() ;){
+            mob_manager((*it));
+            long long lx =  ((*it).x>=0)?((*it).x/chunk_size)*chunk_size : (((*it).x-chunk_size +1)/chunk_size)*chunk_size;
+            long long ly = ((*it).y>=0)? ((*it).y/chunk_size)*chunk_size : (((*it).y - chunk_size+1)/chunk_size)*chunk_size;
+            if((val.first.first!=lx)||(val.first.second!=ly)){
+                if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
+                chunker[{lx,ly}].mobs.push_back((*it));
+                it = val.second.mobs.erase(it);
+            }
+            else it++;
+        }
+    }
 }
