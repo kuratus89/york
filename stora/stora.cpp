@@ -50,6 +50,8 @@ int player_color=5;
 int title_color = 4;
 bool speed =0;
 bool ghost =0;
+long long block_update=0;
+int hit_delay =0;
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",

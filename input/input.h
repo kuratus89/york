@@ -41,6 +41,7 @@ namespace input {
         Tab,
         Backspace,
         Shift,
+        Control,
 
         // Navigation
         Up,

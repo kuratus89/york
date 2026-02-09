@@ -6,6 +6,7 @@
 #include "../physics/physics.h"
 #include "core.h"
 #include "../windows/dynamic/inventory.h"
+#include "weapon.h"
 #include "status.h"
 
 pixel pa , pp;
@@ -15,10 +16,7 @@ void game_window(){
     render(wino.top().screen["game"] , cx , cy);
 }
 void init(){
-    // if(k=="W")cy--;
-    // if(k=="S")cy++;
-    // if(k=="A")cx--;
-    // if(k=="D")cx++;
+    
     if(input::ikd(input::key::Space))jump();
     if(input::ikd(input::key::A))move_left(cx , cy);
     if(input::ikd(input::key::D))move_right(cx , cy);
@@ -27,6 +25,10 @@ void init(){
         if(input::ikd(input::key::Down))break_block_down();
         if(input::ikd(input::key::Left))break_block_left();
         if(input::ikd(input::key::Right))break_block_right();
+    }
+    else if(input::ikd(input::key::Control)){
+        if(input::ikd(input::key::Left))hit_left();
+        if(input::ikd(input::key::Right))hit_right();
     }
     else {
         
@@ -51,6 +53,7 @@ void init(){
         if(input::ikd(input::key::W))cy--;
         if(input::ikd(input::key::S))cy++;
     }
+    if(k=="-")return;
     if(k=="Enter"){
         win pau;
         pau.name = "pause";
@@ -60,6 +63,11 @@ void init(){
         win in;
         in.name = "inventory";
         wino.push(in);
+    }
+    else if(k=="V"){
+        win we;
+        we.name = "weapon";
+        wino.push(we);
     }
 }
 
@@ -112,4 +120,5 @@ void main_game(){
     delay(10);
     
     manage_all_mobs();
+    physics();
 }

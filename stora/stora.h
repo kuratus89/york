@@ -50,11 +50,17 @@ struct mob{
     int health;
     int type;
     int initilize=0;
+    int movement_delay=0;
+    pair<long long , int> bfs;
+    int in_range=0;
+    vector<pair<int , int>> hit;
+    int color=-1;
+    int delay_color=0;
     bool save(ofstream &out){
-        return (write_bin(out , id)&&write_bin(out , x)&&write_bin(out , y)&&write_bin(out , health)&&write_bin(out , type)&&write_bin(out , initilize));
+        return (write_bin(out , id)&&write_bin(out , x)&&write_bin(out , y)&&write_bin(out , health)&&write_bin(out , type)&&write_bin(out , initilize)&&write_bin(out , bfs.first)&&write_bin(out , bfs.second)&&write_bin(out , in_range));
     }
     bool load(ifstream &in){
-        return(read_bin(in , id)&&read_bin(in , x)&&read_bin(in , y)&&read_bin(in , health)&&read_bin(in , type));
+        return(read_bin(in , id)&&read_bin(in , x)&&read_bin(in , y)&&read_bin(in , health)&&read_bin(in , type)&&read_bin(in , initilize)&&read_bin(in , bfs.first)&&read_bin(in , bfs.second)&&read_bin(in , in_range));
     }
     void spawn(int x , int y,int type){
 
@@ -123,11 +129,50 @@ struct world{
     int posy;
     int health;
     map<pair<int,int>  , chunks> chunker;
-    map<int , int> inventory;
+    map<int,int> inventory;
+ 
     map<string,string> sts;
     map<string , long long> stl;
+    map<string , map<string , int>> inventory_str = {
+        {"block", 
+            {
+                {"air",0},
+                {"grass" , 1},
+                {"stone" , 2},
+                {"iron" , 3},
+                {"gold" , 4},
+                {"diamond" ,5}
+            }
+        },
+        {"item",
+            {
+                {"heal" ,6}
+            }
+        },
+        {"weapon",
+            {
+                {"pistol" , 7},
+                {"rifle" , 8}
+            }
+        },
+        {"ammo",
+            {
+                {"pistol" , 9},
+                {"rifle" , 10}
+            }
+        }
+    };
+    
+    int get_inv(string type , string name){
+        return(inventory[inventory_str[type][name]]);
+    }
 
-
+    void set_inv(string type , string name , int n){
+        inventory[inventory_str[type][name]] = n;
+    }
+    void add_inv(string type , string name , int n){
+        inventory[inventory_str[type][name]]+=n;
+    }
 
     bool save(const string& file){
         ofstream out(file , ios::binary);
@@ -200,6 +245,7 @@ struct world{
             read_bin(in , xx);
             read_bin(in , yy);
             inventory[xx]=yy;
+            
         }
         sts.clear();
         read_bin(in , cnt);
@@ -246,6 +292,8 @@ extern string player_name;
 extern bool speed;
 extern bool ghost;
 extern vector<pair<int , win>> ticker;
+extern long long block_update;
+extern int hit_delay;
 
 //func
 

@@ -26,6 +26,7 @@ void move_left(int &vx , int &vy){
         vx--;
     }
     else if((!get_block(vx-1 , vy-1))&&(!get_block(vx , vy-1))){
+        if((get_mob(vx-1 , vy-1)!=-1)&&(get_mob(vx , vy-1)!=-1))return;
         vx--;
         vy--;
     }
@@ -41,6 +42,7 @@ void move_right(int &vx , int &vy){
         vx++;
     }
     else if((!get_block(vx+1 , vy-1))&&(!get_block(vx , vy-1))){
+        if((get_mob(vx+1 , vy-1)!=-1)&&(get_mob(vx, vy-1)!=-1))return;
         vx++;
         vy--;
     }
@@ -146,4 +148,15 @@ void place_block_right(int i){
 
 void reset_physics(){
     jump_hight = 0;
+}
+
+void hit(){
+    if(!hit_delay){
+        ear.health--;
+        hit_delay = 10;
+    }
+}
+
+void physics(){
+    if(hit_delay)hit_delay--;
 }

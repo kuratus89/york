@@ -3,13 +3,19 @@
 #include "../../output/output.h"
 #include "../../game/chunk.h"
 
-vector<string> invoda = {
-    "Air",
-    "Grass",
-    "Stone",
-    "iron",
-    "gold",
-    "diamond"
+vector<pair<string , string>> invoda = {
+    {"Air" , "block"},
+    {"Grass","block"},
+    {"Stone" , "block"},
+    {"iron" , "block"},
+    {"gold" , "block"},
+    {"diamond", "block"},
+    {"heal" , "item"},
+    {"pistol" , "weapon"},
+    {"rifle" , "weapon"},
+    {"pistol_bullet" , "ammo"},
+    {"rifle_bullet" , "ammo"}
+    
 };
 
 
@@ -38,7 +44,8 @@ void inventory(){
         tempo.clear();
         for(auto &val:ear.inventory){
             if(val.second==0)continue;
-            invd.push_back(invoda[val.first] + " : " + to_string(val.second));
+            if(invoda[val.first].second!="block")continue;
+            invd.push_back(invoda[val.first].first + " : " + to_string(val.second));
             tempo.push_back(val.first);
         }
         if(invd.empty()){

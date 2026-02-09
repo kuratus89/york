@@ -3,4 +3,5 @@
 
 void inventory();
 extern int item;
+extern vector<pair<string , string>> invoda;
 #endif

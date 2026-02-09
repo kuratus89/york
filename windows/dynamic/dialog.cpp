@@ -2,6 +2,7 @@
 #include "../../output/output.h"
 #include "../../stora/stora.h"
 #include "../../physics/physics.h"
+#include "../../input/input.h"
 
 void dialog(){
     if(!wino.top().initilizzed){
@@ -56,7 +57,7 @@ void dialog(){
         pe.value = wino.top().vs["dialog"][wino.top().stl["cy"]][wino.top().stl["cx"]];
         wino.top().screen["diao"][wino.top().stl["tempy"]][wino.top().stl["tempx"]] = pe;
         wino.top().stl["tempx"]++; 
-        delay(15);
+        if(!input::ikd(input::key::Shift))delay(15);
     }
     wino.top().stl["cx"]++;
     ita(wino.top().screen["dialog"] , wino.top().screen["diao"] , 9 , 1 , 1);

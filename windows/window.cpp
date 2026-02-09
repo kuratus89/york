@@ -21,6 +21,7 @@
 #include "dynamic/inventory.h"
 #include "dynamic/cheat.h"
 #include "dynamic/dialog.h"
+#include "../game/weapon.h"
 #include "../lib.h"
 
 
@@ -43,7 +44,8 @@ map<string , void(*)()> func_point = {
         {"pause" , pause},
         {"inventory" , inventory},
         {"cheat" , cheat},
-        {"dialog", dialog}
+        {"dialog", dialog},
+        {"weapon" , weapon},
 };
 
 

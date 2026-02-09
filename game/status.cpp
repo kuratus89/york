@@ -3,17 +3,18 @@
 #include "../stora/stora.h"
 #include "chunk.h"
 #include "../windows/dynamic/inventory.h"
+#include "weapon.h"
 
 void healther(){
     for(long long i=1 ; i<=10; i++)wino.top().screen["health"][1][i].value = " ";
     int col;
-    if(ear.health>5)col = 2;
-    if(ear.health>3)col = 1;
+    if(ear.health>50)col = 2;
+    if(ear.health>30)col = 1;
     else col = 0;
     pixel he;
     he.color = col;
     he.value = "█";
-    for(long long i=1 ; i<=ear.health ; i++)wino.top().screen["health"][1][i]=he;
+    for(long long i=1 ; i<=(ear.health/10) ; i++)wino.top().screen["health"][1][i]=he;
     ita(wino.top().screen["status"] ,wino.top().screen["health"] , 17 , 1 ,1);
 
 }
@@ -25,6 +26,15 @@ void selected(){
     wino.top().screen["item"][1][1] = px;
     wino.top().screen["item"][1][2] = px;
     ita(wino.top().screen["status"] , wino.top().screen["item"] , 35 , 1 , 1);
+}
+
+void add_weapon_in_status(){
+    int i = 46;
+    for(auto val:selected_weapon){
+        if(i==x)break;
+        wino.top().screen["status"][2][i].value = val;
+        i++;
+    }
 }
 
 void status(){
@@ -49,15 +59,26 @@ void status(){
         wino.top().screen["status"][2][32].value = "e";
         wino.top().screen["status"][2][33].value = "m";
         wino.top().screen["status"][2][34].value = ":";
+
+        wino.top().screen["status"][2][39].value = "W";
+        wino.top().screen["status"][2][40].value = "e";
+        wino.top().screen["status"][2][41].value = "a";
+        wino.top().screen["status"][2][42].value = "p";
+        wino.top().screen["status"][2][43].value = "o";
+        wino.top().screen["status"][2][44].value = "n";
+        wino.top().screen["status"][2][45].value = ":";
+
         wino.top().screen["item"] = bod_create(5 , 4 , 3);
         long long temp = 1;
         for(auto val:player_name){
             wino.top().screen["status"][2][temp].value = val;
             temp++;
         }
+        
     }
     healther();
     selected();
+    add_weapon_in_status();
     ita(wino.top().screen["screen"] , wino.top().screen["status"] , 0 , y-5 , 0);
     
 }

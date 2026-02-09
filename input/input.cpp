@@ -186,6 +186,7 @@ static int keytovk(key k){
         case key::Right: return VK_RIGHT;
         case key::Left: return VK_LEFT;
         case key::Shift: return VK_SHIFT;
+        case key::Control: return VK_CONTROL;
         default: return 0;
 
     }

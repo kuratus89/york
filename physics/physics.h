@@ -17,5 +17,7 @@ void place_block_down(int i);
 void place_block_right(int i);
 void place_block_left(int i);
 void reset_physics();
+void hit();
+void physics();
 
 #endif

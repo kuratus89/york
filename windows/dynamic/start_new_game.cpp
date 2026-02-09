@@ -47,7 +47,7 @@ void inta(){
                 ear.name = wino.top().sts["world_name"];
                 ear.posx= 0;
                 ear.posy = cy=height(ear.posx)-1;                
-                ear.health = 10;
+                ear.health = 100;
                 ear.chunker.clear();
                 ear.inventory.clear();
                 win mg;

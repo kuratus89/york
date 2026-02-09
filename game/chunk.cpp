@@ -24,7 +24,9 @@ vector<pair<string , pair<string , int>>> mober ={
 };
 long long chunk_size = 10;
 world ear;
-long long mob_count=5;
+long long mob_count=15;
+mob player_haha;
+mob none;
 
 void chunk_loader(long long  lcx ,long long lcy){
     chunks jk;
@@ -49,12 +51,13 @@ void chunk_loader(long long  lcx ,long long lcy){
         }
     }
     if(ear.chunker[{lcx , lcy}].change.size())jk.change = ear.chunker[{lcx , lcy}].change;
+    if(ear.chunker[{lcx , lcy}].mobs.size())jk.mobs = ear.chunker[{lcx , lcy}].mobs;
     for(auto &val:jk.change){
             jk.chunk[val.first.second][val.first.first] = val.second;
     }
     
-    
-    if(ear.stl["mobs_count"]<mob_count){
+    int spawn_height = height(lcx+5)-1;
+    if(((spawn_height>=lcy)&&spawn_height<lcy+chunk_size)&&(ear.stl["mobs_count"]<mob_count&&(abs(lcx)>100))){
         mob b;
         b.type=1;
         b.x = lcx+5;
@@ -71,7 +74,9 @@ void chunk_unloader(long long lvx , long long lvy){
 
     for(auto it = chunker.begin() ; it!=chunker.end() ;){
         if((abs((*it).second.x - lvx)>render_distance)||((abs((*it).second.y - lvy)>render_distance))){
+            // ear.stl["mobs_count"]-= chunker[(*it).first].mobs.size();
             ear.chunker[(*it).first].change = (*it).second.change;
+            ear.chunker[(*it).first].mobs = (*it).second.mobs;
             it = chunker.erase(it);
         }
         else it++;
@@ -97,7 +102,8 @@ void chaper(vector<vector<pixel>> &scv , vector<vector<int>> &chk , long long vx
 void mob_render(vector<vector<pixel>> &scv , mob moho , long long hx , long long hy){
     if(hx< 0 || hx >= scv[0].size()) return;
     if(hy< 0 || hy >= scv.size()) return;
-    scv[hy][hx].color = mober[moho.type].second.second;
+    if(moho.color==-1)scv[hy][hx].color = mober[moho.type].second.second;
+    else scv[hy][hx].color = moho.color;
     scv[hy][hx].value = mober[moho.type].second.first;
 }
 
@@ -144,6 +150,20 @@ int get_mob(long long x , long long y){
     }
     return -1;
 }
+mob& get_mob_id(long long x , long long y){
+    if((x==cx)&&(y==cy)){
+        player_haha.health = -395;
+        return player_haha;
+    }
+    long long lx = (x>=0)?(x/chunk_size)*chunk_size : ((x - chunk_size+1)/chunk_size)*chunk_size;
+    long long ly = (y>=0)?(y/chunk_size)*chunk_size : ((y - chunk_size+1 )/chunk_size)*chunk_size;
+    if(!is_chunk_loaded(lx ,ly))chunk_loader(lx , ly);
+    for(auto &val:chunker[{lx , ly}].mobs){
+        if((val.x==x)&&(val.y==y))return val;
+    }
+    none.health=-1;
+    return none;
+}
 
 void set_block(long long x, long long y , int d){
     long long lx;
@@ -158,6 +178,7 @@ void set_block(long long x, long long y , int d){
     }
     chunker[{lx , ly}].chunk[y - ly][x - lx] = d;
     chunker[{lx , ly}].change[{x - lx , y - ly}] = d;
+    block_update++;
 }
 
 bool save_game(string s){
@@ -170,17 +191,39 @@ bool save_game(string s){
 }
 
 void manage_all_mobs(){
+    queue<pair<pair<long long , long long>, mob>> mob_transfer;
+    queue<pair<long long , long long>> chunk_loader_queue;
+    queue<mob*> mob_manage;
     for(auto &val:chunker){
         for(auto it = val.second.mobs.begin() ; it!=val.second.mobs.end() ;){
-            mob_manager((*it));
+            
             long long lx =  ((*it).x>=0)?((*it).x/chunk_size)*chunk_size : (((*it).x-chunk_size +1)/chunk_size)*chunk_size;
             long long ly = ((*it).y>=0)? ((*it).y/chunk_size)*chunk_size : (((*it).y - chunk_size+1)/chunk_size)*chunk_size;
             if((val.first.first!=lx)||(val.first.second!=ly)){
-                if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
-                chunker[{lx,ly}].mobs.push_back((*it));
+                if(!is_chunk_loaded(lx , ly))chunk_loader_queue.push({lx , ly});
+                mob_transfer.push({{lx,ly} , (*it)});
                 it = val.second.mobs.erase(it);
             }
-            else it++;
+            else if((*it).health<=0){
+                it = val.second.mobs.erase(it);
+            }
+            else {
+                mob_manage.push(&(*it));
+                it++;
+            }
         }
     }
+    while(!chunk_loader_queue.empty()){
+        chunk_loader(chunk_loader_queue.front().first , chunk_loader_queue.front().second);
+        chunk_loader_queue.pop();
+    }
+    while(!mob_manage.empty()){
+        mob_manager(*mob_manage.front());
+        mob_manage.pop();
+    }
+    while(!mob_transfer.empty()){
+        chunker[mob_transfer.front().first].mobs.push_back(mob_transfer.front().second);
+        mob_transfer.pop();
+    }
+    
 }
