@@ -8,6 +8,7 @@
 #include "../windows/dynamic/inventory.h"
 #include "weapon.h"
 #include "status.h"
+#include "npc.h"
 
 pixel pa , pp;
 
@@ -21,14 +22,24 @@ void init(){
     if(input::ikd(input::key::A))move_left(cx , cy);
     if(input::ikd(input::key::D))move_right(cx , cy);
     if(input::ikd(input::key::Shift)){
-        if(input::ikd(input::key::Up))break_block_up();
-        if(input::ikd(input::key::Down))break_block_down();
-        if(input::ikd(input::key::Left))break_block_left();
-        if(input::ikd(input::key::Right))break_block_right();
+        
+        // if(input::ikd(input::key::Up))break_block_up();
+        // if(input::ikd(input::key::Down))break_block_down();
+        // if(input::ikd(input::key::Left))break_block_left();
+        // if(input::ikd(input::key::Right))break_block_right();
+
+        if(input::ikd(input::key::Up))block_breaker(cx , cy-1 , ear.inventory);
+        else if(input::ikd(input::key::Down))block_breaker(cx , cy+1 , ear.inventory);
+        else if(input::ikd(input::key::Left))block_breaker(cx-1 , cy , ear.inventory);
+        else if(input::ikd(input::key::Right))block_breaker(cx+1 , cy , ear.inventory);
+        else if(breaking)breaking =0;
     }
+    else if((input::ikd(input::key::Shift))&&breaking)breaking =0;
     else if(input::ikd(input::key::Control)){
-        if(input::ikd(input::key::Left))hit_left();
-        if(input::ikd(input::key::Right))hit_right();
+        if(input::ikd(input::key::Left))hit_left(selected_weapon);
+        if(input::ikd(input::key::Right))hit_right(selected_weapon);
+        if(input::ikd(input::key::Down))hit_down(selected_weapon);
+        if(input::ikd(input::key::Up))hit_up(selected_weapon);
     }
     else {
         
@@ -115,10 +126,17 @@ void main_game(){
     game_window();
     ita(wino.top().screen["screen"] , wino.top().screen["game"] , 0 , 0 , 1);
     ita(wino.top().screen["screen"] , wino.top().screen["player"] , (x/2), (y/2) , 1);
+    if(show_fps||show_latency){
+        fad(wino.top().screen["fad"] , show_fps , show_latency , ms);
+        ita(wino.top().screen["screen"] , wino.top().screen["fad"] , 1 ,1 , 0);
+    }
     status();
-    init();
     delay(10);
     
     manage_all_mobs();
+    
     physics();
+    manage_hit();
+    
+    init();
 }

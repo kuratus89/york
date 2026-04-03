@@ -2,6 +2,7 @@
 #include "../windows/dynamic/inventory.h"
 #include "chunk.h"
 #include "../output/output.h"
+#include "npc.h"
 
 vector<string> has_weapon;
 string selected_weapon = "fist";
@@ -10,7 +11,7 @@ void inpty(){
         if(k=="W")wino.top().stl["selecter"]--;
         if(k=="S")wino.top().stl["selecter"]++;
         if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"] = has_weapon.size()-1;
-        if(wino.top().stl["seelecter"]==has_weapon.size())wino.top().stl["selecter"] = 0;
+        if(wino.top().stl["selecter"]==has_weapon.size())wino.top().stl["selecter"] = 0;
         if(k=="Enter"){
             selected_weapon = has_weapon[wino.top().stl["selecter"]];
             wino.pop();
@@ -37,28 +38,41 @@ void weapon(){
 
 }
 
-void hit_right(){
-    if(selected_weapon =="fist"){
+void hit_right(string &weap){
+    if(weap =="fist"){
         mob &mo = get_mob_id(cx+1,cy);
         if(mo.health==-1)return;
-        if(mo.health==-395){
-            ear.health-=1;
-            return;
-        }
-        mo.hit.push_back({1 , 1});      
+        if(mo.health==-395)main_hit.push({{1,0} , 1});
+        else mo.hit.push({{1,0} , 1});      
     }
 }
-void hit_left(){
-    if(selected_weapon=="fist"){
+void hit_left(string &weap){
+    if(weap=="fist"){
         mob &mo = get_mob_id(cx-1 , cy);
         if(mo.health==-1)return ;
-        if(mo.health==-395){
-            ear.health-=1;
-           return;
-        }
-        mo.hit.push_back({-1 , 1});                    
+        if(mo.health==-395)main_hit.push({{-1,0},1});
+        else mo.hit.push({{-1,0} , 1});                    
     }
 }
+void hit_up(string &weap){
+    if(weap=="fist"){
+        mob &mo = get_mob_id(cx , cy-1);
+        if(mo.health==-1)return;
+        if(mo.health==-395)main_hit.push({{0,-1} , 1});
+        else mo.hit.push({{0,-1} , 1});
+    }
+}
+
+void hit_down(string &weap){
+    if(weap=="fist"){
+        mob &mo = get_mob_id(cx , cy+1);
+        if(mo.health==-1)return;
+        if(mo.health==-395)main_hit.push({{0,1} , 1});
+        else mo.hit.push({{0,1} , 1});
+    }
+}
+
+
 
 
 

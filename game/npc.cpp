@@ -5,6 +5,8 @@
 #include "../stora/stora.h"
 
 long long zombie_range =30;
+queue<pair<pair<long long ,long long> ,long long>> main_hit;
+long long main_hit_delay=0;
 
 bool bfs(long long rx , long long ry ,int range){
     queue<pair<int,int>> qe;
@@ -26,8 +28,24 @@ bool bfs(long long rx , long long ry ,int range){
     return 0;
 }
 
+void main_hiter_manage(){
+    if(main_hit.empty())return;
+    if(main_hit.back().first.first>0)move_right(cx , cy);
+    else if(main_hit.back().first.first<0)move_left(cx , cy);
+    if(main_hit.back().first.second>0)move_down(cx , cy);
+    else if(main_hit.back().first.second<0)move_up(cx , cy);
+    ear.health-=main_hit.back().second;
+    main_hit_delay=2;
+    main_hit.pop();
+    return;
+}
+
 void sheep(mob &mo){
-    mo.health =10;
+    if(!mo.initilize){
+        mo.initilize = 1;
+        mo.health = 10;
+    }
+    gravity(mo.x , mo.y);
 }
 
 
@@ -37,22 +55,35 @@ void zombie(mob &mo){
         mo.health = 20;
         mo.bfs = {-1 , 0};
     }
+    gravity(mo.x , mo.y);
     if(mo.delay_color)mo.delay_color--;
     else mo.color=-1;
     if(!mo.hit.empty()){
         mo.color = 0;
         mo.delay_color=2;
-    }
-    while(!mo.hit.empty()){
-        if(mo.hit.back().first>0)move_right(mo.x , mo.y);
-        else if(mo.hit.back().first<0)move_left(mo.x , mo.y);
+        if(mo.hit.back().first.first>0)move_right(mo.x , mo.y);
+        else if(mo.hit.back().first.first<0)move_left(mo.x , mo.y);
+        if(mo.hit.front().first.second>0)move_down(mo.x , mo.y);
+        else if(mo.hit.front().first.second<0)move_down(mo.x , mo.y);
         mo.health-=mo.hit.back().second;
-        mo.hit.pop_back();
+        mo.hit.pop();
+        return;
+    }    
+    
+    if(get_mob(mo.x-1 , mo.y)==-395){
+        main_hit.push({{-1 , 0} , 1});
         return;
     }
-    
-    if((get_mob(mo.x-1 , mo.y)==-395)||(get_mob(mo.x+1 , mo.y)==-395)||(get_mob(mo.x , mo.y+1)==-395)||(get_mob(mo.x , mo.y-1)==-395)){
-        hit();
+    if(get_mob(mo.x+1  , mo.y)==-395){
+        main_hit.push({{1 , 0} , 1});
+        return;
+    }
+    if(get_mob(mo.x , mo.y+1)==-395){
+        main_hit.push({{0,1} , 1});
+        return;
+    }
+    if(get_mob(mo.x , mo.y)==-395){
+        main_hit.push({{0,-1} , 1});
         return;
     }
     if(mo.movement_delay){
@@ -76,7 +107,6 @@ void zombie(mob &mo){
             move_left(mo.x , mo.y);
         }
     }
-    gravity(mo.x , mo.y);
     
 }
 
@@ -89,4 +119,27 @@ void mob_manager(mob &mo){
     mober[mo.type](mo);
 }
 
+void manage_hit(){
+    if(main_hit_delay)
+        wino.top().screen["player"][0][0].color = 0;
+    else
+        wino.top().screen["player"][0][0].color = player_color;
+    main_hiter_manage();
+    if(main_hit_delay)main_hit_delay--;
+}
 
+void spawn(int x , int y , int type , chunks *ck){
+    mob mo;
+    mo.type = type;
+    mo.x = x;
+    mo.y =y;
+    (*ck).mobs.push_back(mo);
+}
+
+bool rand_spawn(int x , int y , int type , chunks *ck ){
+    if(get_block(x,y))return 0;
+    if(!get_block(x,y+1))return 0;
+    if(rand()%1000>5)return 0;
+    spawn(x , y , type , ck);
+    return 1;
+}

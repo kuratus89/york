@@ -53,7 +53,7 @@ struct mob{
     int movement_delay=0;
     pair<long long , int> bfs;
     int in_range=0;
-    vector<pair<int , int>> hit;
+    queue<pair<pair<int ,int> , int>> hit;
     int color=-1;
     int delay_color=0;
     bool save(ofstream &out){
@@ -294,6 +294,11 @@ extern bool ghost;
 extern vector<pair<int , win>> ticker;
 extern long long block_update;
 extern int hit_delay;
+extern bool show_fps;
+extern bool show_latency;
+extern double ms;
+extern double avg_ms;
+extern int target_fps;
 
 //func
 

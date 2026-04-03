@@ -11,6 +11,7 @@ float cave_step = 15.0f;
 float cave_depth = 30.0f;
 float cave_fading_range = 10.0f;
 float ore_step = 3;
+int structure_cell = 200;
 
 long long hasher(long long x , long long seed){
     x+=seed*1000;
@@ -172,3 +173,22 @@ bool is_diamond(int x , int y){
     breaker = pow(breaker , 2.0f);
     return((n>0.6f)&&(mask>0.15f)&&(breaker>0.15f));
 }
+
+
+   
+bool has_struct(int x , int y){
+    long long lx = (x>=0)?(x/structure_cell)*structure_cell :((x - structure_cell+1)/structure_cell)*structure_cell;
+    long long ly = (y>=0)?(y/structure_cell)*structure_cell :((y - structure_cell+1)/structure_cell)*structure_cell;
+    long long h = hasher_2d(lx , ly);
+    float c = (h & 0x7fffffff) / float(0x7fffffff);
+    if(c<0.55f)return 0;
+
+    int localx = (h>>8)%structure_cell;
+    int localy = (h>>16)%structure_cell;
+    if(localx<0)localx+=structure_cell;
+    if(localy<0)localy+=structure_cell;
+
+    return (((lx+localx)==x)&&((ly+localy)==y));  
+
+}
+

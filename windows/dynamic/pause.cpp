@@ -11,7 +11,7 @@ void itt(){
 
     if(k=="Enter"){
         if(wino.top().stl["selecter"]==0)wino.pop();
-        if(wino.top().stl["selecter"]==1){
+        else if(wino.top().stl["selecter"]==1){
             win al;
             if(!save_game("data/worlds/"+ear.name+"/data.kp")){
                 al.name = "error";
@@ -24,7 +24,7 @@ void itt(){
             }
             wino.push(al);
         }
-        if(wino.top().stl["selecter"]==2){
+        else if(wino.top().stl["selecter"]==2){
             win che;
             che.name = "cheat";
             wino.push(che);

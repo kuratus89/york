@@ -215,3 +215,47 @@ void kuramizer(vector<vector<pixel>> &screen){
     pre_screen = screen;
     print_screen(dommer(screen));
 }
+
+void fad(vector<vector<pixel>> &screen , bool &fps , bool &latency , double &ms){
+    long long j =0;
+    long long i=0;
+    string f,l;
+    if(fps){
+        j++;
+        f = to_string((long long)(1000.0/ms));
+    }
+    if(latency){
+        j++;
+        l = to_string((long long)ms);
+    }
+    if(j==0)return;
+    i = max(l.size()+10 , f.size()+6);
+    pixel px;
+    px.value = " ";
+    px.color = 5;
+    screen = vector<vector<pixel>> (j , vector<pixel> (i , px));
+    long long jy =0;
+    long long jx=0;
+    if(fps){
+        for(auto val:"fps: "){
+            screen[jy][jx].value = val;
+            jx++;
+        }
+        for(auto val:f){
+            screen[jy][jx].value = val;
+            jx++;
+        }
+        jy++;
+    }
+    jx=0;
+    if(latency){
+        for(auto val:"latency: "){
+            screen[jy][jx].value = val;
+            jx++;
+        }
+        for(auto val:l){
+            screen[jy][jx].value = val;
+            jx++;
+        }
+    }
+}

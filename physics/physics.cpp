@@ -6,6 +6,10 @@
 
 long long jump_hight = 6;
 long long jump_stage = 0;
+int break_block=10;
+int target_block_x=-395;
+int target_block_y=-395;
+bool breaking=0;
 
 bool isbo(){
     return(cy==y-6);
@@ -46,6 +50,14 @@ void move_right(int &vx , int &vy){
         vx++;
         vy--;
     }
+}
+void move_up(int &vx , int &vy){
+    if(get_mob(vx , vy-1)!=-1)return;
+    if((!get_block(vx , vy-1))||(ghost))vy--;
+}
+void move_down(int &vx , int &vy){
+    if(get_mob(vx , vy+1)!=-1)return;
+    if((!get_block(vx , vy+1))||(ghost))vy++;
 }
 
 void gravity(int &vx , int &vy){
@@ -88,6 +100,30 @@ void manage_jump(){
         } else {
             jump_stage = 0;
         }
+    }
+}
+
+void block_breaker(int x , int y , map<int , int> &inv){
+    if(breaking){
+        if((target_block_x!=x)||(target_block_y)!=y){
+            breaking =0;
+            break_block=10;
+            return;
+        }
+        if(!break_block){
+            ear.inventory[get_block(x,y)]++;
+            set_block(x,y , 0);
+            breaking =0;
+            break_block=10;
+            return;
+        }
+        break_block--;
+    }
+    else {
+        if(!get_block(x,y))return;
+        target_block_x= x;
+        target_block_y = y;
+        breaking =1;
     }
 }
 
@@ -150,13 +186,9 @@ void reset_physics(){
     jump_hight = 0;
 }
 
-void hit(){
-    if(!hit_delay){
-        ear.health--;
-        hit_delay = 10;
-    }
-}
+
 
 void physics(){
     if(hit_delay)hit_delay--;
+    if((!breaking)&&(break_block!=10))break_block=10;
 }

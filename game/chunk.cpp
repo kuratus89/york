@@ -10,6 +10,8 @@ long long grass_lvl=10;
 // vector<chunks> chunker;
 map<pair<int , int> , chunks> chunker;
 long long render_distance = 120;
+long long mobs_per_chunk=2;
+
 vector<pair<string , pair<string, int>>> blocker = {
     {"air",{" " , 5}},//0
     {"grass",{"█",2}},//1
@@ -24,19 +26,58 @@ vector<pair<string , pair<string , int>>> mober ={
 };
 long long chunk_size = 10;
 world ear;
-long long mob_count=15;
+long long mob_count=150;
 mob player_haha;
 mob none;
+
+
+void load_mobs(int lcx , int lcy){
+    auto it = &chunker[{lcx , lcy}];
+
+    if(ear.chunker[{lcx , lcy}].mobs.size()){
+        (*it).mobs = ear.chunker[{lcx, lcy}].mobs;
+        ear.stl["mob_count"]+=ear.chunker[{lcx , lcy}].mobs.size();
+    }
+    int local_mob_count = mobs_per_chunk;
+
+    for(int i=0 ; i<10 ; i++){
+
+        int h = height(i+lcx);
+
+        for(int j =0 ; (j<9)&&(ear.stl["mob_count"]<mob_count)&&(local_mob_count) ; j++){
+            if(lcy+j<h){
+                if((rand_spawn(lcx+i , lcy+j , 0 , it))){
+                    ear.stl["mob_count"]++;
+                    local_mob_count--;
+                }
+            }
+            else {
+                if(rand_spawn(lcx+i , lcy+j , 1 , it)){
+                    ear.stl["mob_count"]++;
+                    local_mob_count--;
+                }
+            }
+        }
+    }
+
+}
+
 
 void chunk_loader(long long  lcx ,long long lcy){
     chunks jk;
     jk.x = lcx;
     jk.y = lcy;
+    
+    int mob_per_chunk_count = max(0LL , mobs_per_chunk- (long long)jk.mobs.size());
     for(long long i=0 ; i<10; i++){
         long long h = height(lcx+i);
         long long g = grass(lcx +i);
         for(long long j=0 ; j<10 ; j++){
-            if((lcy+j<h)||(is_air(lcx+i , lcy+j))){
+            if(lcy+j<h){
+                jk.chunk[j][i]=0;
+                continue;
+            }
+            else if(is_air(lcx+i , lcy+j)){
                 jk.chunk[j][i]=0;
                 continue;
             }
@@ -48,26 +89,21 @@ void chunk_loader(long long  lcx ,long long lcy){
             if(is_iron(lcx+i,lcy+j))jk.chunk[j][i]=3;
             if(is_gold(i+lcx,j+lcy))jk.chunk[j][i]=4;
             if(is_diamond(i+lcx,j+lcy))jk.chunk[j][i]=5;
+            if(has_struct(i+lcx , j+lcy))jk.chunk[j][i]=1;
         }
     }
     if(ear.chunker[{lcx , lcy}].change.size())jk.change = ear.chunker[{lcx , lcy}].change;
-    if(ear.chunker[{lcx , lcy}].mobs.size())jk.mobs = ear.chunker[{lcx , lcy}].mobs;
     for(auto &val:jk.change){
             jk.chunk[val.first.second][val.first.first] = val.second;
-    }
-    
-    int spawn_height = height(lcx+5)-1;
-    if(((spawn_height>=lcy)&&spawn_height<lcy+chunk_size)&&(ear.stl["mobs_count"]<mob_count&&(abs(lcx)>100))){
-        mob b;
-        b.type=1;
-        b.x = lcx+5;
-        b.y = height(lcx+5)-1;
-        ear.stl["mobs_count"]++;
-        jk.mobs.push_back(b);
-    }
+    }    
     chunker[{lcx,lcy}] = (jk);
 
+    load_mobs(lcx , lcy);    
+
 }
+
+
+
 void chunk_unloader(long long lvx , long long lvy){
     
     
@@ -77,6 +113,7 @@ void chunk_unloader(long long lvx , long long lvy){
             // ear.stl["mobs_count"]-= chunker[(*it).first].mobs.size();
             ear.chunker[(*it).first].change = (*it).second.change;
             ear.chunker[(*it).first].mobs = (*it).second.mobs;
+            ear.stl["mob_count"]-= (*it).second.mobs.size();
             it = chunker.erase(it);
         }
         else it++;
@@ -139,6 +176,8 @@ int get_block(long long x, long long y){
     if (!is_chunk_loaded(lx, ly))chunk_loader(lx, ly);
     return chunker[{lx , ly}].chunk[y-ly][x - lx];
 }
+
+
 
 int get_mob(long long x , long long y){
     if((x==cx)&&(y==cy))return -395;
@@ -206,6 +245,7 @@ void manage_all_mobs(){
             }
             else if((*it).health<=0){
                 it = val.second.mobs.erase(it);
+                ear.stl["mob_count"]--;
             }
             else {
                 mob_manage.push(&(*it));

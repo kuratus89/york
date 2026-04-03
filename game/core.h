@@ -8,4 +8,5 @@ bool has_tree(int x);
 bool is_iron(int x , int y);
 bool is_gold(int x , int y);
 bool is_diamond(int x , int y);
+bool has_struct(int x , int y);
 #endif

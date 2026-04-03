@@ -3,8 +3,10 @@
 #include "../lib.h"
 
 void weapon();
-void hit_left();
-void hit_right();
+void hit_left(string &weap);
+void hit_right(string &weap);
+void hit_down(string &weap);
+void hit_up(string &weap);
 extern string selected_weapon;
 
 

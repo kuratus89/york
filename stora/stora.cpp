@@ -52,6 +52,11 @@ bool speed =0;
 bool ghost =0;
 long long block_update=0;
 int hit_delay =0;
+bool show_fps=0;
+bool show_latency=0;
+double ms = 0;
+double avg_ms = 0;
+int target_fps=60;
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",

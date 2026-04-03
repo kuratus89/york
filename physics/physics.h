@@ -5,6 +5,8 @@ bool isbo();
 void delay(long long v);
 void move_left(int &vx , int &vy);
 void move_right(int &vx , int &vy);
+void move_up(int &vx , int &vy);
+void move_down(int &vx , int &vy);
 void gravity(int &vx , int &vy);
 void manage_jump();
 void jump();
@@ -17,7 +19,9 @@ void place_block_down(int i);
 void place_block_right(int i);
 void place_block_left(int i);
 void reset_physics();
-void hit();
 void physics();
+void block_breaker(int x , int  y , map<int , int> &inv);
+extern int break_block;
+extern bool breaking;
 
 #endif

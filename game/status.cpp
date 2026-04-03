@@ -4,6 +4,7 @@
 #include "chunk.h"
 #include "../windows/dynamic/inventory.h"
 #include "weapon.h"
+#include "../physics/physics.h"
 
 void healther(){
     for(long long i=1 ; i<=10; i++)wino.top().screen["health"][1][i].value = " ";
@@ -18,6 +19,15 @@ void healther(){
     ita(wino.top().screen["status"] ,wino.top().screen["health"] , 17 , 1 ,1);
 
 }
+void breaker(){
+    for(long long i=1 ; i<=10; i++)wino.top().screen["breaker"][1][i].value = " ";
+    int col;
+    pixel be;
+    be.color = 5;
+    be.value = "█";
+    for(long long i=1 ; (i< break_block )&&(i<=10); i++)wino.top().screen["breaker"][1][i] = be;
+    ita(wino.top().screen["status"] , wino.top().screen["breaker"] ,47 , 1 , 1 );
+}
 
 void selected(){
     pixel px;
@@ -29,7 +39,7 @@ void selected(){
 }
 
 void add_weapon_in_status(){
-    int i = 46;
+    int i = wino.top().stl["wp"]+7;
     for(auto val:selected_weapon){
         if(i==x)break;
         wino.top().screen["status"][2][i].value = val;
@@ -41,6 +51,7 @@ void status(){
     if(wino.top().stl["status_initilize"]!=1){
        wino.top().stl["status_initilize"]=1;
         wino.top().screen["health"] = bod_create( 5,12, 3);
+        wino.top().screen["breaker"] = bod_create(5 , 12 , 3);
         wino.top().screen["status"] = bod_create(5 , x , 5);
         for(long long i=1 ; i<5-1; i++)wino.top().screen["status"][i][8].value = "|";
         wino.top().screen["status"][1][5].color = player_color;
@@ -60,13 +71,24 @@ void status(){
         wino.top().screen["status"][2][33].value = "m";
         wino.top().screen["status"][2][34].value = ":";
 
-        wino.top().screen["status"][2][39].value = "W";
-        wino.top().screen["status"][2][40].value = "e";
-        wino.top().screen["status"][2][41].value = "a";
-        wino.top().screen["status"][2][42].value = "p";
-        wino.top().screen["status"][2][43].value = "o";
-        wino.top().screen["status"][2][44].value = "n";
-        wino.top().screen["status"][2][45].value = ":";
+        long long wp=40;
+        wino.top().stl["wp"]=60;
+
+        wino.top().screen["status"][2][wino.top().stl["wp"]].value = "W";
+        wino.top().screen["status"][2][wino.top().stl["wp"]+1].value = "e";
+        wino.top().screen["status"][2][wino.top().stl["wp"]+2].value = "a";
+        wino.top().screen["status"][2][wino.top().stl["wp"]+3].value = "p";
+        wino.top().screen["status"][2][wino.top().stl["wp"]+4].value = "o";
+        wino.top().screen["status"][2][wino.top().stl["wp"]+5].value = "n";
+        wino.top().screen["status"][2][wino.top().stl["wp"]+6].value = ":";
+
+        wino.top().stl["bp"] = 40;
+        wino.top().screen["status"][2][wino.top().stl["bp"]].value = "B";
+        wino.top().screen["status"][2][wino.top().stl["bp"]+1].value = "r";
+        wino.top().screen["status"][2][wino.top().stl["bp"]+2].value = "e";
+        wino.top().screen["status"][2][wino.top().stl["bp"]+3].value = "a";
+        wino.top().screen["status"][2][wino.top().stl["bp"]+4].value = "k";
+        wino.top().screen["status"][2][wino.top().stl["bp"]+5].value = ":";
 
         wino.top().screen["item"] = bod_create(5 , 4 , 3);
         long long temp = 1;
@@ -74,11 +96,13 @@ void status(){
             wino.top().screen["status"][2][temp].value = val;
             temp++;
         }
+
         
     }
     healther();
     selected();
     add_weapon_in_status();
+    breaker();
     ita(wino.top().screen["screen"] , wino.top().screen["status"] , 0 , y-5 , 0);
     
 }
