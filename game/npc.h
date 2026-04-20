@@ -3,6 +3,7 @@
 #include "../stora/stora.h"
 
 void mob_manager( mob &mo);
+void spawn(int x , int y , int type , chunks *ck);
 void manage_hit();
 bool rand_spawn(int x , int y , int type , chunks *ck );
 extern long long main_hit_delay;

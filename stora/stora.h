@@ -71,6 +71,8 @@ struct chunks{
     int x;
     int y;
     bool always_load=0;
+    bool chunk_genrated=0;
+    bool struct_genrated=0;
     vector<vector<int>> chunk = vector<vector<int>> (10 , vector<int> (10));
     map<pair<int , int> , int> change;
     vector<mob> mobs;
@@ -78,6 +80,8 @@ struct chunks{
         write_bin(out , x);
         write_bin(out , y);
         write_bin(out , always_load);
+        write_bin(out , chunk_genrated);
+        write_bin(out , struct_genrated);
 
         uint64_t cnt = change.size();
         write_bin(out , cnt);
@@ -100,6 +104,8 @@ struct chunks{
         read_bin(in , x);
         read_bin(in , y);
         read_bin(in , always_load);
+        read_bin(in , chunk_genrated);
+        read_bin(in , struct_genrated);
 
         uint64_t cnt;
         read_bin(in , cnt);

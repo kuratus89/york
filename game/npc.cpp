@@ -139,7 +139,7 @@ void spawn(int x , int y , int type , chunks *ck){
 bool rand_spawn(int x , int y , int type , chunks *ck ){
     if(get_block(x,y))return 0;
     if(!get_block(x,y+1))return 0;
-    if(rand()%1000>5)return 0;
+    if(rand()%10000>3)return 0;
     spawn(x , y , type , ck);
     return 1;
 }

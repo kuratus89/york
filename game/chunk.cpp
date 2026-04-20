@@ -5,6 +5,7 @@
 #include "../stora/stora.h"
 #include "../windows/error.h"
 #include "npc.h"
+#include "../struct/struct.h"
 
 long long grass_lvl=10;
 // vector<chunks> chunker;
@@ -18,7 +19,10 @@ vector<pair<string , pair<string, int>>> blocker = {
     {"stone" , {"█" , 6}},//2
     {"iron" , {"█" , 7}},//3
     {"gold" , {"█" , 8}},//4
-    {"diamond" , {"█" , 4}}//5
+    {"diamond" ,  {"█" , 4}},//5
+    {"struct_1" , {"▓", 0}},//6
+    {"struct_2" , {"▒",0}},//7
+    {"struct_3" , {"░" , 0}},//8
 };
 vector<pair<string , pair<string , int>>> mober ={
     {"sheep" , {"S" , 5}},
@@ -33,12 +37,13 @@ mob none;
 
 void load_mobs(int lcx , int lcy){
     auto it = &chunker[{lcx , lcy}];
-
+    int local_mob_count = mobs_per_chunk;
     if(ear.chunker[{lcx , lcy}].mobs.size()){
         (*it).mobs = ear.chunker[{lcx, lcy}].mobs;
         ear.stl["mob_count"]+=ear.chunker[{lcx , lcy}].mobs.size();
+        local_mob_count = max(0 , local_mob_count - (int)(*it).mobs.size());
     }
-    int local_mob_count = mobs_per_chunk;
+    
 
     for(int i=0 ; i<10 ; i++){
 
@@ -62,6 +67,24 @@ void load_mobs(int lcx , int lcy){
 
 }
 
+void spawn_mob(int lx , int ly , int type){
+
+    auto it = &chunker[{lx , ly}];
+
+    spawn(lx , ly , type , it);
+
+}
+void struct_genrator(int x , int y){
+        if(ear.chunker[{x,y}].struct_genrated)return;
+        for(int j=0 ; j<chunk_size ; j++){
+            for(int i=0 ; i<chunk_size ; i++){
+                if(has_struct(x+i , y+j)){
+                    spawn_struct("treasure" , x+i , y+j);
+                    ear.chunker[{x,y}].struct_genrated=1;
+                }
+            }
+        }
+}
 
 void chunk_loader(long long  lcx ,long long lcy){
     chunks jk;
@@ -89,7 +112,6 @@ void chunk_loader(long long  lcx ,long long lcy){
             if(is_iron(lcx+i,lcy+j))jk.chunk[j][i]=3;
             if(is_gold(i+lcx,j+lcy))jk.chunk[j][i]=4;
             if(is_diamond(i+lcx,j+lcy))jk.chunk[j][i]=5;
-            if(has_struct(i+lcx , j+lcy))jk.chunk[j][i]=1;
         }
     }
     if(ear.chunker[{lcx , lcy}].change.size())jk.change = ear.chunker[{lcx , lcy}].change;
@@ -98,9 +120,12 @@ void chunk_loader(long long  lcx ,long long lcy){
     }    
     chunker[{lcx,lcy}] = (jk);
 
+    struct_genrator(lcx , lcy);
     load_mobs(lcx , lcy);    
 
 }
+
+
 
 
 
@@ -211,13 +236,13 @@ void set_block(long long x, long long y , int d){
     long long ly ;
     if(y>=0) ly = (y/chunk_size)*chunk_size;
     else ly = ((y -chunk_size+1)/chunk_size)*chunk_size;
-    if(!is_chunk_loaded(lx , ly)){
-        crash("trying to modify unloaded chunk");
-        return;
-    }
+    // if(!is_chunk_loaded(lx , ly)){
+    //     crash("trying to modify unloaded chunk");
+    //     return;
+    // }
+    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
     chunker[{lx , ly}].chunk[y - ly][x - lx] = d;
     chunker[{lx , ly}].change[{x - lx , y - ly}] = d;
-    block_update++;
 }
 
 bool save_game(string s){
