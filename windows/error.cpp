@@ -11,12 +11,22 @@ void error(){
     cout<<"sorry but the game crash >_<"<<endl;
     cout<<"reason => ";
     cout<<wino.top().sts["value"];
-
 }
 
 void crash(string s){
-    win gw;
-    gw.name = "error";
-    gw.sts["value"] = s;
-    wino.push(gw);
+    hard_clear();
+    cout<<"sorry but the game crash >_<"<<endl;
+    cout<<"reason => ";
+    cout<<s<<endl;
+    if(wino.size())cout<<"window => " + wino.top().name;
+    exit(1);
 }
+
+// void crash(string s){
+//     win gw;
+//     gw.name = "error";
+//     gw.sts["value"] = s;
+//     gw.sts["value"]+= "\n window: "+ wino.top().name;
+//     wino.push(gw);
+
+// }

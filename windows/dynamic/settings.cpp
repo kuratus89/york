@@ -32,7 +32,7 @@ void settings(){
     else wino.top().vs["opt"][1]+="[Disabled]";
     if(show_latency)wino.top().vs["opt"][2]+="[Enabled]";
     else wino.top().vs["opt"][2]+="[Disabled]";
-    option_adder(wino.top().screen["settings"] ,  wino.top().vs["opt"], wino.top().stl["selecter"] ,50 , 6 );
+    option_adder(wino.top().screen["settings"] ,  wino.top().vs["opt"], wino.top().stl["selecter"] ,50 , 6,1 );
     ita(wino.top().screen["screen"], wino.top().screen["settings"] , ((x-wino.top().screen["settings"][0].size()-2)/2)+1 , ((y-wino.top().screen["settings"].size()-2)/2)+1 , 1);
     inpppt();
 }

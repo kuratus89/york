@@ -3,6 +3,7 @@
 #include "../physics/physics.h"
 #include "../windows/window.h"
 #include "../stora/stora.h"
+#include "../windows/error.h"
 
 long long zombie_range =30;
 queue<pair<pair<long long ,long long> ,long long>> main_hit;
@@ -44,8 +45,13 @@ void sheep(mob &mo){
     if(!mo.initilize){
         mo.initilize = 1;
         mo.health = 10;
+        mo.stl["ghost"]=0;
     }
     gravity(mo.x , mo.y);
+    if(!rand()%3){
+        if(rand()%2)move_right(mo.x , mo.y);
+        else move_left(mo.x , mo.y);
+    }
 }
 
 
@@ -54,6 +60,7 @@ void zombie(mob &mo){
         mo.initilize =1;
         mo.health = 20;
         mo.bfs = {-1 , 0};
+        mo.stl["ghost"]=0;
     }
     gravity(mo.x , mo.y);
     if(mo.delay_color)mo.delay_color--;
@@ -61,10 +68,10 @@ void zombie(mob &mo){
     if(!mo.hit.empty()){
         mo.color = 0;
         mo.delay_color=2;
-        if(mo.hit.back().first.first>0)move_right(mo.x , mo.y);
-        else if(mo.hit.back().first.first<0)move_left(mo.x , mo.y);
+        if(mo.hit.front().first.first>0)move_right(mo.x , mo.y);
+        else if(mo.hit.front().first.first<0)move_left(mo.x , mo.y);
         if(mo.hit.front().first.second>0)move_down(mo.x , mo.y);
-        else if(mo.hit.front().first.second<0)move_down(mo.x , mo.y);
+        else if(mo.hit.front().first.second<0)move_up(mo.x , mo.y);
         mo.health-=mo.hit.back().second;
         mo.hit.pop();
         return;
@@ -110,20 +117,96 @@ void zombie(mob &mo){
     
 }
 
+void bullet(mob &mo){
+    if(!mo.initilize){
+        mo.initilize = 1;
+        if(!mo.sts.count("dir"))crash("direction for bullet is invalid");
+        string dir = mo.sts["dir"];
+        mo.health = 1;
+        mo.stl["ghost"]=1;
+
+        if(dir=="up"){
+            mo.stl["motionx"]=0;
+            mo.stl["motiony"]=-1;
+            mo.sts["render"] = "|";
+        }
+        else if(dir=="down"){
+            mo.stl["motionx"]=0;
+            mo.stl["motiony"]=1;
+            mo.sts["render"] = "|";
+        }
+        else if(dir=="left"){
+            mo.stl["motionx"]=-1;
+            mo.stl["motiony"]=0;
+            mo.sts["render"] = "-";
+        }
+        else if(dir=="right"){
+            mo.stl["motionx"]=1;
+            mo.stl["motiony"]=0;
+            mo.sts["render"] = "-";
+        }
+
+    }
+
+    if(!mo.stl["max"])mo.health =0;
+    if(get_mob(mo.x+mo.stl["motionx"] , mo.y+ mo.stl["motiony"])!=-1){
+        auto &it = get_mob_id(mo.x + mo.stl["motionx"] , mo.y + mo.stl["motiony"]);
+        if(mo.health==-395)main_hit.push({{mo.stl["motionx"] , mo.stl["motiony"]} , 1});
+        else it.hit.push({{mo.stl["motionx"] , mo.stl["motiony"]} , 1});
+    }
+
+    mo.x+=mo.stl["motionx"];
+    mo.y+=mo.stl["motiony"];
+    mo.stl["max"]--;
+    
+}
+
+void loot(mob& mo){
+    if(!mo.initilize){
+        mo.initilize =1;
+        mo.stl["ghost"]=1;
+    }
+
+    mo.health = INT_MAX;
+
+    if((mo.x==cx)&&(mo.y==cy)){
+        mo.health = 0;
+        int iron = rand()%20+1;
+        int gold = rand()%10;
+        int diamond = rand()%5;
+        int gun = rand()%2;
+        string sm = "You got :";
+        if(iron)sm+=to_string(iron) + " iron ";
+        if(gold)sm+= to_string(gold) + " gold ";
+        if(diamond)sm+= to_string(diamond) + " diamond ";
+        if(gun) sm+= " and a gun";
+        if(gun)ear.inventory[ear.inventory_str["weapon"]["pistol"]]=1;
+        if(iron)ear.inventory[ear.inventory_str["block"]["iron"]]+=iron;
+        if(gold)ear.inventory[ear.inventory_str["block"]["gold"]]+=gold;
+        if(diamond)ear.inventory[ear.inventory_str["block"]["diamond"]]+=diamond;
+        win dia;
+        dia.name = "dialog";
+        dia.vs["dialog"] = {sm};
+        ticker.push_back({1 , dia});
+    }
+}
+
 map<int, void(*)(mob&)> mober{
     {0,sheep},
-    {1, zombie}
+    {1, zombie},
+    {2 , bullet},
+    {3 , loot}
 };
 
 void mob_manager(mob &mo){
     mober[mo.type](mo);
 }
 
+
+
 void manage_hit(){
-    if(main_hit_delay)
-        wino.top().screen["player"][0][0].color = 0;
-    else
-        wino.top().screen["player"][0][0].color = player_color;
+    if(main_hit_delay)wino.top().screen["player"][0][0].color = 0;
+    else wino.top().screen["player"][0][0].color = player_color;
     main_hiter_manage();
     if(main_hit_delay)main_hit_delay--;
 }
@@ -136,10 +219,16 @@ void spawn(int x , int y , int type , chunks *ck){
     (*ck).mobs.push_back(mo);
 }
 
-bool rand_spawn(int x , int y , int type , chunks *ck ){
+void spawn_this_mob(mob &mo){
+    (*chunk_pointer(mo.x , mo.y)).mobs.push_back(mo);
+}
+
+
+
+bool rand_spawn(int x , int y , int type , chunks *ck){
     if(get_block(x,y))return 0;
-    if(!get_block(x,y+1))return 0;
-    if(rand()%10000>3)return 0;
+    if(!get_block(x , y+1))return 0;
+    if(rand()%50000>3)return 0;
     spawn(x , y , type , ck);
     return 1;
 }

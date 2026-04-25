@@ -28,6 +28,7 @@ int main(){
     cout << "\033[?25l";
     
     while(gameon){//main game loop >_<
+        tick++;
         auto start = chrono::high_resolution_clock::now();
         if(input::pollEvent(e))k=input::keyToString(e.keycode);
         else k="-";

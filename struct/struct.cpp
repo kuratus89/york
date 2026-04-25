@@ -28,7 +28,11 @@ map<string , pair<vector<vector<int>> , vector<vector<int>>>> structures = {
 }
     ,
     {
-        {7,17 ,1}
+        {7 , 3 ,1},
+        {35 , 3 , 1},
+        {7 , 11 , 1},
+        {35 , 11 , 1},
+        {19 , 7 , 3}
     }}}
 };
 
@@ -42,6 +46,6 @@ void spawn_struct(string type ,int x , int y){
     }
     for(int j=0 ; j<it.second.size() ; j++){
         if(it.second[j].size()!=3)crash("struct data is inavalid");
-        spawn_mob( it.second [j][0] , it.second[j][1] , it.second[j][2]);
+        spawn_mob( it.second [j][0] + x , it.second[j][1]+y , it.second[j][2]);
     }
 }

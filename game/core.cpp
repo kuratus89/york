@@ -181,7 +181,7 @@ bool has_struct(int x , int y){
     long long ly = (y>=0)?(y/structure_cell)*structure_cell :((y - structure_cell+1)/structure_cell)*structure_cell;
     long long h = hasher_2d(lx , ly);
     float c = (h & 0x7fffffff) / float(0x7fffffff);
-    if(c<0.55f)return 0;
+    if(c<0.65f)return 0;
 
     int localx = (h>>8)%structure_cell;
     int localy = (h>>16)%structure_cell;

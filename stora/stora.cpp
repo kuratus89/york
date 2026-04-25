@@ -57,6 +57,11 @@ bool show_latency=0;
 double ms = 0;
 double avg_ms = 0;
 int target_fps=60;
+long long tick =0;
+int max_health=100;
+int max_break_block=15;
+int max_pistol_range=10;
+int pistol_gap=10;
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",
@@ -159,6 +164,14 @@ vector<vector<vector<pixel>>> titles = {
     {pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, "Y"}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, "Y"}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, "Y"}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}, pixel{title_color, " "}},
   },
 };
+
+map<string , string> skill_desc = {
+    {"Health" , "Increase Maximum Health!"},
+    {"Mine" , "Increase Mining Speed"},
+    {"Fist" , "Increase Damage due to Fist"},
+    {"Gun" , "Increase Damage due to weapons"},
+    {"Depth" , "Increase Depth Resistance"}
+};
 // functions
 
 bool writeString(ofstream &out, const string &s) {
@@ -237,7 +250,7 @@ bool load_boot_data(const string &valo, const string &dgm, boot_data &out_data) 
             temp.stl.emplace(move(k), v);
         }
 
-        out_data = move(temp); // commit
+        out_data = move(temp);
         return true;
     } catch (...) {
         return false;
@@ -246,9 +259,9 @@ bool load_boot_data(const string &valo, const string &dgm, boot_data &out_data) 
 
 bool isf(){
     string target = "data/boot.kp";
-    if (!fs::exists("data")) return 0; // Add this check
+    if (!fs::exists("data")) return 0;
     for (const auto& entry : fs::recursive_directory_iterator("data")) {
-        if (entry.path().filename() == "boot.kp") { // Also fix the comparison logic here
+        if (entry.path().filename() == "boot.kp") {
             return 1;
         }
     }

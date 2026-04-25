@@ -3,13 +3,19 @@
 #include "../stora/stora.h"
 #include "../game/chunk.h"
 #include "../windows/dynamic/inventory.h"
+#include "../game/weapon.h"
+#include "../game/npc.h"
 
 long long jump_hight = 6;
 long long jump_stage = 0;
-int break_block=10;
+int break_block=max_break_block;
 int target_block_x=-395;
 int target_block_y=-395;
 bool breaking=0;
+int depth_damage_gap=10;
+int depth_damage_tick=0;
+string fi = "fist";
+
 
 bool isbo(){
     return(cy==y-6);
@@ -24,7 +30,7 @@ bool is_ground(int &vx , int &vy){
 }
 
 void move_left(int &vx , int &vy){
-    if(get_mob(vx-1 , vy)!=-1)return;
+    if((get_mob(vx-1 , vy)!=-1)&&(get_mob_id(vx -1 , vy).stl["ghost"]==0))return;
 
     if((!get_block(vx-1, vy))||(ghost)){
         vx--;
@@ -40,7 +46,7 @@ void move_left(int &vx , int &vy){
 
 void move_right(int &vx , int &vy){
 
-    if(get_mob(vx+1 , vy)!=-1)return;
+    if((get_mob(vx+1 , vy)!=-1)&&(get_mob_id(vx+1 , vy).stl["ghost"]==0))return;
 
     if((!get_block(vx+1 , vy))||(ghost)){
         vx++;
@@ -52,19 +58,19 @@ void move_right(int &vx , int &vy){
     }
 }
 void move_up(int &vx , int &vy){
-    if(get_mob(vx , vy-1)!=-1)return;
+    if((get_mob(vx , vy-1)!=-1)&&(get_mob_id(vx , vy-1).stl["ghost"]==0))return;
     if((!get_block(vx , vy-1))||(ghost))vy--;
 }
 void move_down(int &vx , int &vy){
-    if(get_mob(vx , vy+1)!=-1)return;
+    if((get_mob(vx , vy+1)!=-1)&&(get_mob_id(vx , vy+1).stl["ghost"]==0))return;
     if((!get_block(vx , vy+1))||(ghost))vy++;
 }
 
 void gravity(int &vx , int &vy){
     if(ghost)return;
     if(jump_stage)return;
-    if((!get_block(vx ,vy+1))&&(get_mob(vx , vy+1)==-1)){
-        // delay(5);
+    if(get_block(vx , vy+1))return;
+    if((get_mob(vx , vy+1)==-1)||(get_mob_id(vx , vy+1).stl["ghost"]==0)){
         vy++;
     }
 }
@@ -107,14 +113,14 @@ void block_breaker(int x , int y , map<int , int> &inv){
     if(breaking){
         if((target_block_x!=x)||(target_block_y)!=y){
             breaking =0;
-            break_block=10;
+            break_block=max_break_block;
             return;
         }
         if(!break_block){
             ear.inventory[get_block(x,y)]++;
             set_block(x,y , 0);
             breaking =0;
-            break_block=10;
+            break_block=max_break_block;
             return;
         }
         break_block--;
@@ -186,9 +192,15 @@ void reset_physics(){
     jump_hight = 0;
 }
 
-
+void depth_pressure_physics(){
+    if(cy<ear.skill["Depth"]*100)return;
+    if(tick - depth_damage_tick <= depth_damage_gap)return;
+    depth_damage_tick = tick;
+    main_hit.push({{0,-1} , 1});
+}
 
 void physics(){
     if(hit_delay)hit_delay--;
-    if((!breaking)&&(break_block!=10))break_block=10;
+    if((!breaking)&&(break_block!=max_break_block))break_block=max_break_block;
+    depth_pressure_physics();
 }

@@ -10,12 +10,12 @@ void healther(){
     for(long long i=1 ; i<=10; i++)wino.top().screen["health"][1][i].value = " ";
     int col;
     if(ear.health>50)col = 2;
-    if(ear.health>30)col = 1;
+    else if(ear.health>30)col = 1;
     else col = 0;
     pixel he;
     he.color = col;
     he.value = "█";
-    for(long long i=1 ; i<=(ear.health/10) ; i++)wino.top().screen["health"][1][i]=he;
+    for(long long i=1 ; i<=((ear.health*10)/max_health) ; i++)wino.top().screen["health"][1][i]=he;
     ita(wino.top().screen["status"] ,wino.top().screen["health"] , 17 , 1 ,1);
 
 }
@@ -25,7 +25,7 @@ void breaker(){
     pixel be;
     be.color = 5;
     be.value = "█";
-    for(long long i=1 ; (i< break_block )&&(i<=10); i++)wino.top().screen["breaker"][1][i] = be;
+    if(max_break_block!=0)for(long long i=1 ; (i< ((break_block*10)/max_break_block)&&(i<=10)); i++)wino.top().screen["breaker"][1][i] = be;
     ita(wino.top().screen["status"] , wino.top().screen["breaker"] ,47 , 1 , 1 );
 }
 

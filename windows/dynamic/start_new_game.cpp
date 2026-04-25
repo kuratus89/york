@@ -50,6 +50,11 @@ void inta(){
                 ear.health = 100;
                 ear.chunker.clear();
                 ear.inventory.clear();
+                ear.skill["Health"]=1;
+                ear.skill["Mine"] = 1;
+                ear.skill["Fist"] = 1;
+                ear.skill["Gun"] = 1;
+                ear.skill["Depth"]=1;
                 win mg;
                 filesystem::create_directories("data/worlds/"+ear.name);
                 if(!ear.save("data/worlds/"+ear.name+"/data.kp")){
@@ -82,7 +87,7 @@ void start_new_game(){
     }
     if(wino.top().sts["world_name"]!="")opts[0]+=wino.top().sts["world_name"];
     if(wino.top().sts["seed"]!="")opts[1]+= wino.top().sts["seed"];
-    option_adder(wino.top().screen["pika"] , opts , wino.top().stl["selecter"] , 50  , 8);
+    option_adder(wino.top().screen["pika"] , opts , wino.top().stl["selecter"] , 50  , 8,1);
     ita(wino.top().screen["screen"] , wino.top().screen["pika"] ,( (wino.top().screen["screen"][0].size() - wino.top().screen["pika"][0].size()-2)/2)+1 , ((wino.top().screen["screen"].size() - wino.top().screen["pika"].size()-2)/2)+1 , 1);
     inta();
 }

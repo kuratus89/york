@@ -21,6 +21,7 @@ void manage_all_mobs();
 void spawn_mob(int lx , int ly , int type);
 int get_mob(long long x , long long y);
 mob& get_mob_id(long long x , long long y);
+chunks* chunk_pointer(int lx , int ly);
 extern world ear;
 extern long long chunk_size;
 extern vector<pair<string , pair<string, int>>> blocker;

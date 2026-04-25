@@ -26,7 +26,9 @@ vector<pair<string , pair<string, int>>> blocker = {
 };
 vector<pair<string , pair<string , int>>> mober ={
     {"sheep" , {"S" , 5}},
-    {"zombie" , {"Z" , 2}}
+    {"zombie" , {"Z" , 2}},
+    {"bullet" , {"-" , 5}},
+    {"loot" , {"*" , 5}}
 };
 long long chunk_size = 10;
 world ear;
@@ -69,22 +71,35 @@ void load_mobs(int lcx , int lcy){
 
 void spawn_mob(int lx , int ly , int type){
 
-    auto it = &chunker[{lx , ly}];
+    // auto it = &chunker[{lx , ly}];
+    auto it = chunk_pointer(lx , ly);
 
     spawn(lx , ly , type , it);
 
 }
-void struct_genrator(int x , int y){
-        if(ear.chunker[{x,y}].struct_genrated)return;
-        for(int j=0 ; j<chunk_size ; j++){
-            for(int i=0 ; i<chunk_size ; i++){
-                if(has_struct(x+i , y+j)){
-                    spawn_struct("treasure" , x+i , y+j);
-                    ear.chunker[{x,y}].struct_genrated=1;
-                }
-            }
-        }
+
+
+chunks* chunk_pointer(int bx , int by){
+    int lx = (bx>=0)?(bx/chunk_size)*chunk_size : ((bx - chunk_size +1)/chunk_size)*chunk_size;
+    int ly = (by>=0)?(by/chunk_size)*chunk_size : ((by - chunk_size +1)/chunk_size)*chunk_size;
+    return &chunker[{lx , ly}];
 }
+
+
+void struct_genrator(int x , int y){
+    if(y<=height(x))return;
+    if(ear.chunker[{x,y}].struct_genrated)return;
+
+    for(int j=0 ; j<chunk_size ; j++){
+        for(int i=0 ; i<chunk_size ; i++){
+            if(!has_struct(x+i , y+j))continue;
+
+            spawn_struct("treasure" , x+i , y+j);
+            ear.chunker[{x,y}].struct_genrated=1;
+        }
+    }
+}
+
 
 void chunk_loader(long long  lcx ,long long lcy){
     chunks jk;
@@ -125,14 +140,7 @@ void chunk_loader(long long  lcx ,long long lcy){
 
 }
 
-
-
-
-
 void chunk_unloader(long long lvx , long long lvy){
-    
-    
-
     for(auto it = chunker.begin() ; it!=chunker.end() ;){
         if((abs((*it).second.x - lvx)>render_distance)||((abs((*it).second.y - lvy)>render_distance))){
             // ear.stl["mobs_count"]-= chunker[(*it).first].mobs.size();
@@ -144,12 +152,13 @@ void chunk_unloader(long long lvx , long long lvy){
         else it++;
     }
 }
+
 void chaper(vector<vector<pixel>> &scv , vector<vector<int>> &chk , long long vx , long long vy){
-    for(long long i = 0; i < chk.size(); ++i){
+    for(long long i = 0; i < chk[0].size(); ++i){
         long long tx = vx + i;
         if(tx < 0 || tx >= scv[0].size()) continue;
 
-        for(long long j = 0; j < chk[i].size(); ++j){
+        for(long long j = 0; j < chk.size(); ++j){
             long long ty = vy + j;
             if(ty < 0 || ty >= scv.size()) continue;
 
@@ -166,8 +175,10 @@ void mob_render(vector<vector<pixel>> &scv , mob moho , long long hx , long long
     if(hy< 0 || hy >= scv.size()) return;
     if(moho.color==-1)scv[hy][hx].color = mober[moho.type].second.second;
     else scv[hy][hx].color = moho.color;
-    scv[hy][hx].value = mober[moho.type].second.first;
+    if(moho.sts.count("render")&&moho.sts["render"]!="")scv[hy][hx].value = moho.sts["render"];
+    else scv[hy][hx].value = mober[moho.type].second.first;
 }
+
 
 void render(vector<vector<pixel>> &scv , long long mx , long long my ){
     long long center_x = scv[0].size()/2;

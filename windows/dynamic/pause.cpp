@@ -6,8 +6,8 @@
 void itt(){
     if(k=="W")wino.top().stl["selecter"]--;
     else if(k=="S")wino.top().stl["selecter"]++;
-    if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"] = 2;
-    if(wino.top().stl["selecter"]==3)wino.top().stl["selecter"]=0;
+    if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"] = 4;
+    if(wino.top().stl["selecter"]==5)wino.top().stl["selecter"]=0;
 
     if(k=="Enter"){
         if(wino.top().stl["selecter"]==0)wino.pop();
@@ -29,6 +29,15 @@ void itt(){
             che.name = "cheat";
             wino.push(che);
         }
+        else if(wino.top().stl["selecter"]==3){
+            win se;
+            se.name = "settings";
+            wino.push(se);
+        }
+        else if(wino.top().stl["selecter"]==4){
+            wino.pop();
+            wino.pop();
+        }
     }
 }
 
@@ -41,9 +50,11 @@ void pause(){
     vector<string> opts= {
         "Resume",
         "Save",
-        "Cheats"
+        "Cheats",
+        "Settings",
+        "Exit",
     };
-    option_adder(wino.top().screen["pau"] , opts , wino.top().stl["selecter"] , 30 , 5);
-    ita(wino.top().screen["screen"] ,wino.top().screen["pau"] , LLONG_MIN , LLONG_MIN , 1);
+    option_adder(wino.top().screen["pau"] , opts , wino.top().stl["selecter"] , LLONG_MIN , LLONG_MIN , 1);
+    ita(wino.top().screen["screen"] ,wino.top().screen["pau"] , INT_MIN , INT_MIN , 1);
     itt();
 }

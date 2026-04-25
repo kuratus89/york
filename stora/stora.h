@@ -56,10 +56,46 @@ struct mob{
     queue<pair<pair<int ,int> , int>> hit;
     int color=-1;
     int delay_color=0;
+    map<string , int> stl;
+    map<string , string> sts;
     bool save(ofstream &out){
+        uint64_t cnt = stl.size();
+        write_bin(out , cnt);
+        for(auto val:stl){
+            write_string(out  , val.first);
+            write_bin(out , val.second);
+        }
+
+        cnt = sts.size();
+        write_bin(out , cnt);
+        for(auto val:sts){
+            write_string(out , val.first);
+            write_string(out , val.second);
+        }
+
         return (write_bin(out , id)&&write_bin(out , x)&&write_bin(out , y)&&write_bin(out , health)&&write_bin(out , type)&&write_bin(out , initilize)&&write_bin(out , bfs.first)&&write_bin(out , bfs.second)&&write_bin(out , in_range));
     }
     bool load(ifstream &in){
+        uint64_t cnt;
+        read_bin(in , cnt);
+        for(int i=0 ; i<cnt ; i++){
+            string a;
+            int b;
+            read_string(in , a);
+            read_bin(in , b);
+            stl[a]=b;
+        }
+
+        read_bin(in , cnt);
+
+        for(int i=0 ; i<cnt ; i++){
+            string a;
+            string b;
+            read_string(in ,a);
+            read_string(in , b);
+            sts[a]=b;
+        }
+
         return(read_bin(in , id)&&read_bin(in , x)&&read_bin(in , y)&&read_bin(in , health)&&read_bin(in , type)&&read_bin(in , initilize)&&read_bin(in , bfs.first)&&read_bin(in , bfs.second)&&read_bin(in , in_range));
     }
     void spawn(int x , int y,int type){
@@ -139,6 +175,7 @@ struct world{
  
     map<string,string> sts;
     map<string , long long> stl;
+    map<string , int> skill;
     map<string , map<string , int>> inventory_str = {
         {"block", 
             {
@@ -220,6 +257,13 @@ struct world{
             write_bin(out , val.second);
         }
 
+        cnt = skill.size();
+        write_bin(out , cnt);
+        for(auto &val:skill){
+            write_string(out , val.first);
+            write_bin(out , val.second);
+        }
+
         return out.good();
     }
 
@@ -270,6 +314,16 @@ struct world{
             stl[a]=b;
         }
 
+        skill.clear();
+        read_bin(in , cnt);
+
+        for(int i=0 ; i<cnt ; i++){
+            string a;int b;
+            read_string(in , a);
+            read_bin(in , b);
+            skill[a] = b;
+        }
+
         return in.good();
     }
 };
@@ -305,6 +359,12 @@ extern bool show_latency;
 extern double ms;
 extern double avg_ms;
 extern int target_fps;
+extern long long tick;
+extern map<string , string> skill_desc;
+extern int max_health;
+extern int max_break_block;
+extern int max_pistol_range;
+extern int pistol_gap;
 
 //func
 

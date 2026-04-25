@@ -58,7 +58,7 @@ void inventory(){
             return;
         }
     }
-    option_adder(wino.top().screen["invo"] , invd , wino.top().stl["selecter"] , 20 , 10);
-    ita(wino.top().screen["screen"] , wino.top().screen["invo"] , LLONG_MIN , LLONG_MIN , 1);
+    option_adder(wino.top().screen["invo"] , invd , wino.top().stl["selecter"] , LLONG_MIN , LLONG_MIN , 1);
+    ita(wino.top().screen["screen"] , wino.top().screen["invo"] , INT_MIN , INT_MIN , 1);
     itp();
 }

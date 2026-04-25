@@ -22,6 +22,9 @@
 #include "dynamic/cheat.h"
 #include "dynamic/dialog.h"
 #include "../game/weapon.h"
+#include "../skill/skill_main.h"
+#include "dynamic/yan.h"
+#include "../skill/skill_up.h"
 #include "../lib.h"
 
 
@@ -46,6 +49,9 @@ map<string , void(*)()> func_point = {
         {"cheat" , cheat},
         {"dialog", dialog},
         {"weapon" , weapon},
+        {"skill" , skill_main},
+        {"skill_up" , skill_up},
+        {"yan" , yan},
 };
 
 

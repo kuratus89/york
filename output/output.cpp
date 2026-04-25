@@ -32,9 +32,23 @@ string paint(string s ,string col ){//paint string with color
 //     return s;
 // }
 
-void print_screen(string screen){// output the string with soft clear
+void print_screen(string screen){// output the string with soft clear *-*
     soft_clear();
     cout<<screen;
+}
+
+void text_adder(vector<vector<pixel>> &screen , int x , int y , string s , int color){
+    if(x == INT_MIN)x = max(0 ,(int) (screen[0].size() - s.size())/2);
+    if(y == INT_MIN)y = screen.size()/2;
+    if(y<0)return;
+    for(auto val:s){
+        if(x<0)continue;
+        pixel pe;
+        pe.color = color;
+        pe.value = val;
+        screen[y][x] = pe;
+        x++;
+    }
 }
 
 vector<vector<pixel>> bod_create(int colo , long long lx , long long ly  ){ 
@@ -153,18 +167,21 @@ void par_scr(vector<vector<pair<char, char>>> &screen,vector<vector<pair<char, c
         }
     }
 }
-void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, long long vy , bool boder) {
-    if(vx == LLONG_MIN)vx = ((screen[0].size() - par[0].size()-2)/2)+1;
-    if(vy == LLONG_MIN)vy = ((screen.size() - par.size()-2)/2)+1;
-    for (long long sy = 0; sy < (long long)par.size(); ++sy) {
-        long long ty = vy + sy;
-        if (boder&&(ty <= 0 || ty >= y-1)) continue;
-        for (long long sx = 0; sx < (long long)par[sy].size(); ++sx) {
-            long long tx = vx + sx;
-            if (boder&&(tx <= 0 || tx >= x-1)) continue;
-            if (ty < 0 || ty >= (long long)screen.size()) continue;
 
-            screen[ty][tx] = par[sy][sx];
+void ita(vector<vector<pixel>> &screen ,vector<vector<pixel>> &par , int vx , int vy , bool boder){
+    if((par.empty())||(screen.empty())||(par[0].empty())||(screen[0].empty()))return;
+
+    if(vx == INT_MIN)vx = (((int) screen[0].size() - (int)par[0].size()- 2)/2)+1;
+    if(vy == INT_MIN)vy = (((int) screen.size() - (int) par.size() - 2)/2)+1;
+
+    for(int sy = 0 ; sy< (int)par.size() ; sy++){
+        int ty = vy+sy;
+        if((boder)&&((ty <=0)||(ty>= y-1)))continue;
+        for(int sx = 0 ; sx<(int)par[sy].size() ; sx++){
+            int tx = vx+sx;
+            if((boder)&&(tx <=0)|| (tx>=x-1))continue;
+            if((ty<0)||(ty>=(int)screen.size()))continue;
+            screen[ty][tx]= par[sy][sx];
         }
     }
 }
@@ -172,8 +189,24 @@ void ita(vector<vector<pixel>> &screen,vector<vector<pixel>> &par,long long vx, 
 
 
 
-void option_adder(vector<vector<pixel>> &screen , vector<string> &options , long long selecter , long long sx , long long sy){
-    screen = bod_create(5 , sx ,sy);
+void option_adder(vector<vector<pixel>> &screen , vector<string> &options , long long selecter , long long sx , long long sy , bool boder){
+
+    if(sx<=0){
+        int ma = 0;
+        for(auto val:options)ma = max(ma , (int)val.size());
+        sx = ma+5;
+    }
+    if(sy<=0){
+        sy = options.size()+3;
+    }
+
+    if(boder)screen = bod_create(5 , sx ,sy);
+    else{
+        pixel pe;
+        pe.color = 5;
+        pe.value = " ";
+        screen = vector<vector<pixel>> (sy , vector<pixel> (sx ,  pe));
+    }
     pixel pe;
     pe.color = 5;
     long long hy=1;
@@ -258,4 +291,66 @@ void fad(vector<vector<pixel>> &screen , bool &fps , bool &latency , double &ms)
             jx++;
         }
     }
+}
+
+void  vertical_window_align(vector<vector<pixel>> &result , vector<vector<pixel>> &top , vector<vector<pixel>> &bottom , bool center_align){
+    if((top.size()<=0)||(bottom.size()<=0))return;
+    int x=max(top[0].size() , bottom[0].size());
+    int y = top.size() + bottom.size();
+
+    pixel pe;
+    pe.color = 5;
+    pe.value = " ";
+    result = vector<vector<pixel>> (y , vector<pixel> (x , pe));
+    
+    if(center_align)ita(result , top , INT_MIN , 0 , 0);
+    else ita(result , top , 0 , 0 , 0);
+
+    if(center_align)ita(result , bottom , INT_MIN, top.size(),0);
+    else ita(result , bottom , 0 , top.size() , 0);
+}
+
+void horizontal_window_align(vector<vector<pixel>> &result ,vector<vector<pixel>> &left , vector<vector<pixel>> &right , bool center_align){
+    int lx = left[0].size();
+    int rx = right[0].size();
+    int x = lx +rx;
+    int y = max(left.size() , right.size());
+
+    pixel pe;
+    pe.color = 5;
+    pe.value = " ";
+
+    result  = vector<vector<pixel>> (y , vector<pixel> (x , pe));
+
+    if(center_align)ita(result , left , 0 , INT_MIN, 0);
+    else ita(result , left , 0 ,0  , 0);
+
+    if(center_align)ita(result , right , lx , INT_MIN , 0);
+    else ita(result , right , lx , 0 , 0);
+
+}
+
+void text_to_win_xlim(vector<vector<pixel>> &win , string s , int x){
+    if(x<=0)x = s.size();
+    int i=0;
+    win.clear();
+    vector<pixel> pv;
+    pixel pe;
+    pe.color = 5;
+    for(auto val:s){
+        if(i==x){
+            win.push_back(pv);
+            pv.clear();
+            i=0;
+        }
+        pe.value = val;
+        pv.push_back(pe);
+    }
+    if(pv.size())win.push_back(pv);
+}
+
+void bod_add(vector<vector<pixel>> &result , vector<vector<pixel>> &scr){
+    if(scr.size()==0)return;
+    result = bod_create(5 , scr[0].size()+2 , scr.size()+2);
+    ita(result , scr , 1 , 1 , 0);
 }

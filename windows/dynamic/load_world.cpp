@@ -60,7 +60,7 @@ void load_world(){
         worlds.push_back(" Back");
         
     }
-    option_adder(wino.top().screen["worlds"] ,worlds , wino.top().stl["selecter"], 50 , worlds.size()+4 );
-    ita(wino.top().screen["screen"] , wino.top().screen["worlds"] , LLONG_MIN,LLONG_MIN , 1);
+    option_adder(wino.top().screen["worlds"] ,worlds , wino.top().stl["selecter"], 50 , worlds.size()+4 , 1 );
+    ita(wino.top().screen["screen"] , wino.top().screen["worlds"] , INT_MIN , INT_MIN , 1);
     iptl();
 }

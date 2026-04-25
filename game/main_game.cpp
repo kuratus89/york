@@ -9,6 +9,7 @@
 #include "weapon.h"
 #include "status.h"
 #include "npc.h"
+#include "../skill/skill_main.h"
 
 pixel pa , pp;
 
@@ -21,6 +22,7 @@ void init(){
     if(input::ikd(input::key::Space))jump();
     if(input::ikd(input::key::A))move_left(cx , cy);
     if(input::ikd(input::key::D))move_right(cx , cy);
+    // if(!input::ikd(input::key::Shift))breaking =0;
     if(input::ikd(input::key::Shift)){
         
         // if(input::ikd(input::key::Up))break_block_up();
@@ -34,7 +36,7 @@ void init(){
         else if(input::ikd(input::key::Right))block_breaker(cx+1 , cy , ear.inventory);
         else if(breaking)breaking =0;
     }
-    else if((input::ikd(input::key::Shift))&&breaking)breaking =0;
+    else if(breaking)breaking =0;
     else if(input::ikd(input::key::Control)){
         if(input::ikd(input::key::Left))hit_left(selected_weapon);
         if(input::ikd(input::key::Right))hit_right(selected_weapon);
@@ -80,6 +82,11 @@ void init(){
         we.name = "weapon";
         wino.push(we);
     }
+    else if(k=="K"){
+        win sk;
+        sk.name = "skill";
+        wino.push(sk);
+    }
 }
 
 void main_game(){
@@ -98,6 +105,7 @@ void main_game(){
         pp.value = string(1,player);
         wino.top().screen["player"] = vector<vector<pixel>> (1 , vector<pixel> (1 , pp));
         wino.top().stl["item"]=1;
+        apply_skills();
 
         if(ear.stl["first_timer"]==0){
             ear.stl["first_timer"]=1;
@@ -117,6 +125,7 @@ void main_game(){
             dia.sts["player"] = string(1,player);
             dia.sts["name"] = player_name;
             ticker.push_back({2,dia});
+            
         }
         
     }
