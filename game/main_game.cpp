@@ -151,7 +151,6 @@ void main_game(){
     
     manage_all_mobs(wino.top().screen["screen"]);
     
-    physics();
     manage_hit();
     
     init();
@@ -159,4 +158,5 @@ void main_game(){
     gravity(cx , cy);
     manage_jump();
     manage_chunks(cx , cy);
+    physics();
 }

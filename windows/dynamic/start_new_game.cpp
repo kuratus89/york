@@ -46,7 +46,7 @@ void inta(){
                 else ear.seed = stoi(wino.top().sts["seed"]);
                 ear.name = wino.top().sts["world_name"];
                 ear.posx= 0;
-                ear.posy = cy=height(ear.posx)-1;                
+                ear.posy = ear.stl["spawny"] = cy=height(ear.posx)-1;                
                 ear.health = 100;
                 ear.chunker.clear();
                 ear.inventory.clear();

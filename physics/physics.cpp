@@ -200,8 +200,20 @@ void depth_pressure_physics(){
     main_hit.push({{0,0} , 1});
 }
 
+void death(){
+    ear.inventory.clear();
+    cy = ear.stl["spawny"];
+    cx=0;
+    ear.health=max_health;
+    win msg;
+    msg.name = "msg";
+    msg.vs["msg"] = {"You died"};
+    wino.push(msg);
+}
+
 void physics(){
     if(hit_delay)hit_delay--;
     if((!breaking)&&(break_block!=max_break_block))break_block=max_break_block;
     depth_pressure_physics();
+    if(ear.health<=0)death();
 }
