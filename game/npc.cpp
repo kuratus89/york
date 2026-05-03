@@ -51,12 +51,12 @@ bool manage_mob_hit(mob &mo , bool knockback){
     mo.color = 0;
     mo.delay_color = 2;
     mo.health -= mo.hit.front().second;
-    mo.hit.pop();
     if(!knockback)return 1;
     if(mo.hit.front().first.first>0)move_right(mo.x , mo.y);
     else if(mo.hit.front().first.first<0)move_left(mo.x , mo.y);
     if(mo.hit.front().first.second>0)move_down(mo.x , mo.y);
     else if(mo.hit.front().first.second<0)move_up(mo.x , mo.y);
+    mo.hit.pop();
     
     return 1;
 }
@@ -72,8 +72,6 @@ void sheep(mob &mo){
         int r = rand()%5 +1;
         for(int i=0 ; i<r ; i++)mo.kill_reward.push_back(ear.inventory_str["item"]["food"]);
     }
-    if(mo.delay_color)mo.delay_color--;
-    else mo.color = -1;
     manage_mob_hit(mo , 1);
     gravity(mo.x , mo.y);
     if(tick- mo.stl["tick"]<30)return;

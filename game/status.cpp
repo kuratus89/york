@@ -119,7 +119,7 @@ void status(){
         horizontal_window_align(wino.top().screen["pro_stats"] , wino.top().screen["profile"] , wino.top().screen["stats"] , 1 , 0);
 
         horizontal_window_align(wino.top().screen["sta"] , wino.top().screen["pro_stats"] , wino.top().screen["cordinate_pack"] , 1 , 1);
-        wino.top().screen["status"] = bod_create(5 , x-1 , 5);
+        wino.top().screen["status"] = bod_create(5 , x , 5);
         if(show_fps||show_latency){
             horizontal_window_align(wino.top().screen["pcf"] , wino.top().screen["sta"] , wino.top().screen["fl"] , 1 , 0 );
             ita(wino.top().screen["status"] , wino.top().screen["pcf"] , 1 , 1 , 0);

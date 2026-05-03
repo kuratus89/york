@@ -13,6 +13,8 @@ void dialog(){
         wino.top().stl["cy"]=0;
         wino.top().screen["dialog"] = bod_create(5 , x , 5);
         for(long long i=1 ; i<5-1; i++)wino.top().screen["dialog"][i][8].value = "|";
+        wino.top().screen["dialog"][0][0].value = "|";
+        wino.top().screen["dialog"][0].back().value = "|";
         wino.top().screen["dialog"][1][5].color = wino.top().stl["player_color"];
         wino.top().screen["dialog"][1][5].value = wino.top().sts["player"];
         long long temp = 1;

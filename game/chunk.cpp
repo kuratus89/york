@@ -47,14 +47,16 @@ int chunk_cor(int i){
 
 void load_mobs(int lcx , int lcy){
     auto it = &chunker[{lcx , lcy}];
-    if(it->mobs.size()>mobs_per_chunk)return;
+
+    if(it->mobs.size()>=mobs_per_chunk)return;
+
     int local_mob_count = mobs_per_chunk;
+
     if(ear.chunker[{lcx , lcy}].mobs.size()){
         (*it).mobs = ear.chunker[{lcx, lcy}].mobs;
         ear.stl["mob_count"]+=ear.chunker[{lcx , lcy}].mobs.size();
         local_mob_count = max(0 , local_mob_count - (int)(*it).mobs.size());
-    }
-    
+    }    
 
     for(int i=0 ; (i<chunk_size)&&(local_mob_count>0) ; i++){
         int h = height(lcx +i);
@@ -64,14 +66,14 @@ void load_mobs(int lcx , int lcy){
             int wx = lcx +i;
             int wy = lcy+j;
 
-            if(wy<h)continue;
+            // if(wy<h)continue;
             if(get_block(wx , wy)||(!get_block(wx , wy+1)))continue;
 
             int type;
             if(wy<=g+3)type = 0;
             else type = 1;
 
-            if(rand()%120)continue;
+            if(rand()%1200)continue;
 
             spawn(wx , wy , type , it);
             ear.stl["mob_count"]++;
