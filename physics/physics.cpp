@@ -5,6 +5,7 @@
 #include "../windows/dynamic/inventory.h"
 #include "../game/weapon.h"
 #include "../game/npc.h"
+#include "../input/input.h"
 
 long long jump_hight = 6;
 long long jump_stage = 0;
@@ -29,34 +30,36 @@ bool is_ground(int &vx , int &vy){
     return(get_block(vx , vy+1));
 }
 
-void move_left(int &vx , int &vy){
-    if((get_mob(vx-1 , vy)!=-1)&&(get_mob_id(vx -1 , vy).stl["ghost"]==0))return;
 
-    if((!get_block(vx-1, vy))||(ghost)){
-        vx--;
+void move_left(int &vx , int &vy){
+    if((get_mob(vx-1 , vy)!=-1)&&(get_mob_id(vx-1 , vy).stl["ghost"]==0))return;
+    if(((!get_block(vx-1 , vy))||(ghost))){
+        if((input::ikd(input::key::Shift))&&(!get_block(vx-1 , vy+1)))return;
+        else vx--;
+        return;
     }
-    else if((!get_block(vx-1 , vy-1))&&(!get_block(vx , vy-1))){
-        if((get_mob(vx-1 , vy-1)!=-1)&&(get_mob(vx , vy-1)!=-1))return;
+    if(input::ikd(input::key::Shift))return;
+    else if((get_block(vx-1 , vy))&&(!get_block(vx-1 , vy-1))&&(!get_block(vx , vy-1))&&(get_mob(vx-1 , vy-1)==-1)&&(get_mob(vx , vy-1)==-1)){
         vx--;
         vy--;
     }
 }
-
 
 
 void move_right(int &vx , int &vy){
-
-    if((get_mob(vx+1 , vy)!=-1)&&(get_mob_id(vx+1 , vy).stl["ghost"]==0))return;
-
-    if((!get_block(vx+1 , vy))||(ghost)){
-        vx++;
+    if((get_mob(vx +1 , vy)!=-1)&&(get_mob_id(vx+1 , vy).stl["ghost"]==0))return;
+    if(((!get_block(vx+1 , vy))||(ghost))){
+        if((input::ikd(input::key::Shift))&&(!get_block(vx+1 , vy+1)))return;
+        else vx++;
+        return;
     }
-    else if((!get_block(vx+1 , vy-1))&&(!get_block(vx , vy-1))){
-        if((get_mob(vx+1 , vy-1)!=-1)&&(get_mob(vx, vy-1)!=-1))return;
+    if(input::ikd(input::key::Shift))return;
+    else if((get_block(vx+1 , vy))&&(!get_block(vx+1 , vy-1)) &&(!get_block(vx , vy-1))&&(get_mob(vx+1 , vy-1)==-1)&&(get_mob(vx , vy-1)==-1)){
         vx++;
         vy--;
     }
 }
+
 void move_up(int &vx , int &vy){
     if((get_mob(vx , vy-1)!=-1)&&(get_mob_id(vx , vy-1).stl["ghost"]==0))return;
     if((!get_block(vx , vy-1))||(ghost))vy--;
@@ -66,13 +69,12 @@ void move_down(int &vx , int &vy){
     if((!get_block(vx , vy+1))||(ghost))vy++;
 }
 
+
 void gravity(int &vx , int &vy){
     if(ghost)return;
     if(jump_stage)return;
     if(get_block(vx , vy+1))return;
-    if((get_mob(vx , vy+1)==-1)||(get_mob_id(vx , vy+1).stl["ghost"]==0)){
-        vy++;
-    }
+    if((get_mob(vx , vy+1)==-1)&&(get_mob_id(vx , vy+1).stl["ghost"]==0))vy++;
 }
 void jump(){
     if(jump_stage)return;
@@ -111,25 +113,26 @@ void manage_jump(){
 
 void block_breaker(int x , int y , map<int , int> &inv){
     if(breaking){
-        if((target_block_x!=x)||(target_block_y)!=y){
-            breaking =0;
-            break_block=max_break_block;
+        if((target_block_x!=x)||(target_block_y!=y)){
+            breaking = 0;
+            break_block = max_break_block;
             return;
         }
         if(!break_block){
-            ear.inventory[get_block(x,y)]++;
-            set_block(x,y , 0);
-            breaking =0;
-            break_block=max_break_block;
+            ear.inventory[get_block(x , y)]++;
+            set_block(x , y , 0);
+            breaking = 0;
+            break_block = max_break_block;
             return;
         }
-        break_block--;
+        break_block --;
     }
     else {
         if(!get_block(x,y))return;
-        target_block_x= x;
+        target_block_x = x;
         target_block_y = y;
-        breaking =1;
+        breaking = 1;
+        return;
     }
 }
 
@@ -142,24 +145,22 @@ void break_block_left(){
 }
 
 void break_block_right(){
-    int temp = get_block(cx+1, cy);
-    if(!temp)return;
-    ear.inventory[temp]++;
-    delay(10);
+    int block = get_block(cx +1 , cy);
+    if(!block)return;
+    ear.inventory[block]++;
     set_block(cx+1 , cy , 0);
 }
+
 void break_block_up(){
-    int temp = get_block(cx, cy-1);
-    if(!temp)return;
-    ear.inventory[temp]++;
-    delay(10);
+    int block = get_block(cx , cy-1);
+    if(!block)return;
+    ear.inventory[block]++;
     set_block(cx , cy-1 , 0);
 }
 void break_block_down(){
-    int temp = get_block(cx, cy+1);
-    if(!temp)return;
-    ear.inventory[temp]++;
-    delay(10);
+    int block = get_block(cx , cy+1);
+    if(!block)return;
+    ear.inventory[block]++;
     set_block(cx , cy+1 , 0);
 }
 
@@ -196,7 +197,7 @@ void depth_pressure_physics(){
     if(cy<ear.skill["Depth"]*100)return;
     if(tick - depth_damage_tick <= depth_damage_gap)return;
     depth_damage_tick = tick;
-    main_hit.push({{0,-1} , 1});
+    main_hit.push({{0,0} , 1});
 }
 
 void physics(){

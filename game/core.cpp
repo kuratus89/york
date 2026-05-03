@@ -177,18 +177,15 @@ bool is_diamond(int x , int y){
 
    
 bool has_struct(int x , int y){
-    long long lx = (x>=0)?(x/structure_cell)*structure_cell :((x - structure_cell+1)/structure_cell)*structure_cell;
-    long long ly = (y>=0)?(y/structure_cell)*structure_cell :((y - structure_cell+1)/structure_cell)*structure_cell;
-    long long h = hasher_2d(lx , ly);
-    float c = (h & 0x7fffffff) / float(0x7fffffff);
-    if(c<0.65f)return 0;
-
-    int localx = (h>>8)%structure_cell;
-    int localy = (h>>16)%structure_cell;
-    if(localx<0)localx+=structure_cell;
-    if(localy<0)localy+=structure_cell;
-
-    return (((lx+localx)==x)&&((ly+localy)==y));  
-
+    int clx = x/structure_cell;
+    int cly = y/structure_cell;
+    float den = noise_2d(clx * 0.08f , cly * 0.08f , 100.0f);
+    if(den<0.04f)return 0;
+    int h = hasher(clx, cly);
+    int lx = (h>>8)%structure_cell;
+    int ly = (h>>16)%structure_cell;
+    int mx = ((x%structure_cell)+ structure_cell)% structure_cell;
+    int my = ((y%structure_cell)+structure_cell)%structure_cell;
+    return ((mx == lx)&&(my==ly));
 }
 

@@ -54,7 +54,7 @@ void pause(){
         "Settings",
         "Exit",
     };
-    option_adder(wino.top().screen["pau"] , opts , wino.top().stl["selecter"] , LLONG_MIN , LLONG_MIN , 1);
+    option_adder(wino.top().screen["pau"] , opts , wino.top().stl["selecter"] , INT_MIN , INT_MIN , 1);
     ita(wino.top().screen["screen"] ,wino.top().screen["pau"] , INT_MIN , INT_MIN , 1);
     itt();
 }

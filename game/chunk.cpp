@@ -28,17 +28,26 @@ vector<pair<string , pair<string , int>>> mober ={
     {"sheep" , {"S" , 5}},
     {"zombie" , {"Z" , 2}},
     {"bullet" , {"-" , 5}},
-    {"loot" , {"*" , 5}}
+    {"loot" , {"*" , 5}},
+    {"grave" , {"*" , 5}},
+    {"bures" , {"H" , 5}},
+    {"kures_mob" , {"▪",5}},
+    {"kuers" , {"▪" , 5}},
+
 };
 long long chunk_size = 10;
 world ear;
 long long mob_count=150;
-mob player_haha;
 mob none;
 
+int chunk_cor(int i){
+    if(i>=0)return ((i/chunk_size)*chunk_size);
+    else return (((i - chunk_size +1)/chunk_size)*chunk_size);
+}
 
 void load_mobs(int lcx , int lcy){
     auto it = &chunker[{lcx , lcy}];
+    if(it->mobs.size()>mobs_per_chunk)return;
     int local_mob_count = mobs_per_chunk;
     if(ear.chunker[{lcx , lcy}].mobs.size()){
         (*it).mobs = ear.chunker[{lcx, lcy}].mobs;
@@ -47,27 +56,31 @@ void load_mobs(int lcx , int lcy){
     }
     
 
-    for(int i=0 ; i<10 ; i++){
+    for(int i=0 ; (i<chunk_size)&&(local_mob_count>0) ; i++){
+        int h = height(lcx +i);
+        int g = grass(lcx+i);
 
-        int h = height(i+lcx);
+        for(int j=0 ; ((j<chunk_size -1)&&(local_mob_count>0)&&(ear.stl["mob_count"]<mob_count)) ; j++){
+            int wx = lcx +i;
+            int wy = lcy+j;
 
-        for(int j =0 ; (j<9)&&(ear.stl["mob_count"]<mob_count)&&(local_mob_count) ; j++){
-            if(lcy+j<h){
-                if((rand_spawn(lcx+i , lcy+j , 0 , it))){
-                    ear.stl["mob_count"]++;
-                    local_mob_count--;
-                }
-            }
-            else {
-                if(rand_spawn(lcx+i , lcy+j , 1 , it)){
-                    ear.stl["mob_count"]++;
-                    local_mob_count--;
-                }
-            }
+            if(wy<h)continue;
+            if(get_block(wx , wy)||(!get_block(wx , wy+1)))continue;
+
+            int type;
+            if(wy<=g+3)type = 0;
+            else type = 1;
+
+            if(rand()%120)continue;
+
+            spawn(wx , wy , type , it);
+            ear.stl["mob_count"]++;
+            local_mob_count--;
         }
     }
 
 }
+
 
 void spawn_mob(int lx , int ly , int type){
 
@@ -79,11 +92,7 @@ void spawn_mob(int lx , int ly , int type){
 }
 
 
-chunks* chunk_pointer(int bx , int by){
-    int lx = (bx>=0)?(bx/chunk_size)*chunk_size : ((bx - chunk_size +1)/chunk_size)*chunk_size;
-    int ly = (by>=0)?(by/chunk_size)*chunk_size : ((by - chunk_size +1)/chunk_size)*chunk_size;
-    return &chunker[{lx , ly}];
-}
+
 
 
 void struct_genrator(int x , int y){
@@ -94,7 +103,7 @@ void struct_genrator(int x , int y){
         for(int i=0 ; i<chunk_size ; i++){
             if(!has_struct(x+i , y+j))continue;
 
-            spawn_struct("treasure" , x+i , y+j);
+            spawn_struct(struct_selecter(y) , x+i , y+j);
             ear.chunker[{x,y}].struct_genrated=1;
         }
     }
@@ -193,68 +202,68 @@ bool is_chunk_loaded(long long x, long long y) {
     return(chunker.count({x,y}));
 }
 
-void manage_chunks(long long px, long long py) {
-    chunk_unloader(px, py);
-    // long long gx = floor(px / chunk_size)*chunk_size;
-    // long long gy = floor(py / chunk_size)*chunk_size;
-    long long gx = (px >= 0) ? (px / chunk_size) * chunk_size : ((px - chunk_size + 1) / chunk_size) * chunk_size;
-    long long gy = (py >= 0) ? (py / chunk_size) * chunk_size : ((py - chunk_size + 1) / chunk_size) * chunk_size;
-    
-    for (long long x=gx-render_distance;x<=gx+render_distance;x+=chunk_size)for (long long y = gy - render_distance; y <= gy + render_distance; y +=chunk_size)if (!is_chunk_loaded(x, y))chunk_loader(x, y);
-}
 
-int get_block(long long x, long long y){
-    long long lx = (x >= 0) ? (x / chunk_size) * chunk_size : ((x - chunk_size + 1) / chunk_size) * chunk_size;
-    long long ly = (y >= 0) ? (y / chunk_size) * chunk_size : ((y - chunk_size + 1) / chunk_size) * chunk_size;
-    // long long lx = floor(x / chunk_size)*chunk_size;
-    // long long ly = floor(y / chunk_size)*chunk_size;
-    
-    if (!is_chunk_loaded(lx, ly))chunk_loader(lx, ly);
-    return chunker[{lx , ly}].chunk[y-ly][x - lx];
-}
-
-
-
-int get_mob(long long x , long long y){
-    if((x==cx)&&(y==cy))return -395;
-    long long lx = (x>=0)?(x/chunk_size)*chunk_size : ((x-chunk_size +1)/ chunk_size)*chunk_size;
-    long long ly = (y>=0)?(y/chunk_size)*chunk_size : ((y-chunk_size+1)/chunk_size)*chunk_size;
-    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
-    for(auto &val:chunker[{lx,ly}].mobs){
-        if((val.x==x)&&(val.y==y))return val.type;
+void manage_chunks(int x , int y){
+    chunk_unloader(x ,y);
+    int lx = chunk_cor(x);
+    int ly = chunk_cor(y);
+    for(int j = lx - render_distance ; j<=lx+render_distance ; j+=chunk_size){
+        for(int i = ly - render_distance ; i<= ly+render_distance ; i+=chunk_size){
+            if(is_chunk_loaded(j,i))continue;
+            chunk_loader(j , i);
+        }
     }
+}
+
+
+
+int get_block(int x , int y){
+    int lx = chunk_cor(x);
+    int ly = chunk_cor(y);
+    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
+    return chunker[{lx , ly}].chunk[y- ly][x - lx];
+}
+
+
+int get_mob(int x , int y){
+    if((x==cx)&&(y==cy))return -395;
+    int lx = chunk_cor(x);
+    int ly = chunk_cor(y);
+    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
+    for(auto &val:chunker[{lx , ly}].mobs)if((val.x==x)&&(val.y==y))return val.type;
     return -1;
 }
-mob& get_mob_id(long long x , long long y){
+
+mob& get_mob_id(int x , int y){
     if((x==cx)&&(y==cy)){
-        player_haha.health = -395;
-        return player_haha;
+        none.health = -395;
+        return none;
     }
-    long long lx = (x>=0)?(x/chunk_size)*chunk_size : ((x - chunk_size+1)/chunk_size)*chunk_size;
-    long long ly = (y>=0)?(y/chunk_size)*chunk_size : ((y - chunk_size+1 )/chunk_size)*chunk_size;
-    if(!is_chunk_loaded(lx ,ly))chunk_loader(lx , ly);
-    for(auto &val:chunker[{lx , ly}].mobs){
-        if((val.x==x)&&(val.y==y))return val;
-    }
-    none.health=-1;
+    int lx = chunk_cor(x);
+    int ly = chunk_cor(y);
+    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
+    for(auto &val:chunker[{lx , ly}].mobs)if((val.x==x)&&(val.y==y))return val;
+    none.health = -1;
     return none;
 }
 
-void set_block(long long x, long long y , int d){
-    long long lx;
-    if(x>=0)lx = (x/chunk_size)*chunk_size;
-    else lx = ((x - chunk_size+1)/chunk_size)*chunk_size;
-    long long ly ;
-    if(y>=0) ly = (y/chunk_size)*chunk_size;
-    else ly = ((y -chunk_size+1)/chunk_size)*chunk_size;
-    // if(!is_chunk_loaded(lx , ly)){
-    //     crash("trying to modify unloaded chunk");
-    //     return;
-    // }
-    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
-    chunker[{lx , ly}].chunk[y - ly][x - lx] = d;
-    chunker[{lx , ly}].change[{x - lx , y - ly}] = d;
+
+void set_block(int x , int y , int block){
+    int bx = chunk_cor(x);
+    int by = chunk_cor(y);
+
+    if(!is_chunk_loaded(bx , by))chunk_loader(bx , by);
+    chunker[{bx , by}].chunk[y - by][x - bx] = block;
+    chunker[{bx , by}].change[{x - bx , y - by}]= block;
 }
+
+chunks* chunk_pointer(int bx , int by){
+    int lx = chunk_cor(bx);
+    int ly = chunk_cor(by);
+    if(!is_chunk_loaded(lx , ly))chunk_loader(lx , ly);
+    return &chunker[{lx , ly}];
+}
+
 
 bool save_game(string s){
     ear.posx = cx;
@@ -265,28 +274,41 @@ bool save_game(string s){
     return ear.save(s);
 }
 
-void manage_all_mobs(){
-    queue<pair<pair<long long , long long>, mob>> mob_transfer;
-    queue<pair<long long , long long>> chunk_loader_queue;
+void manage_all_mobs(vector<vector<pixel>> &scr){
+    queue<pair<pair<int , int> , mob>> mob_transfer;
+    queue<pair<int , int>> chunk_loader_queue;
     queue<mob*> mob_manage;
+    bool boss_mob=0;
     for(auto &val:chunker){
-        for(auto it = val.second.mobs.begin() ; it!=val.second.mobs.end() ;){
-            
-            long long lx =  ((*it).x>=0)?((*it).x/chunk_size)*chunk_size : (((*it).x-chunk_size +1)/chunk_size)*chunk_size;
-            long long ly = ((*it).y>=0)? ((*it).y/chunk_size)*chunk_size : (((*it).y - chunk_size+1)/chunk_size)*chunk_size;
+        for(auto it = val.second.mobs.begin() ; it!=val.second.mobs.end();){
+            int lx = chunk_cor((*it).x);
+            int ly = chunk_cor ((*it).y);
             if((val.first.first!=lx)||(val.first.second!=ly)){
                 if(!is_chunk_loaded(lx , ly))chunk_loader_queue.push({lx , ly});
-                mob_transfer.push({{lx,ly} , (*it)});
+                mob_transfer.push({{lx , ly} , (*it)});
                 it = val.second.mobs.erase(it);
             }
             else if((*it).health<=0){
+                if(((*it).type!=4)&&(!(*it).kill_reward.empty())){
+                    mob mo;
+                    mo.type = 4;
+                    mo.kill_reward = (*it).kill_reward;
+                    mo.x = (*it).x;
+                    mo.y = (*it).y;
+                    mob_transfer.push({{lx , ly} , mo});
+                }
                 it = val.second.mobs.erase(it);
                 ear.stl["mob_count"]--;
             }
             else {
+                if((it->stl["boss"])&&(!boss_mob)){
+                    boss_title(scr , (*it));
+                    boss_mob=0;
+                }
                 mob_manage.push(&(*it));
                 it++;
             }
+
         }
     }
     while(!chunk_loader_queue.empty()){
@@ -301,5 +323,4 @@ void manage_all_mobs(){
         chunker[mob_transfer.front().first].mobs.push_back(mob_transfer.front().second);
         mob_transfer.pop();
     }
-    
 }

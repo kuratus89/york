@@ -11,6 +11,7 @@ void error(){
     cout<<"sorry but the game crash >_<"<<endl;
     cout<<"reason => ";
     cout<<wino.top().sts["value"];
+    this_thread::sleep_for(chrono::milliseconds(1000));
 }
 
 void crash(string s){

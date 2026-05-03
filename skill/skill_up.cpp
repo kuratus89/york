@@ -90,17 +90,17 @@ void skill_up(){
             "Diamond : " + to_string(wino.top().stl["diamond"]),
             "Back"
         };
-        option_adder(wino.top().screen["opt"] , wino.top().vs["opt"] , wino.top().stl["selecter"] , LLONG_MIN , LLONG_MIN , 0);
+        option_adder(wino.top().screen["opt"] , wino.top().vs["opt"] , wino.top().stl["selecter"] ,INT_MIN , INT_MIN , 0);
 
-        horizontal_window_align(wino.top().screen["up1"] , wino.top().screen["name"] , wino.top().screen["lvl"] , 1);
-        vertical_window_align(wino.top().screen["up2"] , wino.top().screen["up1"] , wino.top().screen["desc"] , 1);
-        vertical_window_align(wino.top().screen["up3"] , wino.top().screen["up2"] , wino.top().screen["opt_title"] , 0);
-        vertical_window_align(wino.top().screen["main"] , wino.top().screen["up3"] , wino.top().screen["opt"] , 1);
+        horizontal_window_align(wino.top().screen["up1"] , wino.top().screen["name"] , wino.top().screen["lvl"] , 1 ,0);
+        vertical_window_align(wino.top().screen["up2"] , wino.top().screen["up1"] , wino.top().screen["desc"] , 1 , 0);
+        vertical_window_align(wino.top().screen["up3"] , wino.top().screen["up2"] , wino.top().screen["opt_title"] , 0 , 0);
+        vertical_window_align(wino.top().screen["main"] , wino.top().screen["up3"] , wino.top().screen["opt"] , 1 , 0);
     }
     
 
-    option_adder(wino.top().screen["opt"] , wino.top().vs["opt"] , wino.top().stl["selecter"] , LLONG_MIN , LLONG_MIN , 0);
-    vertical_window_align(wino.top().screen["main"] , wino.top().screen["up3"] ,wino.top().screen["opt"] , 1 );
+    option_adder(wino.top().screen["opt"] , wino.top().vs["opt"] , wino.top().stl["selecter"] ,INT_MIN , INT_MIN , 0);
+    vertical_window_align(wino.top().screen["main"] , wino.top().screen["up3"] ,wino.top().screen["opt"] , 1  , 0);
     bod_add(wino.top().screen["main_bod"] , wino.top().screen["main"]);
     ita(wino.top().screen["screen"] , wino.top().screen["main_bod"] ,INT_MIN , INT_MIN,0);
 

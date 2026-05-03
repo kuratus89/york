@@ -56,12 +56,13 @@ bool show_fps=0;
 bool show_latency=0;
 double ms = 0;
 double avg_ms = 0;
-int target_fps=60;
+int target_fps=20;
 long long tick =0;
 int max_health=100;
 int max_break_block=15;
 int max_pistol_range=10;
 int pistol_gap=10;
+int seconds=0;
 vector<string> intro_dialog = {
     "Hi, Spatial-oh, you seem confused by that word ,so let me explain: you are a tri-dimensional organism, and that's why I call you Spatial.",
     "As I promised, I surrender my will to you-but in return, you must make me York; and because a world can endure only one York, you will have to erase the one who exists now.",
@@ -171,6 +172,23 @@ map<string , string> skill_desc = {
     {"Fist" , "Increase Damage due to Fist"},
     {"Gun" , "Increase Damage due to weapons"},
     {"Depth" , "Increase Depth Resistance"}
+};
+map<string , string> item_desc = {
+    {"heal" , "Increase Your Health"},
+    {"food" , "Increase 10 Health"},
+};
+vector<pair<string , string>> invoda = {
+    {"Air" , "block"},
+    {"Grass","block"},
+    {"Stone" , "block"},
+    {"Iron" , "block"},
+    {"Gold" , "block"},
+    {"diamond", "block"},
+    {"Heal" , "item"},
+    {"Food" , "item"},
+    {"pistol" , "weapon"},
+    {"kures" , "weapon"},
+    
 };
 // functions
 

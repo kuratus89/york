@@ -189,48 +189,42 @@ void ita(vector<vector<pixel>> &screen ,vector<vector<pixel>> &par , int vx , in
 
 
 
-void option_adder(vector<vector<pixel>> &screen , vector<string> &options , long long selecter , long long sx , long long sy , bool boder){
 
-    if(sx<=0){
+
+void option_adder(vector<vector<pixel>> &screen , vector<string> &options , long long selecter , int x, int y , bool boder){
+    if(x<=0){
         int ma = 0;
         for(auto val:options)ma = max(ma , (int)val.size());
-        sx = ma+5;
+        x = ma+5;
     }
-    if(sy<=0){
-        sy = options.size()+3;
-    }
-
-    if(boder)screen = bod_create(5 , sx ,sy);
-    else{
-        pixel pe;
-        pe.color = 5;
-        pe.value = " ";
-        screen = vector<vector<pixel>> (sy , vector<pixel> (sx ,  pe));
-    }
+    if(y<=0)y = options.size()+3;
     pixel pe;
-    pe.color = 5;
-    long long hy=1;
-    for(long long i=0 ; i<options.size() ; i++){
-        long long hx = 2;
-        if(hy>=screen.size())continue; 
-        if(i==wino.top().stl["selecter"]){
+    pe.color =5;
+    pe.value = " ";
+    if(boder)screen = bod_create(5 , x , y);
+    else screen = vector<vector<pixel>> (y , vector<pixel> (x , pe));
+    int hy=1;
+    for(int i=0 ; i<options.size() ; i++){
+        int hx = 2;
+        if(hy>=screen.size())continue;
+        if(i==selecter){
             pe.value = "─";
-            screen[hy][hx]= pe;
+            screen[hy][hx] = pe;
             hx++;
             pe.value = ">";
-            screen[hy][hx]= pe;
+            screen[hy][hx] = pe;
             hx++;
         }
         for(auto val:options[i]){
             if(hx>=screen[0].size())continue;
             pe.value = val;
-            screen[hy][hx] =pe;
+            screen[hy][hx] = pe;
             hx++;
         }
         hy++;
     }
-}
 
+}
 string dommer(vector<vector<pixel>> &scr){
     string s;
     for(auto &var:scr){
@@ -293,10 +287,10 @@ void fad(vector<vector<pixel>> &screen , bool &fps , bool &latency , double &ms)
     }
 }
 
-void  vertical_window_align(vector<vector<pixel>> &result , vector<vector<pixel>> &top , vector<vector<pixel>> &bottom , bool center_align){
-    if((top.size()<=0)||(bottom.size()<=0))return;
+void  vertical_window_align(vector<vector<pixel>> &result , vector<vector<pixel>> &top , vector<vector<pixel>> &bottom , bool center_align , int space){
+    if(top.empty() || bottom.empty())return;
     int x=max(top[0].size() , bottom[0].size());
-    int y = top.size() + bottom.size();
+    int y = top.size() + bottom.size() + space;
 
     pixel pe;
     pe.color = 5;
@@ -307,13 +301,15 @@ void  vertical_window_align(vector<vector<pixel>> &result , vector<vector<pixel>
     else ita(result , top , 0 , 0 , 0);
 
     if(center_align)ita(result , bottom , INT_MIN, top.size(),0);
-    else ita(result , bottom , 0 , top.size() , 0);
+    else ita(result , bottom , 0 , top.size()+space , 0);
 }
 
-void horizontal_window_align(vector<vector<pixel>> &result ,vector<vector<pixel>> &left , vector<vector<pixel>> &right , bool center_align){
-    int lx = left[0].size();
+void horizontal_window_align(vector<vector<pixel>> &result ,vector<vector<pixel>> &left , vector<vector<pixel>> &right , bool center_align , int space){
+    if(left.empty()||right.empty())return;
+    
+    int lx = left[0].size()+space;
     int rx = right[0].size();
-    int x = lx +rx;
+    int x = lx +rx+space;
     int y = max(left.size() , right.size());
 
     pixel pe;
@@ -345,6 +341,7 @@ void text_to_win_xlim(vector<vector<pixel>> &win , string s , int x){
         }
         pe.value = val;
         pv.push_back(pe);
+        i++;
     }
     if(pv.size())win.push_back(pv);
 }

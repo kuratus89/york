@@ -25,6 +25,8 @@
 #include "../skill/skill_main.h"
 #include "dynamic/yan.h"
 #include "../skill/skill_up.h"
+#include "dynamic/item.h"
+#include "dynamic/itemup.h"
 #include "../lib.h"
 
 
@@ -52,6 +54,8 @@ map<string , void(*)()> func_point = {
         {"skill" , skill_main},
         {"skill_up" , skill_up},
         {"yan" , yan},
+        {"item" , item},
+        {"itemup" , itemup},
 };
 
 
@@ -108,7 +112,8 @@ void window(){
     }
     
 
-    if(wino.top().screen_handle){
+    // if(wino.top().screen_handle){
+    if((!wino.empty())&&(wino.top().screen_handle)){
         kuramizer(wino.top().screen["screen"]);
     }
 }

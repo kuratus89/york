@@ -8,6 +8,7 @@
 vector<string> has_weapon;
 string selected_weapon = "fist";
 int pre_tick_pistol=-1;
+int pre_tick_kures = -1;
 void inpty(){
     if(k!="-"){
         if(k=="W")wino.top().stl["selecter"]--;
@@ -20,6 +21,47 @@ void inpty(){
         }
     }
 }
+
+void fist(string dir){
+    int mox=0;
+    int moy=0;
+    if(dir=="left")mox = -1;
+    else if(dir=="right") mox = 1;
+    else if(dir =="up")moy=-1;
+    else if(dir=="down")moy = 1;
+    mob &mo = get_mob_id(cx+mox , cy+moy);
+    if(mo.health==-1)return;
+    if(mo.health==-395)main_hit.push({{mox,moy} , 1});
+    else mo.hit.push({{mox , moy} , 1});
+}
+void pistol(string dir){
+    if(tick - pre_tick_pistol<=pistol_gap)return;
+    pre_tick_pistol = tick;
+    mob bul;
+    bul.type = 2;
+    bul.sts["dir"] = dir;
+    bul.stl["max"] = max_pistol_range;
+    bul.x = cx;
+    bul.y = cy;
+    spawn_this_mob(bul);
+}
+void kures(string dir){
+    if(tick - pre_tick_kures<=(pistol_gap*1.5 +1))return;
+    pre_tick_kures = tick;
+    mob kures;
+    kures.type = 7;
+    kures.sts["dir"] = dir;
+    kures.stl["max"] = max_pistol_range;
+    kures.x = cx;
+    kures.y = cy;
+    spawn_this_mob(kures);
+}
+
+map<string , void(*)(string)> weapons = {
+    {"fist" , fist},
+    {"pistol" ,pistol},
+    {"kures" , kures}
+};
 
 void weapon(){
     if(!wino.top().initilizzed){
@@ -43,82 +85,16 @@ void weapon(){
 }
 
 void hit_right(string &weap){
-    if(weap =="fist"){
-        mob &mo = get_mob_id(cx+1,cy);
-        if(mo.health==-1)return;
-        if(mo.health==-395)main_hit.push({{1,0} ,  1 });
-        else mo.hit.push({{1,0} , ear.skill["Fist"]});      
-    }
-    if(weap =="pistol"){
-        if(tick - pre_tick_pistol<=pistol_gap)return;
-        pre_tick_pistol = tick;
-        mob bul;
-        bul.type = 2;
-        bul.sts["dir"] = "right";
-        bul.stl["max"]=max_pistol_range;
-        bul.x = cx;
-        bul.y = cy;
-        spawn_this_mob(bul);
-    }
+    weapons[weap]("right");
 }
 void hit_left(string &weap){
-    if(weap=="fist"){
-        mob &mo = get_mob_id(cx-1 , cy);
-        if(mo.health==-1)return ;
-        if(mo.health==-395)main_hit.push({{-1,0},1});
-        else mo.hit.push({{-1,0} , ear.skill["Fist"]});                    
-    }
-    else if(weap=="pistol"){
-        if(tick - pre_tick_pistol<=pistol_gap)return;
-        pre_tick_pistol = tick;
-        mob mo;
-        mo.type = 2;
-        mo.x = cx;
-        mo.y=cy;
-        mo.sts["dir"] = "left";
-        mo.stl["max"] = max_pistol_range;
-        spawn_this_mob(mo);
-    }
+    weapons[weap]("left");
 }
 void hit_up(string &weap){
-    if(weap=="fist"){
-        mob &mo = get_mob_id(cx , cy-1);
-        if(mo.health==-1)return;
-        if(mo.health==-395)main_hit.push({{0,-1} , 1});
-        else mo.hit.push({{0,-1} , ear.skill["Fist"]});
-    }
-    else if(weap=="pistol"){
-        if(tick - pre_tick_pistol<=pistol_gap)return ;
-        pre_tick_pistol = tick;
-        mob mo;
-        mo.type = 2;
-        mo.x = cx;
-        mo.y = cy;
-        mo.sts["dir"]="up";
-        mo.stl["max"] = max_pistol_range;
-        spawn_this_mob(mo);
-    }
+    weapons[weap]("up");
 }
-
 void hit_down(string &weap){
-    if(weap=="fist"){
-        mob &mo = get_mob_id(cx , cy+1);
-        if(mo.health==-1)return;
-        if(mo.health==-395)main_hit.push({{0,1} , 1});
-        else mo.hit.push({{0,1} , ear.skill["Fist"]});
-    }
-    else if(weap == "pistol"){
-        if(tick - pre_tick_pistol<=pistol_gap)return ;
-        pre_tick_pistol = tick;
-        mob mo;
-        mo.type = 2;
-        mo.x = cx;
-        mo.y = cy;
-        mo.sts["dir"]="down";
-        mo.stl["max"] = max_pistol_range;
-        spawn_this_mob(mo);
-    }
-
+    weapons[weap]("down");
 }
 
 

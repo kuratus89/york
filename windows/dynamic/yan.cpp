@@ -31,13 +31,13 @@ void yan(){
         if(!wino.top().vs["opt"].size())crash("invalid options provided for yan");
         int lx=1;
         for(auto val:wino.top().vs["opt"])lx = max(lx , (int) val.size());
-        if(wino.top().sts.count("desc"))text_to_win_xlim(wino.top().screen["desc"] , wino.top().sts["desc"] , lx+2);
+        if(wino.top().sts.count("desc"))text_to_win_xlim(wino.top().screen["desc"] , wino.top().sts["desc"] , x/3);
         
         
         
     }
     option_adder(wino.top().screen["opt"] , wino.top().vs["opt"] , wino.top().stl["selecter"] , INT_MIN , INT_MIN, 0);
-    if(wino.top().sts.count("desc"))vertical_window_align(wino.top().screen["main"] , wino.top().screen["desc"] , wino.top().screen["opt"] , 1);
+    if(wino.top().sts.count("desc"))vertical_window_align(wino.top().screen["main"] , wino.top().screen["desc"] , wino.top().screen["opt"] , 1 , 0);
     else wino.top().screen["main"] = wino.top().screen["opt"];
     bod_add(wino.top().screen["main_bod"] , wino.top().screen["main"]);
     ita(wino.top().screen["screen"] , wino.top().screen["main_bod"] , INT_MIN , INT_MIN , 0);

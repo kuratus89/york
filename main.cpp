@@ -26,14 +26,16 @@ int main(){
     input::event e;
     init_console();
     cout << "\033[?25l";
-    
+    auto start_time = chrono::high_resolution_clock::now();
     while(gameon){//main game loop >_<
         tick++;
         auto start = chrono::high_resolution_clock::now();
         if(input::pollEvent(e))k=input::keyToString(e.keycode);
         else k="-";
         window();
-        cap(target_fps , (chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now()- start)).count()/1000.0);
-        ms = (chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now()-start)).count()/1000.0;        
+        auto now = chrono::high_resolution_clock::now();
+        cap(target_fps , (chrono::duration_cast<chrono::microseconds>(now- start)).count()/1000.0);
+        ms = (chrono::duration_cast<chrono::microseconds>(now-start)).count()/1000.0;   
+        seconds = (chrono::duration_cast<chrono::seconds>(now - start_time)).count();
     }
 }

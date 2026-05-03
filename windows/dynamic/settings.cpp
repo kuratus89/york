@@ -1,23 +1,49 @@
 #include "../window.h"
 #include "../../output/output.h"
 #include "../../stora/stora.h"
+#include "../../game/chunk.h"
+#include "../../game/npc.h"
 void inpppt(){
     if(k=="W")wino.top().stl["selecter"]--;
     if(k=="S")wino.top().stl["selecter"]++;
-    if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"] = 3;
-    if(wino.top().stl["selecter"]==4)wino.top().stl["selecter"]=0;
+    if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"] = wino.top().vs["opo"].size() - 1;
+    if(wino.top().stl["selecter"]==wino.top().vs["opo"].size())wino.top().stl["selecter"]=0;
     if(k=="Enter"){
-        if(wino.top().stl["selecter"]==3){
-            wino.pop();
-        }
+        if(wino.top().stl["selecter"]==3)wino.pop();
         else if(wino.top().stl["selecter"]==1)show_fps = !show_fps;
         else if(wino.top().stl["selecter"]==2)show_latency = !show_latency;
+        else if(wino.top().stl["selecter"]==0){
+            win yan;
+            yan.name = "yan";
+            yan.sts["api"] = "restart";
+            yan.vs["opt"] = {
+                "Yes",
+                "No"
+            };
+            yan.sts["desc"] = "This will restart the game. Do you want to continue?";
+            wino.push(yan);
+            return;
+        }
     }
 }
+void reset(){
+    ear.reset();
+    while(!main_hit.empty())main_hit.pop();
+    main_hit_delay = 0;
+}
 void settings(){
+    if(wino.top().sts.count("restart")){
+        string s = wino.top().sts["restart"];
+        wino.top().sts.erase("restart");
+        if(s!="Yes")return;
+        while(!wino.empty())wino.pop();
+        first_boot = 1;
+        return;
+    }
     if(!wino.top().initilizzed){
         wino.top().initilizzed=1;
         wino.top().screen_handle=1;
+        reset();
         wino.top().screen["screen"] = pre_screen;
         wino.top().stl["selecter"]=0;
         wino.top().vs["opo"] = {

@@ -14,7 +14,6 @@
 pixel pa , pp;
 
 void game_window(){
-    wino.top().screen["game"] = vector<vector<pixel>> (y , vector<pixel> (x , pa));
     render(wino.top().screen["game"] , cx , cy);
 }
 void init(){
@@ -46,20 +45,20 @@ void init(){
     else {
         
         if(input::ikd(input::key::Up)){
-            if(ear.inventory[item]<=0)return;
-            place_block_up(item);
+            if(ear.inventory[selected_item]<=0)return;
+            place_block_up(selected_item);
         }
         if(input::ikd(input::key::Down)){
-            if(ear.inventory[item]<=0)return;
-            place_block_down(item);
+            if(ear.inventory[selected_item]<=0)return;
+            place_block_down(selected_item);
         }
         if(input::ikd(input::key::Left)){
-            if(ear.inventory[item]<=0)return;
-            place_block_left(item);         
+            if(ear.inventory[selected_item]<=0)return;
+            place_block_left(selected_item);         
         }
         if(input::ikd(input::key::Right)){
-            if(ear.inventory[item]<=0)return;
-            place_block_right(item);
+            if(ear.inventory[selected_item]<=0)return;
+            place_block_right(selected_item);
         }
     }
     if(ghost){
@@ -87,7 +86,13 @@ void init(){
         sk.name = "skill";
         wino.push(sk);
     }
+    else if(k=="I"){
+        win it;
+        it.name = "item";
+        wino.push(it);
+    }
 }
+
 
 void main_game(){
     if(!wino.top().initilizzed){
@@ -99,7 +104,9 @@ void main_game(){
         pa.value = " ";
         cx=ear.posx;
         cy=ear.posy;
-        wino.top().screen["screen"] = vector<vector<pixel>> (y , vector<pixel> (x ,pa));
+        // wino.top().screen["screen"] = vector<vector<pixel>> (y , vector<pixel> (x ,pa));
+        wino.top().screen["screen"] = bod_create(5 , x , y);
+        wino.top().screen["game"] = vector<vector<pixel>> (y , vector<pixel> (x , pa));
     
         pp.color = player_color;
         pp.value = string(1,player);
@@ -113,13 +120,17 @@ void main_game(){
             dia.name = "dialog";
             dia.vs["dialog"] = {
                 "This is the world I live in!",
-                "I will show you exactly how to take control of me.",
+                "For now you should explore the world and collects resources",
+                "And become strong by upgrading your skills",
+                "You can open skill tab by pressing 'K' key and weapon tab by pressing 'V' key",
+                "yeahh the weapons , you can find them in structures which were made by york.",
+                "but you will need a special special weapon to defeat york , after killing bures who will be in dungeons below 500 blocks you will get a weapon callede kures",
+                "You can only defeat york with the help of kures",
+                "I will now show you exactly how to control me.",
                 "You can control my movement using the A and D keys.",
-                "You can open my thoughts with E and select what I must carry then confirm it with Enter",
+                "Press 'E' to open the block menu and select the block you want to equip.",
                 "You can make me place the selected block using the arrow keys",
                 "You can make me break blocks using Shift + arrow keys",
-                "And yes you possess a special ability to freeze time itself. Press ENTER to stop the world."
-                
             };
             dia.stl["player_color"] = player_color;
             dia.sts["player"] = string(1,player);
@@ -129,23 +140,23 @@ void main_game(){
         }
         
     }
-    gravity(cx , cy);
-    manage_jump();
-    manage_chunks(cx , cy);
     game_window();
     ita(wino.top().screen["screen"] , wino.top().screen["game"] , 0 , 0 , 1);
     ita(wino.top().screen["screen"] , wino.top().screen["player"] , (x/2), (y/2) , 1);
-    if(show_fps||show_latency){
-        fad(wino.top().screen["fad"] , show_fps , show_latency , ms);
-        ita(wino.top().screen["screen"] , wino.top().screen["fad"] , 1 ,1 , 0);
-    }
+    // if(show_fps||show_latency){
+    //     fad(wino.top().screen["fad"] , show_fps , show_latency , ms);
+    //     ita(wino.top().screen["screen"] , wino.top().screen["fad"] , 1 ,1 , 0);
+    // }
     status();
-    delay(10);
     
-    manage_all_mobs();
+    manage_all_mobs(wino.top().screen["screen"]);
     
     physics();
     manage_hit();
     
     init();
+    
+    gravity(cx , cy);
+    manage_jump();
+    manage_chunks(cx , cy);
 }

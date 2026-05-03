@@ -58,6 +58,7 @@ struct mob{
     int delay_color=0;
     map<string , int> stl;
     map<string , string> sts;
+    vector<int> kill_reward;
     bool save(ofstream &out){
         uint64_t cnt = stl.size();
         write_bin(out , cnt);
@@ -72,6 +73,9 @@ struct mob{
             write_string(out , val.first);
             write_string(out , val.second);
         }
+        cnt = kill_reward.size();
+        write_bin(out , cnt);
+        for(auto val:kill_reward)write_bin(out , val);
 
         return (write_bin(out , id)&&write_bin(out , x)&&write_bin(out , y)&&write_bin(out , health)&&write_bin(out , type)&&write_bin(out , initilize)&&write_bin(out , bfs.first)&&write_bin(out , bfs.second)&&write_bin(out , in_range));
     }
@@ -95,12 +99,17 @@ struct mob{
             read_string(in , b);
             sts[a]=b;
         }
+        read_bin(in , cnt);
+        kill_reward.clear();
+        for(int i=0 ; i<cnt ; i++){
+            int n;
+            read_bin(in , n);
+            kill_reward.push_back(n);
+        }
 
         return(read_bin(in , id)&&read_bin(in , x)&&read_bin(in , y)&&read_bin(in , health)&&read_bin(in , type)&&read_bin(in , initilize)&&read_bin(in , bfs.first)&&read_bin(in , bfs.second)&&read_bin(in , in_range));
     }
-    void spawn(int x , int y,int type){
-
-    }
+    
 };
 
 struct chunks{
@@ -189,21 +198,17 @@ struct world{
         },
         {"item",
             {
-                {"heal" ,6}
+                {"heal" ,6},
+                {"food" , 7}
             }
         },
         {"weapon",
             {
-                {"pistol" , 7},
-                {"rifle" , 8}
+                {"pistol" , 8},
+                {"kures" , 9}
             }
         },
-        {"ammo",
-            {
-                {"pistol" , 9},
-                {"rifle" , 10}
-            }
-        }
+        
     };
     
     int get_inv(string type , string name){
@@ -326,6 +331,9 @@ struct world{
 
         return in.good();
     }
+    void reset(){
+        *this = world();
+    }
 };
 bool save_boot_data(const boot_data &data, const std::string &valo, const std::string &dgm);
 bool load_boot_data(const string &valo, const string &dgm, boot_data &out_data);
@@ -361,10 +369,14 @@ extern double avg_ms;
 extern int target_fps;
 extern long long tick;
 extern map<string , string> skill_desc;
+extern map<string , string> item_desc;
+extern vector<pair<string , string >> invoda;
 extern int max_health;
 extern int max_break_block;
 extern int max_pistol_range;
 extern int pistol_gap;
+extern int seconds;
+
 
 //func
 

@@ -3,23 +3,10 @@
 #include "../../output/output.h"
 #include "../../game/chunk.h"
 
-vector<pair<string , string>> invoda = {
-    {"Air" , "block"},
-    {"Grass","block"},
-    {"Stone" , "block"},
-    {"iron" , "block"},
-    {"gold" , "block"},
-    {"diamond", "block"},
-    {"heal" , "item"},
-    {"pistol" , "weapon"},
-    {"rifle" , "weapon"},
-    {"pistol_bullet" , "ammo"},
-    {"rifle_bullet" , "ammo"}
-    
-};
 
 
-int item=0;
+
+int selected_item=0;
 vector<string> invd;
 vector<int> tempo;
 void itp(){
@@ -28,7 +15,7 @@ void itp(){
     if(wino.top().stl["selecter"]==invd.size())wino.top().stl["selecter"]=0;
     if(wino.top().stl["selecter"]<0)wino.top().stl["selecter"] = invd.size()-1;
     if(k=="Enter"){
-        item = tempo[wino.top().stl["selecter"]];
+        selected_item = tempo[wino.top().stl["selecter"]];
         wino.pop();
     }
 }
@@ -58,7 +45,7 @@ void inventory(){
             return;
         }
     }
-    option_adder(wino.top().screen["invo"] , invd , wino.top().stl["selecter"] , LLONG_MIN , LLONG_MIN , 1);
+    option_adder(wino.top().screen["invo"] , invd , wino.top().stl["selecter"] , INT_MIN , INT_MIN , 1);
     ita(wino.top().screen["screen"] , wino.top().screen["invo"] , INT_MIN , INT_MIN , 1);
     itp();
 }

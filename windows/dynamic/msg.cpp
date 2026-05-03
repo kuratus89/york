@@ -5,7 +5,7 @@ long long mx;
 long long my;
 int  colo;
 void inpu(){
-    if(k=="Enter"){
+    if(k!="-"){
         wino.pop();
     }
 }

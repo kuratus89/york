@@ -313,10 +313,6 @@ void main_menu(){
     ita(wino.top().screen["screen"] , titles[which_title] ,((x-titles[which_title][0].size()-2)/2)+1, wino.top().stl["ty"],1 );
     ita(wino.top().screen["screen"] , wino.top().screen["player"] , cx , cy ,1);
     ita(wino.top().screen["screen"] , wino.top().screen["dia"] , 0 , y-5 , 1);
-    if(show_fps||show_latency){
-        fad(wino.top().screen["fad"] , show_fps , show_latency , ms);
-        ita(wino.top().screen["screen"] , wino.top().screen["fad"] , 1 ,1 , 0);
-    }
     inpt();
 
 }
